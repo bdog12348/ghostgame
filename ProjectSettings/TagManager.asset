@@ -9,9 +9,10 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
+  - Obstacles
   - 
   - 
   - 
@@ -22,9 +23,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
+  - Floor 1
+  - Floor 2
   - 
   - 
   - 
