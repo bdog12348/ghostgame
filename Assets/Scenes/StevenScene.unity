@@ -230,7 +230,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 550496887}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2069270030}
@@ -276,12 +276,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 771aa8f76aa86f743afed904d969eb65, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 006fd412339d3f04ab3d734a3736d81b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.6, y: 1.6}
+  m_Size: {x: 1.4342858, y: 3.0661974}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -440,7 +440,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 882719521}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 0.048, z: 20.83}
+  m_LocalPosition: {x: 1, y: 0, z: 20.83}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2055487160}
@@ -575,6 +575,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   p1GhostObject: {fileID: 1359566265}
   p2GhostObject: {fileID: 1438082236}
+  KeyboardInputEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1359566267}
+        m_TargetAssemblyTypeName: NewPlayerController, Assembly-CSharp
+        m_MethodName: MoveInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   p1MoveInputEvent:
     m_PersistentCalls:
       m_Calls:
@@ -712,6 +727,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 58cd69e5-46c7-4a2f-b988-0ef540b931a0
     m_ActionName: Dustpan/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow,/DualShock4GamepadHID/leftStick/up,/XInputControllerWindows/leftStick/up,/XInputControllerWindows/leftStick/up,/DualShock4GamepadHID/leftStick/down,/XInputControllerWindows/leftStick/down,/XInputControllerWindows/leftStick/down,/DualShock4GamepadHID/leftStick/left,/XInputControllerWindows/leftStick/left,/XInputControllerWindows/leftStick/left,/DualShock4GamepadHID/leftStick/right,/XInputControllerWindows/leftStick/right,/XInputControllerWindows/leftStick/right]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c4c0400c-9434-4899-bcfb-842b350fb34d
+    m_ActionName: Ghost/KeyboardMove[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Ghost
@@ -730,7 +749,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactObject: {fileID: 1445673121}
-  ghostSprite: {fileID: 21300000, guid: 076cfaaed9d286f4b8acce84b0f4a326, type: 3}
+  ghostSprite: {fileID: 21300000, guid: 136634fb7ccb0ba489b728fa80799c76, type: 3}
   possessableObject: {fileID: 0}
   currentObject: {fileID: 0}
   originalGhost: {fileID: 0}
@@ -842,7 +861,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1362576218}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.31, y: 0.048, z: 20.83}
+  m_LocalPosition: {x: 4.31, y: 0, z: 20.83}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1457484917}
@@ -920,12 +939,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 076cfaaed9d286f4b8acce84b0f4a326, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 136634fb7ccb0ba489b728fa80799c76, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 1.5, y: 1.8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1008,6 +1027,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 58cd69e5-46c7-4a2f-b988-0ef540b931a0
     m_ActionName: Dustpan/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow,/DualShock4GamepadHID/leftStick/up,/XInputControllerWindows/leftStick/up,/XInputControllerWindows/leftStick/up,/DualShock4GamepadHID/leftStick/down,/XInputControllerWindows/leftStick/down,/XInputControllerWindows/leftStick/down,/DualShock4GamepadHID/leftStick/left,/XInputControllerWindows/leftStick/left,/XInputControllerWindows/leftStick/left,/DualShock4GamepadHID/leftStick/right,/XInputControllerWindows/leftStick/right,/XInputControllerWindows/leftStick/right]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c4c0400c-9434-4899-bcfb-842b350fb34d
+    m_ActionName: Ghost/KeyboardMove[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Ghost
@@ -1026,7 +1049,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactObject: {fileID: 406728416}
-  ghostSprite: {fileID: 21300000, guid: 076cfaaed9d286f4b8acce84b0f4a326, type: 3}
+  ghostSprite: {fileID: 21300000, guid: 2c64fcede8d948641afb04a477df6b8a, type: 3}
   possessableObject: {fileID: 0}
   currentObject: {fileID: 0}
   originalGhost: {fileID: 0}
@@ -1185,7 +1208,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1457484916}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1362576221}
@@ -1231,12 +1254,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: a2413891be2edb043b97ff2302ac70e7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0c8419df27f02524fb731bcc247f7e5d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.6, y: 1.6}
+  m_Size: {x: 1.4342858, y: 3.0661974}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1439,12 +1462,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 747f6988a8a433548b8e2699e8cd7400, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9b0d4e18f59ad52428d88cf19d451b09, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.6, y: 1.6}
+  m_Size: {x: 2.1985714, y: 1.5885714}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1489,7 +1512,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2069270028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.97, y: 0.048, z: 20.83}
+  m_LocalPosition: {x: -2.97, y: 0, z: 20.83}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 550496888}
@@ -1588,12 +1611,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 076cfaaed9d286f4b8acce84b0f4a326, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2c64fcede8d948641afb04a477df6b8a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 2, y: 1.8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

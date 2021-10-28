@@ -6,6 +6,10 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
+
+[Serializable]
+public class KeyboardInputEvent : UnityEvent<float, float, bool, int> { }
+
 [Serializable]
 public class P1MoveInputEvent : UnityEvent<float, float, bool, int> { }
 
@@ -28,6 +32,7 @@ public class InputController : MonoBehaviour
 
     private PlayerControls playerControls;
 
+    public KeyboardInputEvent KeyboardInputEvent;
     public P1MoveInputEvent p1MoveInputEvent;
     public P1AttemptPossessEvent p1AttemptPossessEvent;
     public P2MoveInputEvent p2MoveInputEvent;
@@ -41,6 +46,7 @@ public class InputController : MonoBehaviour
 
     Gamepad[] gamepads;
     int numGamepads;
+    bool keyboard = false;
 
     private void Awake()
     {
@@ -76,15 +82,35 @@ public class InputController : MonoBehaviour
         if(ghostObject.GetComponent<NewPlayerController>().currentObject.name == "Player")
         {
             CurrentForms[playerNumber] = CurrentForm.Ghost;
-            playerControls.Ghost.Move.performed += MoveEvent;
-            playerControls.Ghost.Move.canceled += MoveEvent;
+            if (playerNumber == 0 && keyboard)
+            {
+                playerControls.Ghost.KeyboardMove.performed += KeyboardEvent;
+                playerControls.Ghost.KeyboardMove.canceled += KeyboardEvent;
+                playerControls.Ghost.Move.performed -= MoveEvent;
+                playerControls.Ghost.Move.canceled -= MoveEvent;
+            }
+            else
+            {
+                playerControls.Ghost.Move.performed += MoveEvent;
+                playerControls.Ghost.Move.canceled += MoveEvent;
+                playerControls.Ghost.KeyboardMove.performed -= KeyboardEvent;
+                playerControls.Ghost.KeyboardMove.canceled -= KeyboardEvent;
+            }
             playerControls.Ghost.Possess.performed += AttemptPossess;
             //playerControls.Ghost.Possess.canceled += AttemptPossess;
         }
         else
         {
-            playerControls.Ghost.Move.performed -= MoveEvent;
-            playerControls.Ghost.Move.canceled -= MoveEvent;
+            if (playerNumber == 0 && keyboard)
+            {
+                playerControls.Ghost.KeyboardMove.performed -= KeyboardEvent;
+                playerControls.Ghost.KeyboardMove.canceled -= KeyboardEvent; 
+            }
+            else
+            {
+                playerControls.Ghost.Move.performed -= MoveEvent;
+                playerControls.Ghost.Move.canceled -= MoveEvent;
+            }
             playerControls.Ghost.Possess.performed -= AttemptPossess;
         }
 
@@ -137,6 +163,12 @@ public class InputController : MonoBehaviour
 
     private void Update()
     {
+        if(Keyboard.current.kKey.wasPressedThisFrame)
+        {
+            keyboard = keyboard ? false : true;
+            ChangeInputControls(0, p1GhostObject, P1MoveEvent, P1AttemptPossess);
+        }
+
         //If there is a device (gamepad) change, we need to handle it
         InputSystem.onDeviceChange +=
         (device, change) =>
@@ -192,6 +224,12 @@ public class InputController : MonoBehaviour
         }
     }
 
+    private void KeyboardEvent(InputAction.CallbackContext context)
+    {
+        Vector2 moveInput = context.ReadValue<Vector2>();
+        p1MoveInputEvent.Invoke(moveInput.x, moveInput.y, false, 0);
+    }
+
     private void P1MoveEvent(InputAction.CallbackContext context)
     {
         if(gamepads[0] != null)
@@ -215,7 +253,7 @@ public class InputController : MonoBehaviour
                     direction = 1;
             }
             Vector2 moveInput = gamepads[0].leftStick.ReadValue();
-            p1MoveInputEvent.Invoke(moveInput.x, moveInput.y, forward, direction);
+            p1MoveInputEvent.Invoke(moveInput.x, moveInput.y, forward, direction);    
         }
     }
 

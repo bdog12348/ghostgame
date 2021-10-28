@@ -19,7 +19,7 @@ public class NewPlayerController : MonoBehaviour
 
     float horizontal;
     float vertical;
-
+    
     private bool canInteract = false;
     private bool possessing = false;
 
@@ -62,7 +62,6 @@ public class NewPlayerController : MonoBehaviour
             interactObject.SetActive(false);
             spriteRenderer.sprite = possessableObject.GetComponentInChildren<SpriteRenderer>().sprite;
             possessableObject.GetComponentInChildren<SpriteRenderer>().enabled = false;
-            Debug.Log($"Posessing {currentObject.name}");
         }
         else if(possessing == true)
         {
@@ -70,7 +69,6 @@ public class NewPlayerController : MonoBehaviour
             spriteRenderer.sprite = ghostSprite;
             possessableObject.transform.position = transform.position;
             possessableObject.GetComponentInChildren<SpriteRenderer>().enabled = true;
-            Debug.Log($"Going Ghost{currentObject.name}");
             possessing = false;
         }
     }
@@ -112,7 +110,7 @@ public class NewPlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("COllided");
+        Debug.Log("Collided");
     }
 
 }

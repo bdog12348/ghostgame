@@ -33,119 +33,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""KeyboardMove"",
+                    ""type"": ""Button"",
+                    ""id"": ""c4c0400c-9434-4899-bcfb-842b350fb34d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": ""WASD"",
-                    ""id"": ""3843ad6c-a84a-47bc-8d58-786daf57cfa9"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""3623b130-33d3-4cc6-b885-8dbc39b64be6"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""8cdadf27-b32f-45e9-9121-83d7e1f0c956"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""1d8b29f1-467a-4b97-bacc-4fedadf0ae34"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""b314c923-f4d3-4db0-8d77-083925389b04"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Arrow Keys"",
-                    ""id"": ""725bcb2b-2d02-4bd7-9344-f8a48050e02c"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""2a53935c-6ded-49a0-a552-ea302237c4f9"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""5b6a8293-a5ae-4d53-a48d-882283e0a3a1"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""c35aac8d-3dfc-4ba9-b319-3e978af5677d"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""f4cce054-fe9f-4851-b588-79ff66cc4639"",
-                    ""path"": ""<Keyboard>/rightArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
                 {
                     ""name"": ""Gamepad"",
                     ""id"": ""07c0c6e9-6f3c-42d9-961f-00d35462b8db"",
@@ -222,6 +120,61 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Possess"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""WASD"",
+                    ""id"": ""5812923e-6b1c-42ac-b163-56d30137d3d1"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""KeyboardMove"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""c41a62b4-9f2d-4846-8b5e-9f5100ffdd83"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""KeyboardMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""e2205667-1108-4896-9c4e-4ea02f4992e6"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""KeyboardMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""eed11b10-d179-4c4b-b012-788d165686b8"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""KeyboardMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""60d4c0df-e308-47c7-a978-90f2a23e4c72"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""KeyboardMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -734,6 +687,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Ghost = asset.FindActionMap("Ghost", throwIfNotFound: true);
         m_Ghost_Move = m_Ghost.FindAction("Move", throwIfNotFound: true);
         m_Ghost_Possess = m_Ghost.FindAction("Possess", throwIfNotFound: true);
+        m_Ghost_KeyboardMove = m_Ghost.FindAction("KeyboardMove", throwIfNotFound: true);
         // Roomba
         m_Roomba = asset.FindActionMap("Roomba", throwIfNotFound: true);
         m_Roomba_Possess = m_Roomba.FindAction("Possess", throwIfNotFound: true);
@@ -797,12 +751,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private IGhostActions m_GhostActionsCallbackInterface;
     private readonly InputAction m_Ghost_Move;
     private readonly InputAction m_Ghost_Possess;
+    private readonly InputAction m_Ghost_KeyboardMove;
     public struct GhostActions
     {
         private @PlayerControls m_Wrapper;
         public GhostActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Ghost_Move;
         public InputAction @Possess => m_Wrapper.m_Ghost_Possess;
+        public InputAction @KeyboardMove => m_Wrapper.m_Ghost_KeyboardMove;
         public InputActionMap Get() { return m_Wrapper.m_Ghost; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -818,6 +774,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Possess.started -= m_Wrapper.m_GhostActionsCallbackInterface.OnPossess;
                 @Possess.performed -= m_Wrapper.m_GhostActionsCallbackInterface.OnPossess;
                 @Possess.canceled -= m_Wrapper.m_GhostActionsCallbackInterface.OnPossess;
+                @KeyboardMove.started -= m_Wrapper.m_GhostActionsCallbackInterface.OnKeyboardMove;
+                @KeyboardMove.performed -= m_Wrapper.m_GhostActionsCallbackInterface.OnKeyboardMove;
+                @KeyboardMove.canceled -= m_Wrapper.m_GhostActionsCallbackInterface.OnKeyboardMove;
             }
             m_Wrapper.m_GhostActionsCallbackInterface = instance;
             if (instance != null)
@@ -828,6 +787,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Possess.started += instance.OnPossess;
                 @Possess.performed += instance.OnPossess;
                 @Possess.canceled += instance.OnPossess;
+                @KeyboardMove.started += instance.OnKeyboardMove;
+                @KeyboardMove.performed += instance.OnKeyboardMove;
+                @KeyboardMove.canceled += instance.OnKeyboardMove;
             }
         }
     }
@@ -968,6 +930,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnPossess(InputAction.CallbackContext context);
+        void OnKeyboardMove(InputAction.CallbackContext context);
     }
     public interface IRoombaActions
     {
