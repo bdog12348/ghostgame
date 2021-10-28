@@ -14,7 +14,7 @@ public class NewPlayerController : MonoBehaviour
     public GameObject originalGhost;
 
     private SpriteRenderer spriteRenderer;
-
+    
     public float moveSpeed = 5.0f;
 
     float horizontal;
@@ -23,24 +23,31 @@ public class NewPlayerController : MonoBehaviour
     private bool canInteract = false;
     private bool possessing = false;
 
-    public void MoveInput(float horizontal, float vertical)
+    public void MoveInput(float horizontal, float vertical, bool forward, int direction)
     {
         if(currentObject.name == "Player")
         {
             this.horizontal = horizontal;
             this.vertical = vertical;
         }
-
         else if(currentObject.name == "Broom")
         {
             this.horizontal = horizontal / 2;
             this.vertical = vertical / 2;
         }
-
+        else if(currentObject.name == "Roomba")
+        {
+            if(forward)
+                this.horizontal = (float)0.1;
+            if(direction == 2) //left
+                this.vertical = (float)0.1;
+            else if(direction == 1) //right
+                this.vertical = (float)-0.1;
+        }
         else
         {
-            this.horizontal = horizontal * 2;
-            this.vertical = vertical * 2;
+            this.horizontal = horizontal / 2;
+            this.vertical = vertical / 2;
         }
         
     }
@@ -80,7 +87,6 @@ public class NewPlayerController : MonoBehaviour
     {
         Vector3 moveDirection = Vector3.forward * vertical + Vector3.right * horizontal;
         transform.position += moveDirection * moveSpeed * Time.deltaTime;
-        //Debug.Log($"{currentObject.name}");
     }
 
     private void OnTriggerStay(Collider other)
