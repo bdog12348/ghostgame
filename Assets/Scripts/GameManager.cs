@@ -6,7 +6,6 @@ public class GameManager : MonoBehaviour
 {
     [Header("Helper Scripts")]
     [SerializeField] TimerHelper timer;
-    [SerializeField] DetectionHandler detectionHandler;
     [Header("Game Variables")]
     [SerializeField] float timeForLevel;
     // Start is called before the first frame update

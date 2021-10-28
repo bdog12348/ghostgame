@@ -103,5 +103,10 @@ public class NewPlayerController : MonoBehaviour
             } 
         }
     }
-    
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("COllided");
+    }
+
 }

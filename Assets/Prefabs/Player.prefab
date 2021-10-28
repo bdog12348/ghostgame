@@ -153,7 +153,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 076cfaaed9d286f4b8acce84b0f4a326, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0150c609835f7294d93a8368673dbfb7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -244,7 +244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactObject: {fileID: 3764385262121173109}
-  ghostSprite: {fileID: 21300000, guid: 076cfaaed9d286f4b8acce84b0f4a326, type: 3}
+  ghostSprite: {fileID: 21300000, guid: 0150c609835f7294d93a8368673dbfb7, type: 3}
   possessableObject: {fileID: 0}
   currentObject: {fileID: 0}
   originalGhost: {fileID: 0}
