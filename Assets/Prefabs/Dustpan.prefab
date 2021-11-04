@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5739596252149415785}
   - component: {fileID: 5739596252149415784}
   - component: {fileID: 5739596252149415791}
+  - component: {fileID: 1705418952}
   m_Layer: 0
   m_Name: Dustpan
   m_TagString: Possessable
@@ -44,8 +45,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.3705348, y: 1.5160251, z: 1}
-  m_Center: {x: 0, y: 0.25801253, z: 0}
+  m_Size: {x: 1.3705348, y: 1.9353273, z: 1}
+  m_Center: {x: 0, y: 0.04836145, z: 0}
 --- !u!114 &5739596252149415791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,6 +68,22 @@ MonoBehaviour:
   innerVerticalOffset: 0.25
   distanceGrounded: 0.15
   slopeThreshold: 0.55
+--- !u!114 &1705418952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5739596252149415790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90e9b0613a9f9544580c1644719392dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GrabMainCameraOnStart: 1
+  NestObject: 1
+  OffsetDirection: {x: 0, y: 0, z: -1}
+  Up: {x: 0, y: 1, z: 0}
 --- !u!1 &5739596252164606016
 GameObject:
   m_ObjectHideFlags: 0

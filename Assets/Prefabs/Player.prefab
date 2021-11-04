@@ -177,6 +177,7 @@ GameObject:
   - component: {fileID: 3764385263636056902}
   - component: {fileID: 3764385263636056901}
   - component: {fileID: 3764385263636056900}
+  - component: {fileID: 1453300481}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -245,6 +246,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactObject: {fileID: 3764385262121173109}
   ghostSprite: {fileID: 21300000, guid: 0150c609835f7294d93a8368673dbfb7, type: 3}
+  characterController: {fileID: 3764385263636056903}
   possessableObject: {fileID: 0}
   currentObject: {fileID: 0}
   originalGhost: {fileID: 0}
@@ -311,3 +313,19 @@ MonoBehaviour:
   m_DefaultActionMap: Ghost
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &1453300481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3764385263636056905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90e9b0613a9f9544580c1644719392dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GrabMainCameraOnStart: 1
+  NestObject: 1
+  OffsetDirection: {x: 0, y: 0, z: -1}
+  Up: {x: 0, y: 1, z: 0}

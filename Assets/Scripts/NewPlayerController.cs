@@ -8,19 +8,22 @@ public class NewPlayerController : MonoBehaviour
     private GameObject interactObject;
     [SerializeField]
     private Sprite ghostSprite;
+    [SerializeField]
+    private Sprite humanSprite;
 
     public GameObject possessableObject;
     public GameObject currentObject;
     public GameObject originalGhost;
 
     private SpriteRenderer spriteRenderer;
+    Rigidbody rb;
     
     public float moveSpeed = 5.0f;
 
     float horizontal;
     float vertical;
 
-    private bool canInteract = false;
+    private bool canInteract = true;
     private bool possessing = false;
 
     public void MoveInput(float horizontal, float vertical, bool forward, int direction)
@@ -32,8 +35,8 @@ public class NewPlayerController : MonoBehaviour
         }
         else if(currentObject.name == "Broom")
         {
-            this.horizontal = horizontal / 2;
-            this.vertical = vertical / 2;
+            this.horizontal = horizontal * 2;
+            this.vertical = vertical * 2;
         }
         else if(currentObject.name == "Roomba")
         {
@@ -55,23 +58,39 @@ public class NewPlayerController : MonoBehaviour
     public void OnPossessAttempt()
     {
         // If we are not currently possessing, and we can, then do so
-        if(possessing == false && possessableObject != null)
+        if(possessing == false && possessableObject != null && canInteract)
         {
             currentObject = possessableObject;
             possessing = true;
             interactObject.SetActive(false);
-            spriteRenderer.sprite = possessableObject.GetComponentInChildren<SpriteRenderer>().sprite;
+            ChangeSprites(possessableObject.GetComponentInChildren<SpriteRenderer>().sprite);
             possessableObject.GetComponentInChildren<SpriteRenderer>().enabled = false;
             Debug.Log($"Posessing {currentObject.name}");
         }
         else if(possessing == true)
         {
             currentObject = originalGhost;
-            spriteRenderer.sprite = ghostSprite;
+            ChangeSprites(ghostSprite);
             possessableObject.transform.position = transform.position;
             possessableObject.GetComponentInChildren<SpriteRenderer>().enabled = true;
             Debug.Log($"Going Ghost{currentObject.name}");
             possessing = false;
+        }
+    }
+
+    public void SwapForms()
+    {
+        if (canInteract) //is a ghost
+        {
+            ChangeSprites(humanSprite);
+            canInteract = false;
+            moveSpeed = 8;
+        }
+        else
+        {
+            ChangeSprites(ghostSprite);
+            canInteract = true;
+            moveSpeed = 5;
         }
     }
 
@@ -80,18 +99,20 @@ public class NewPlayerController : MonoBehaviour
         currentObject = gameObject;
         originalGhost = gameObject;
         spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        Vector3 moveDirection = Vector3.forward * vertical + Vector3.right * horizontal;
-        transform.position += moveDirection * moveSpeed * Time.deltaTime;
+        Vector3 moveDirection = FixMovementForCamera(Vector3.forward * vertical + Vector3.right * horizontal);
+        Vector3 moveVel = moveDirection * moveSpeed;
+        rb.AddForce(moveVel - rb.velocity, ForceMode.VelocityChange);
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (!possessing && other.gameObject.tag == "Possessable")
+        if (!possessing && other.gameObject.tag == "Possessable" && canInteract)
         {
             possessableObject = other.gameObject;
             interactObject.SetActive(true);
@@ -109,10 +130,23 @@ public class NewPlayerController : MonoBehaviour
             } 
         }
     }
-
-    private void OnCollisionEnter(Collision collision)
+    Vector3 FixMovementForCamera(Vector3 moveVector)
     {
-        Debug.Log("COllided");
+        Vector3 camF = Camera.main.transform.forward;
+        Vector3 camR = Camera.main.transform.right;
+        camF.y = 0;
+        camR.y = 0;
+        camF.Normalize();
+        camR.Normalize();
+        Vector3 velVector = ((camF * moveVector.z + camR * moveVector.x) * Time.deltaTime) / Time.deltaTime;
+        return velVector;
     }
 
+    void ChangeSprites(Sprite sprite)
+    {
+        spriteRenderer.sprite = sprite;
+        Vector2 spriteSize = spriteRenderer.sprite.bounds.size;
+        GetComponent<BoxCollider>().size = new Vector3(spriteSize.x / 2, spriteSize.y / 4, .5f);
+        GetComponent<BoxCollider>().center = new Vector3(0, -spriteSize.y / 4, 0);
+    }
 }

@@ -13,10 +13,16 @@ public class P1MoveInputEvent : UnityEvent<float, float, bool, int> { }
 public class P1AttemptPossessEvent : UnityEvent { }
 
 [Serializable]
+public class P1SwapFormEvent : UnityEvent { }
+
+[Serializable]
 public class P2MoveInputEvent : UnityEvent<float, float, bool, int> { }
 
 [Serializable]
 public class P2AttemptPossessEvent : UnityEvent { }
+
+[Serializable]
+public class P2SwapFormEvent : UnityEvent { }
 
 public class InputController : MonoBehaviour
 {
@@ -30,8 +36,10 @@ public class InputController : MonoBehaviour
 
     public P1MoveInputEvent p1MoveInputEvent;
     public P1AttemptPossessEvent p1AttemptPossessEvent;
+    public P1SwapFormEvent p1SwapFormEvent;
     public P2MoveInputEvent p2MoveInputEvent;
     public P2AttemptPossessEvent p2AttemptPossessEvent;
+    public P2SwapFormEvent p2SwapFormEvent;
 
     bool p1SwitchObject;
     bool p2SwitchObject;
@@ -70,7 +78,7 @@ public class InputController : MonoBehaviour
     }
 
     private void ChangeInputControls(int playerNumber, GameObject ghostObject, 
-    Action<InputAction.CallbackContext> MoveEvent, Action<InputAction.CallbackContext> AttemptPossess)
+    Action<InputAction.CallbackContext> MoveEvent, Action<InputAction.CallbackContext> AttemptPossess, Action<InputAction.CallbackContext> SwapForms)
     {
         // Ghost Controls
         if(ghostObject.GetComponent<NewPlayerController>().currentObject.name == "Player")
@@ -79,6 +87,7 @@ public class InputController : MonoBehaviour
             playerControls.Ghost.Move.performed += MoveEvent;
             playerControls.Ghost.Move.canceled += MoveEvent;
             playerControls.Ghost.Possess.performed += AttemptPossess;
+            playerControls.Ghost.Swap.performed += SwapForms;
             //playerControls.Ghost.Possess.canceled += AttemptPossess;
         }
         else
@@ -86,12 +95,13 @@ public class InputController : MonoBehaviour
             playerControls.Ghost.Move.performed -= MoveEvent;
             playerControls.Ghost.Move.canceled -= MoveEvent;
             playerControls.Ghost.Possess.performed -= AttemptPossess;
+            playerControls.Ghost.Swap.performed -= SwapForms;
         }
 
         // Broom Controls
         if(ghostObject.GetComponent<NewPlayerController>().currentObject.name == "Broom")
         {
-            CurrentForms[playerNumber] = CurrentForm.Ghost;
+            CurrentForms[playerNumber] = CurrentForm.Broom;
             playerControls.Broom.Move.performed += MoveEvent;
             playerControls.Broom.Move.canceled += MoveEvent;
             playerControls.Broom.Possess.performed += AttemptPossess;
@@ -106,7 +116,7 @@ public class InputController : MonoBehaviour
         // Dustpan Controls
         if(ghostObject.GetComponent<NewPlayerController>().currentObject.name == "Dustpan")
         {
-            CurrentForms[playerNumber] = CurrentForm.Ghost;
+            CurrentForms[playerNumber] = CurrentForm.Dustpan;
             playerControls.Dustpan.Move.performed += MoveEvent;
             playerControls.Dustpan.Move.canceled += MoveEvent;
             playerControls.Dustpan.Possess.performed += AttemptPossess;
@@ -181,13 +191,13 @@ public class InputController : MonoBehaviour
 
         if(p1SwitchObject)
         {
-            ChangeInputControls(0, p1GhostObject, P1MoveEvent, P1AttemptPossess);
+            ChangeInputControls(0, p1GhostObject, P1MoveEvent, P1AttemptPossess, P1SwapForm);
             p1SwitchObject = false;
         }
 
         if(p2SwitchObject)
         {
-            ChangeInputControls(1, p2GhostObject, P2MoveEvent, P2AttemptPossess);
+            ChangeInputControls(1, p2GhostObject, P2MoveEvent, P2AttemptPossess, P2SwapForm);
             p2SwitchObject = false;
         }
     }
@@ -228,6 +238,14 @@ public class InputController : MonoBehaviour
         }
     }
 
+    void P1SwapForm(InputAction.CallbackContext context)
+    {
+        if (gamepads[0] != null && gamepads[0].buttonSouth.wasPressedThisFrame && CurrentForms[0] == CurrentForm.Ghost)
+        {
+            p1SwapFormEvent.Invoke();
+        }
+    }
+
     private void P2MoveEvent(InputAction.CallbackContext context)
     {
         if(gamepads[1] != null)
@@ -262,5 +280,13 @@ public class InputController : MonoBehaviour
             p2AttemptPossessEvent.Invoke();
             p2SwitchObject = true;
         } 
+    }
+
+    void P2SwapForm(InputAction.CallbackContext context)
+    {
+        if (gamepads[1] != null && gamepads[1].buttonSouth.wasPressedThisFrame && CurrentForms[1] == CurrentForm.Ghost)
+        {
+            p2SwapFormEvent.Invoke();
+        }
     }
 }

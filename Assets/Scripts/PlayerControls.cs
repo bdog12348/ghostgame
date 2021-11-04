@@ -33,6 +33,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Swap"",
+                    ""type"": ""Button"",
+                    ""id"": ""4e082f4d-c3d2-468b-8860-637331aaacb7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -220,6 +228,28 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Possess"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e8c46ad2-856e-4bf6-ab73-22577d7e4cad"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Swap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bd483586-a13a-45eb-82d8-08843ef21d86"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Swap"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -734,6 +764,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Ghost = asset.FindActionMap("Ghost", throwIfNotFound: true);
         m_Ghost_Move = m_Ghost.FindAction("Move", throwIfNotFound: true);
         m_Ghost_Possess = m_Ghost.FindAction("Possess", throwIfNotFound: true);
+        m_Ghost_Swap = m_Ghost.FindAction("Swap", throwIfNotFound: true);
         // Roomba
         m_Roomba = asset.FindActionMap("Roomba", throwIfNotFound: true);
         m_Roomba_Possess = m_Roomba.FindAction("Possess", throwIfNotFound: true);
@@ -797,12 +828,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private IGhostActions m_GhostActionsCallbackInterface;
     private readonly InputAction m_Ghost_Move;
     private readonly InputAction m_Ghost_Possess;
+    private readonly InputAction m_Ghost_Swap;
     public struct GhostActions
     {
         private @PlayerControls m_Wrapper;
         public GhostActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Ghost_Move;
         public InputAction @Possess => m_Wrapper.m_Ghost_Possess;
+        public InputAction @Swap => m_Wrapper.m_Ghost_Swap;
         public InputActionMap Get() { return m_Wrapper.m_Ghost; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -818,6 +851,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Possess.started -= m_Wrapper.m_GhostActionsCallbackInterface.OnPossess;
                 @Possess.performed -= m_Wrapper.m_GhostActionsCallbackInterface.OnPossess;
                 @Possess.canceled -= m_Wrapper.m_GhostActionsCallbackInterface.OnPossess;
+                @Swap.started -= m_Wrapper.m_GhostActionsCallbackInterface.OnSwap;
+                @Swap.performed -= m_Wrapper.m_GhostActionsCallbackInterface.OnSwap;
+                @Swap.canceled -= m_Wrapper.m_GhostActionsCallbackInterface.OnSwap;
             }
             m_Wrapper.m_GhostActionsCallbackInterface = instance;
             if (instance != null)
@@ -828,6 +864,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Possess.started += instance.OnPossess;
                 @Possess.performed += instance.OnPossess;
                 @Possess.canceled += instance.OnPossess;
+                @Swap.started += instance.OnSwap;
+                @Swap.performed += instance.OnSwap;
+                @Swap.canceled += instance.OnSwap;
             }
         }
     }
@@ -968,6 +1007,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnPossess(InputAction.CallbackContext context);
+        void OnSwap(InputAction.CallbackContext context);
     }
     public interface IRoombaActions
     {
