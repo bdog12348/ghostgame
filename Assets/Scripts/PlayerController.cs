@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class PlayerController : MonoBehaviour
 {
     #region Serialized Fields
-    [SerializeField] GameObject interactObject;
+    [SerializeField] GameObject interactIndicatorObject;
     [SerializeField] Sprite ghostSprite;
     [SerializeField] Sprite humanSprite;
     [SerializeField] public int playerJoystick;
@@ -13,6 +14,7 @@ public class PlayerController : MonoBehaviour
 
     #region Private Fields
     GameObject possessableObject = null;
+    GameObject interactObject = null;
 
     MovementMode movementMode;
     PlayerMovement ghostMovement;
@@ -21,7 +23,7 @@ public class PlayerController : MonoBehaviour
     bool GameOver = false;
     bool CanInteract = false;
     bool Possessing = false;
-    bool IsHuman = true;
+    bool IsHuman = false;
 
     List<float> inputs;
     #endregion
@@ -31,10 +33,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         spriteRenderer = transform.Find("Sprite").GetComponent<SpriteRenderer>();
-        if(spriteRenderer.sprite != humanSprite)
-            IsHuman = false;
         ghostMovement = GetComponent<PlayerMovement>();
-        ghostMovement.AutoAsssignCharacterController();
+        ghostMovement.AutoAsssignRigidbody();
         ghostMovement.SetPlayerNumber(playerJoystick);
         movementMode = ghostMovement;
         TimerHelper.OnTimerEnd += () => GameOver = true;
@@ -46,23 +46,36 @@ public class PlayerController : MonoBehaviour
         if (GameOver) return; // Disable script?
 
         if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 1") && !Possessing)
-          || (playerJoystick == 1 && Input.GetKeyDown("space") && !Possessing))
+          || (playerJoystick == 1 && Input.GetKeyDown(KeyCode.Space) && !Possessing))
         {
             ToggleHuman();
         }
 
-        if (CanInteract && !Possessing && !IsHuman)
+        if (CanInteract)
         {
-            interactObject.SetActive(true);
-            if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKeyDown("e"))))
+            if (Possessing) // On goal object
             {
-                Possess();
-                return;
+                interactIndicatorObject.SetActive(true);
+                if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 2") || (playerJoystick == 1 && Input.GetKeyDown("f"))))
+                {
+                    movementMode.InteractWithObject(interactObject);
+                    CanInteract = false;
+                    return;
+                }
+            }
+            else if (!Possessing && !IsHuman) // On possessable object
+            {
+                interactIndicatorObject.SetActive(true);
+                if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKeyDown("e"))))
+                {
+                    Possess();
+                    return;
+                }
             }
         }
         else
         {
-            interactObject.SetActive(false);
+            interactIndicatorObject.SetActive(false);
         }
 
         if (movementMode != null)
@@ -80,19 +93,21 @@ public class PlayerController : MonoBehaviour
             ResetGhost();
         }
     }
-
-    private void FixedUpdate()
-    {
-    }
     #endregion
 
     #region Collision Handlers
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.CompareTag("Possessable"))
+        if (other.gameObject.CompareTag("Possessable") && !Possessing)
         {
             CanInteract = true;
             possessableObject = other.gameObject;
+        }
+
+        if (movementMode.interactableTags.Contains(other.gameObject.tag) && Possessing)
+        {
+            CanInteract = true;
+            interactObject = other.gameObject;
         }
     }
 
@@ -103,6 +118,13 @@ public class PlayerController : MonoBehaviour
             CanInteract = false;
             if (!Possessing)
                 possessableObject = null;
+        }
+
+        if (movementMode.interactableTags.Contains(other.gameObject.tag) && Possessing)
+        {
+            CanInteract = false;
+            if (Possessing)
+                interactObject = null;
         }
     }
     #endregion
@@ -116,9 +138,9 @@ public class PlayerController : MonoBehaviour
     {
         Possessing = true;
         CanInteract = false;
-        spriteRenderer.sprite = possessableObject.GetComponentInChildren<SpriteRenderer>().sprite;
+        ChangeSprites(possessableObject.GetComponentInChildren<SpriteRenderer>().sprite);
         movementMode = possessableObject.GetComponent<MovementMode>();
-        movementMode.SetCharacterController(ghostMovement.GetCharacterController());
+        movementMode.SetRigidbody(ghostMovement.GetRigidbody());
         movementMode.SetPlayerNumber(playerJoystick);
         possessableObject.GetComponentInChildren<SpriteRenderer>().enabled = false;
     }
@@ -128,13 +150,13 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void ResetGhost()
     {
-        Possessing = false;
-        spriteRenderer.sprite = ghostSprite;
+        Possessing = false;       
+        ChangeSprites(ghostSprite);
         possessableObject.transform.position = transform.position;
         possessableObject.GetComponentInChildren<SpriteRenderer>().enabled = true;
         possessableObject = null;
 
-        movementMode.SetCharacterController(null);
+        movementMode.SetRigidbody(null);
         movementMode.SetPlayerNumber(0);
         movementMode = ghostMovement;
     }
@@ -148,13 +170,20 @@ public class PlayerController : MonoBehaviour
         if (IsHuman)
         {
             movementMode.SetSpeed(10f);
-            spriteRenderer.sprite = humanSprite;
+            ChangeSprites(humanSprite);
         }
         else
         {
             movementMode.SetSpeed(4f);
-            spriteRenderer.sprite = ghostSprite;
+            ChangeSprites(ghostSprite);
         }
+    }
+    void ChangeSprites(Sprite sprite)
+    {
+        spriteRenderer.sprite = sprite;
+        Vector2 spriteSize = spriteRenderer.sprite.bounds.size;
+        GetComponent<BoxCollider>().size = new Vector3(spriteSize.x / 2, spriteSize.y / 4, .5f);
+        GetComponent<BoxCollider>().center = new Vector3(0, -spriteSize.y / 4, 0);
     }
     #endregion
 }

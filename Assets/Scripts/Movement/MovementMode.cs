@@ -1,30 +1,26 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class MovementMode : MonoBehaviour
 {
+
     #region Protected Fields
-    protected CharacterController char_controller;
+    protected Rigidbody rb;
     protected float verticalVelocity;
     protected Vector3 slopeNormal;
     protected int playerNumber = 0;
+    protected int currentGoalNumber = 0;
     #endregion
 
     #region Serialized Fields
     //Note: not all of these will be used for every movement mode
     [Header("Movement Config")]
-    [SerializeField] protected float speedX = 5;
-    [SerializeField] protected float speedY = 5;
-    [SerializeField] protected float gravity = 0.25f;
-    [SerializeField] protected float terminalVelocity = 5.0f;
-    [SerializeField] protected float jumpForce = 8.0f;
+    [SerializeField] protected float movementSpeed = 5f;
 
-    [Header("Ground Check Raycast")]
-    [SerializeField] protected float extremitiesOffset = 0.05f;
-    [SerializeField] protected float innerVerticalOffset = 0.25f;
-    [SerializeField] protected float distanceGrounded = 0.15f;
-    [SerializeField] protected float slopeThreshold = 0.55f;
+    [Header("Optional Goals")]
+    public string[] interactableTags;
     #endregion
 
     #region Public Methods
@@ -40,94 +36,50 @@ public abstract class MovementMode : MonoBehaviour
     /// <param name="inputs">List of inputs used to calculate movement</param>
     public abstract void Move(List<float> inputs);
 
+    public abstract void InteractWithObject(GameObject interactObject);
+
     public void SetPlayerNumber(int player)
     {
         playerNumber = player;
     }
 
-
     /// <summary>
-    /// Assigns character controller to character controller on GameObject if there is one
+    /// Assigns rb to Rigidbody on GameObject if there is one
     /// </summary>
-    public void AutoAsssignCharacterController()
+    public void AutoAsssignRigidbody()
     {
-        char_controller = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();
     }
 
     /// <summary>
-    /// Sets character controller to <paramref name="characterController"/>
+    /// Sets rb to <paramref name="rigidb"/>
     /// </summary>
-    /// <param name="characterController">Character controller to set to</param>
-    public void SetCharacterController(CharacterController characterController)
+    /// <param name="rigidb">Rigidbody to set to</param>
+    public void SetRigidbody(Rigidbody rigidb)
     {
-        char_controller = characterController;
+        rb = rigidb;
     }
 
     /// <summary>
     /// Returns current character controller in MovementMode
     /// </summary>
     /// <returns>Current character controller</returns>
-    public CharacterController GetCharacterController()
+    public Rigidbody GetRigidbody()
     {
-        return char_controller;
+        return rb;
     }
 
-    public void AddSpeed(float amount, bool bothAxes = true, bool xAxis = true)
+    public void AddSpeed(float amount)
     {
-        if (bothAxes)
-        {
-            speedX += amount;
-            speedY += amount;
-        }
-        else
-        {
-            if (xAxis)
-            {
-                speedX += amount;
-            }
-            else
-            {
-                speedY += amount;
-            }
-        }
+        movementSpeed += amount;
     }
-    public void SubtractSpeed(float amount, bool bothAxes = true, bool xAxis = true)
+    public void SubtractSpeed(float amount)
     {
-        if (bothAxes)
-        {
-            speedX -= amount;
-            speedY -= amount;
-        }
-        else
-        {
-            if (xAxis)
-            {
-                speedX -= amount;
-            }
-            else
-            {
-                speedY -= amount;
-            }
-        }
+        movementSpeed -= amount;
     }
-    public void SetSpeed(float amount, bool bothAxes = true, bool xAxis = true)
+    public void SetSpeed(float amount)
     {
-        if (bothAxes)
-        {
-            speedX = amount;
-            speedY = amount;
-        }
-        else
-        {
-            if (xAxis)
-            {
-                speedX = amount;
-            }
-            else
-            {
-                speedY = amount;
-            }
-        }
+        movementSpeed = amount;
     }
     #endregion
 
@@ -136,48 +88,48 @@ public abstract class MovementMode : MonoBehaviour
     /// Checks if character controller is hitting the ground
     /// </summary>
     /// <returns>True if raycasts hit the ground, False otherwise</returns>
-    protected bool Grounded()
-    {
-        if (verticalVelocity > 0)
-            return false;
+    //protected bool Grounded()
+    //{
+    //    if (verticalVelocity > 0)
+    //        return false;
 
-        float yRay = (char_controller.bounds.center.y - (char_controller.height * 0.5f)) + innerVerticalOffset; // Bottom of character controller
-        RaycastHit hit;
+    //    float yRay = (char_controller.bounds.center.y - (char_controller.height * 0.5f)) + innerVerticalOffset; // Bottom of character controller
+    //    RaycastHit hit;
 
-        //Mid
-        if (Physics.Raycast(new Vector3(char_controller.bounds.center.x, yRay, char_controller.bounds.center.z), -Vector3.up, out hit, innerVerticalOffset + distanceGrounded))
-        {
-            Debug.DrawRay(new Vector3(char_controller.bounds.center.x, yRay, char_controller.bounds.center.z), -Vector3.up * (innerVerticalOffset + distanceGrounded), Color.red);
-            slopeNormal = hit.normal;
-            return (slopeNormal.y > slopeThreshold) ? true : false;
-        }
-        //Front-Right
-        if (Physics.Raycast(new Vector3(char_controller.bounds.center.x + (char_controller.bounds.extents.x - extremitiesOffset), yRay, char_controller.bounds.center.z + (char_controller.bounds.extents.z - extremitiesOffset)), -Vector3.up, out hit, innerVerticalOffset + distanceGrounded))
-        {
-            slopeNormal = hit.normal;
-            return (slopeNormal.y > slopeThreshold) ? true : false;
-        }
-        //Front-Left
-        if (Physics.Raycast(new Vector3(char_controller.bounds.center.x - (char_controller.bounds.extents.x - extremitiesOffset), yRay, char_controller.bounds.center.z + (char_controller.bounds.extents.z - extremitiesOffset)), -Vector3.up, out hit, innerVerticalOffset + distanceGrounded))
-        {
-            slopeNormal = hit.normal;
-            return (slopeNormal.y > slopeThreshold) ? true : false;
-        }
-        //Back-Right
-        if (Physics.Raycast(new Vector3(char_controller.bounds.center.x + (char_controller.bounds.extents.x - extremitiesOffset), yRay, char_controller.bounds.center.z - (char_controller.bounds.extents.z - extremitiesOffset)), -Vector3.up, out hit, innerVerticalOffset + distanceGrounded))
-        {
-            slopeNormal = hit.normal;
-            return (slopeNormal.y > slopeThreshold) ? true : false;
-        }
-        //Back-Left
-        if (Physics.Raycast(new Vector3(char_controller.bounds.center.x - (char_controller.bounds.extents.x - extremitiesOffset), yRay, char_controller.bounds.center.z - (char_controller.bounds.extents.z - extremitiesOffset)), -Vector3.up, out hit, innerVerticalOffset + distanceGrounded))
-        {
-            slopeNormal = hit.normal;
-            return (slopeNormal.y > slopeThreshold) ? true : false;
-        }
+    //    //Mid
+    //    if (Physics.Raycast(new Vector3(char_controller.bounds.center.x, yRay, char_controller.bounds.center.z), -Vector3.up, out hit, innerVerticalOffset + distanceGrounded))
+    //    {
+    //        Debug.DrawRay(new Vector3(char_controller.bounds.center.x, yRay, char_controller.bounds.center.z), -Vector3.up * (innerVerticalOffset + distanceGrounded), Color.red);
+    //        slopeNormal = hit.normal;
+    //        return (slopeNormal.y > slopeThreshold) ? true : false;
+    //    }
+    //    //Front-Right
+    //    if (Physics.Raycast(new Vector3(char_controller.bounds.center.x + (char_controller.bounds.extents.x - extremitiesOffset), yRay, char_controller.bounds.center.z + (char_controller.bounds.extents.z - extremitiesOffset)), -Vector3.up, out hit, innerVerticalOffset + distanceGrounded))
+    //    {
+    //        slopeNormal = hit.normal;
+    //        return (slopeNormal.y > slopeThreshold) ? true : false;
+    //    }
+    //    //Front-Left
+    //    if (Physics.Raycast(new Vector3(char_controller.bounds.center.x - (char_controller.bounds.extents.x - extremitiesOffset), yRay, char_controller.bounds.center.z + (char_controller.bounds.extents.z - extremitiesOffset)), -Vector3.up, out hit, innerVerticalOffset + distanceGrounded))
+    //    {
+    //        slopeNormal = hit.normal;
+    //        return (slopeNormal.y > slopeThreshold) ? true : false;
+    //    }
+    //    //Back-Right
+    //    if (Physics.Raycast(new Vector3(char_controller.bounds.center.x + (char_controller.bounds.extents.x - extremitiesOffset), yRay, char_controller.bounds.center.z - (char_controller.bounds.extents.z - extremitiesOffset)), -Vector3.up, out hit, innerVerticalOffset + distanceGrounded))
+    //    {
+    //        slopeNormal = hit.normal;
+    //        return (slopeNormal.y > slopeThreshold) ? true : false;
+    //    }
+    //    //Back-Left
+    //    if (Physics.Raycast(new Vector3(char_controller.bounds.center.x - (char_controller.bounds.extents.x - extremitiesOffset), yRay, char_controller.bounds.center.z - (char_controller.bounds.extents.z - extremitiesOffset)), -Vector3.up, out hit, innerVerticalOffset + distanceGrounded))
+    //    {
+    //        slopeNormal = hit.normal;
+    //        return (slopeNormal.y > slopeThreshold) ? true : false;
+    //    }
 
-        return false;
-    }
+    //    return false;
+    //}
 
     /// <summary>
     /// Given <paramref name="moveVector"/> returns a Vector3 following the floor even if it's sloped

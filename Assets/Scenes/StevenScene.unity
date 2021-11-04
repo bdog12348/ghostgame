@@ -410,15 +410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c67e6f7760d507546859325ef6ed348f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedX: 2
-  speedY: 2
-  gravity: 0.25
-  terminalVelocity: 5
-  jumpForce: 8
-  extremitiesOffset: 0.05
-  innerVerticalOffset: 0.25
-  distanceGrounded: 0.15
-  slopeThreshold: 0.55
+  movementSpeed: 5
 --- !u!65 &882719523
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -569,10 +561,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1359566270}
-  - component: {fileID: 1359566269}
-  - component: {fileID: 1359566268}
   - component: {fileID: 1359566267}
   - component: {fileID: 1359566266}
+  - component: {fileID: 1359566269}
+  - component: {fileID: 1359566268}
   m_Layer: 0
   m_Name: Player1
   m_TagString: Player
@@ -592,15 +584,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d821cce478ad47c4095703d1abc4f98e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedX: 5
-  speedY: 5
-  gravity: 0.25
-  terminalVelocity: 5
-  jumpForce: 8
-  extremitiesOffset: 0.05
-  innerVerticalOffset: 0.25
-  distanceGrounded: 0.15
-  slopeThreshold: 0.55
+  movementSpeed: 5
 --- !u!114 &1359566267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -617,8 +601,8 @@ MonoBehaviour:
   ghostSprite: {fileID: 21300000, guid: 136634fb7ccb0ba489b728fa80799c76, type: 3}
   humanSprite: {fileID: 21300000, guid: 81446765035f4364f9e7891fcbfa7a7e, type: 3}
   playerJoystick: 1
---- !u!135 &1359566268
-SphereCollider:
+--- !u!65 &1359566268
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -628,26 +612,24 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.623585
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!143 &1359566269
-CharacterController:
+--- !u!54 &1359566269
+Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1359566265}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
   serializedVersion: 2
-  m_Height: 1.21
-  m_Radius: 0.6
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!4 &1359566270
 Transform:
   m_ObjectHideFlags: 0
@@ -694,15 +676,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d029a9f8f806d9a4d83092b0b1bf0ad3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedX: 10
-  speedY: 10
-  gravity: 0.25
-  terminalVelocity: 5
-  jumpForce: 8
-  extremitiesOffset: 0.05
-  innerVerticalOffset: 0.25
-  distanceGrounded: 0.15
-  slopeThreshold: 0.55
+  movementSpeed: 5
 --- !u!65 &1362576220
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -822,10 +796,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1438082241}
-  - component: {fileID: 1438082240}
-  - component: {fileID: 1438082239}
   - component: {fileID: 1438082238}
   - component: {fileID: 1438082237}
+  - component: {fileID: 1438082240}
+  - component: {fileID: 1438082239}
   m_Layer: 0
   m_Name: Player2
   m_TagString: Player
@@ -845,15 +819,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d821cce478ad47c4095703d1abc4f98e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedX: 5
-  speedY: 5
-  gravity: 0.25
-  terminalVelocity: 5
-  jumpForce: 8
-  extremitiesOffset: 0.05
-  innerVerticalOffset: 0.25
-  distanceGrounded: 0.15
-  slopeThreshold: 0.55
+  movementSpeed: 5
 --- !u!114 &1438082238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -870,8 +836,8 @@ MonoBehaviour:
   ghostSprite: {fileID: 21300000, guid: 2c64fcede8d948641afb04a477df6b8a, type: 3}
   humanSprite: {fileID: 21300000, guid: 81446765035f4364f9e7891fcbfa7a7e, type: 3}
   playerJoystick: 2
---- !u!135 &1438082239
-SphereCollider:
+--- !u!65 &1438082239
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -881,26 +847,24 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.623585
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!143 &1438082240
-CharacterController:
+--- !u!54 &1438082240
+Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1438082236}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
   serializedVersion: 2
-  m_Height: 1.21
-  m_Radius: 0.6
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!4 &1438082241
 Transform:
   m_ObjectHideFlags: 0
@@ -1347,15 +1311,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d80110cd31e2db54b93edfe85819654b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedX: 5
-  speedY: 5
-  gravity: 0.25
-  terminalVelocity: 5
-  jumpForce: 8
-  extremitiesOffset: 0.05
-  innerVerticalOffset: 0.25
-  distanceGrounded: 0.15
-  slopeThreshold: 0.55
+  movementSpeed: 5
 --- !u!1 &2088060247
 GameObject:
   m_ObjectHideFlags: 0

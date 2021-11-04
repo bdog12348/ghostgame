@@ -5,8 +5,10 @@ using UnityEngine;
 /// <summary>
 /// Basic 2D movement, WASD / Arrow Keys to move and you move smoothly in that direction
 /// </summary>
-public class PlayerMovement : MovementMode
+public class DustpanMovement : MovementMode
 {
+    bool Filled = false;
+
     public override List<float> GetInputs()
     {
         List<float> inputs = new List<float>();
@@ -30,11 +32,6 @@ public class PlayerMovement : MovementMode
         return inputs;
     }
 
-    public override void InteractWithObject(GameObject interactObject)
-    {
-        throw new System.NotImplementedException();
-    }
-
     public override void Move(List<float> inputs)
     {
         Vector3 moveDirection = FixMovementForCamera(Vector3.forward * inputs[1] + Vector3.right * inputs[0]);
@@ -44,5 +41,24 @@ public class PlayerMovement : MovementMode
         else
             rb.velocity = moveVel;
             //rb.AddForce(moveVel, ForceMode.VelocityChange);
+    }
+
+    public override void InteractWithObject(GameObject interactObject)
+    {
+        if (interactObject.CompareTag("Dirt"))
+        {
+            if (!Filled)
+            {
+                Filled = true;
+                interactObject.SetActive(false);
+            }
+        }else if (interactObject.CompareTag("Trash"))
+        {
+            if (Filled)
+            {
+                Filled = false;
+                FindObjectOfType<ScoreManager>().AddScore(20f);
+            }
+        }
     }
 }

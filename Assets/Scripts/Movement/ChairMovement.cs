@@ -37,9 +37,15 @@ public class ChairMovement : MovementMode
         return null;
     }
 
+    public override void InteractWithObject(GameObject interactObject)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override void Move(List<float> inputs)
     {
-        Vector3 moveVec = new Vector3(inputs[0] * speedX * 40, 0f, inputs[1] * speedY * 40); // Chair gets a boost to movement to make it move further per step while having a reasonable speed
-        char_controller.Move(FixMovementForCamera(moveVec) * Time.deltaTime);
+        Vector3 moveDirection = FixMovementForCamera(Vector3.forward * inputs[1] + Vector3.right * inputs[0]);
+        Vector3 moveVel = moveDirection * movementSpeed * 10;
+        rb.AddForce(moveVel - rb.velocity, ForceMode.VelocityChange);
     }
 }
