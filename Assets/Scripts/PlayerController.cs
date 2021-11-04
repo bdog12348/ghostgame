@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject interactObject;
     [SerializeField] Sprite ghostSprite;
     [SerializeField] Sprite humanSprite;
+    [SerializeField] public int playerJoystick;
     #endregion
 
     #region Private Fields
@@ -30,8 +31,11 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         spriteRenderer = transform.Find("Sprite").GetComponent<SpriteRenderer>();
+        if(spriteRenderer.sprite != humanSprite)
+            IsHuman = false;
         ghostMovement = GetComponent<PlayerMovement>();
         ghostMovement.AutoAsssignCharacterController();
+        ghostMovement.SetPlayerNumber(playerJoystick);
         movementMode = ghostMovement;
         TimerHelper.OnTimerEnd += () => GameOver = true;
     }
@@ -41,7 +45,8 @@ public class PlayerController : MonoBehaviour
     {
         if (GameOver) return; // Disable script?
 
-        if (Input.GetKeyDown(KeyCode.Space) && !Possessing)
+        if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 1") && !Possessing)
+          || (playerJoystick == 1 && Input.GetKeyDown("space") && !Possessing))
         {
             ToggleHuman();
         }
@@ -49,7 +54,7 @@ public class PlayerController : MonoBehaviour
         if (CanInteract && !Possessing && !IsHuman)
         {
             interactObject.SetActive(true);
-            if (Input.GetButtonDown("Possess"))
+            if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKeyDown("e"))))
             {
                 Possess();
                 return;
@@ -70,7 +75,7 @@ public class PlayerController : MonoBehaviour
             movementMode.Move(inputs);
         }
 
-        if (Input.GetButtonDown("Possess") && Possessing)
+        if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKeyDown("e"))) && Possessing)
         {
             ResetGhost();
         }
@@ -114,6 +119,7 @@ public class PlayerController : MonoBehaviour
         spriteRenderer.sprite = possessableObject.GetComponentInChildren<SpriteRenderer>().sprite;
         movementMode = possessableObject.GetComponent<MovementMode>();
         movementMode.SetCharacterController(ghostMovement.GetCharacterController());
+        movementMode.SetPlayerNumber(playerJoystick);
         possessableObject.GetComponentInChildren<SpriteRenderer>().enabled = false;
     }
 
@@ -129,6 +135,7 @@ public class PlayerController : MonoBehaviour
         possessableObject = null;
 
         movementMode.SetCharacterController(null);
+        movementMode.SetPlayerNumber(0);
         movementMode = ghostMovement;
     }
 

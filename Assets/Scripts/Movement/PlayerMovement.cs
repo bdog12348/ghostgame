@@ -10,8 +10,19 @@ public class PlayerMovement : MovementMode
     public override List<float> GetInputs()
     {
         List<float> inputs = new List<float>();
-
-        Vector2 r = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        Vector2 r;
+        if(playerNumber == 1 && Input.GetAxisRaw("HorizontalGamepad1") == 0 && Input.GetAxisRaw("VerticalGamepad1") == 0)
+        {
+            r = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        }
+        else if(playerNumber != 0)
+        {
+            r = new Vector2(Input.GetAxisRaw("HorizontalGamepad" + playerNumber.ToString()), Input.GetAxisRaw("VerticalGamepad" + playerNumber.ToString()));
+        }
+        else
+        {
+            return inputs;
+        }
         r = (r.magnitude > 1) ? r.normalized : r;
         inputs.Add(r.x);
         inputs.Add(r.y);
