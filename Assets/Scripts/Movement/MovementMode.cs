@@ -8,6 +8,7 @@ public abstract class MovementMode : MonoBehaviour
     protected CharacterController char_controller;
     protected float verticalVelocity;
     protected Vector3 slopeNormal;
+    protected int playerNumber = 0;
     #endregion
 
     #region Serialized Fields
@@ -38,6 +39,12 @@ public abstract class MovementMode : MonoBehaviour
     /// </summary>
     /// <param name="inputs">List of inputs used to calculate movement</param>
     public abstract void Move(List<float> inputs);
+
+    public void SetPlayerNumber(int player)
+    {
+        playerNumber = player;
+    }
+
 
     /// <summary>
     /// Assigns character controller to character controller on GameObject if there is one
