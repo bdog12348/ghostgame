@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Sprite ghostSprite;
     [SerializeField] Sprite humanSprite;
     [SerializeField] public int playerJoystick;
+    [SerializeField] Animator spriteAnimator;
     #endregion
 
     #region Private Fields
@@ -49,6 +50,7 @@ public class PlayerController : MonoBehaviour
           || (playerJoystick == 1 && Input.GetKeyDown(KeyCode.Space) && !Possessing))
         {
             ToggleHuman();
+            spriteAnimator.SetBool("IsHuman", IsHuman);
         }
 
         if (CanInteract)
@@ -85,6 +87,21 @@ public class PlayerController : MonoBehaviour
 
         if (inputs != null)
         {
+            // Do animation stuff
+            //if (inputs[0] < 0)
+            //{
+            //    spriteRenderer.flipX = false;
+            //    spriteAnimator.SetBool("Moving", true);
+
+            //}else if (inputs[0] > 0)
+            //{
+            //    spriteRenderer.flipX = true;
+            //    spriteAnimator.SetBool("Moving", true);
+            //}else
+            //{
+            //    spriteAnimator.SetBool("Moving", false);
+            //}
+
             movementMode.Move(inputs);
         }
 
