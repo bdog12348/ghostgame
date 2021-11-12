@@ -11,10 +11,12 @@ public class PlayerMovement : MovementMode
     {
         List<float> inputs = new List<float>();
         Vector2 r;
+        // Check if player 1 is inputting on the keyboard
         if(playerNumber == 1 && Input.GetAxisRaw("HorizontalGamepad1") == 0 && Input.GetAxisRaw("VerticalGamepad1") == 0)
         {
             r = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         }
+        // Check if any player is inputting on their controller
         else if(playerNumber != 0)
         {
             r = new Vector2(Input.GetAxisRaw("HorizontalGamepad" + playerNumber.ToString()), Input.GetAxisRaw("VerticalGamepad" + playerNumber.ToString()));

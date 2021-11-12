@@ -411,6 +411,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 5
+  interactableTags: []
 --- !u!65 &882719523
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -585,6 +586,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 5
+  interactableTags: []
 --- !u!114 &1359566267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -597,10 +599,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54013075a74cd6e49841b2a3e4e2a921, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactObject: {fileID: 1445673121}
+  interactIndicatorObject: {fileID: 1445673121}
   ghostSprite: {fileID: 21300000, guid: 136634fb7ccb0ba489b728fa80799c76, type: 3}
   humanSprite: {fileID: 21300000, guid: 81446765035f4364f9e7891fcbfa7a7e, type: 3}
   playerJoystick: 1
+  spriteAnimator: {fileID: 0}
 --- !u!65 &1359566268
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -673,10 +676,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1362576218}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d029a9f8f806d9a4d83092b0b1bf0ad3, type: 3}
+  m_Script: {fileID: 11500000, guid: 314d14b4c32bab545b9e97503091c003, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 5
+  movementSpeed: 3
+  interactableTags: []
+  jumpSpeed: 1
 --- !u!65 &1362576220
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -820,6 +825,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 5
+  interactableTags: []
 --- !u!114 &1438082238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -832,10 +838,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54013075a74cd6e49841b2a3e4e2a921, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactObject: {fileID: 406728416}
+  interactIndicatorObject: {fileID: 406728416}
   ghostSprite: {fileID: 21300000, guid: 2c64fcede8d948641afb04a477df6b8a, type: 3}
   humanSprite: {fileID: 21300000, guid: 81446765035f4364f9e7891fcbfa7a7e, type: 3}
   playerJoystick: 2
+  spriteAnimator: {fileID: 0}
 --- !u!65 &1438082239
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1164,7 +1171,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1940273442}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1540901182}
@@ -1312,6 +1319,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 5
+  interactableTags: []
 --- !u!1 &2088060247
 GameObject:
   m_ObjectHideFlags: 0

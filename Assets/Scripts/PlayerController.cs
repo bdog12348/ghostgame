@@ -201,10 +201,10 @@ public class PlayerController : MonoBehaviour
 
         spriteRenderer.enabled = false;
         currentlyPossessedObject = possessableObject;
-
         movementMode = possessableObject.GetComponent<MovementMode>();
         movementMode.SetRigidbody(ghostMovement.GetRigidbody());
         movementMode.SetPlayerNumber(playerJoystick);
+        movementMode.SetPlayer(gameObject);
     }
 
     /// <summary>
@@ -220,6 +220,7 @@ public class PlayerController : MonoBehaviour
 
         movementMode.SetRigidbody(null);
         movementMode.SetPlayerNumber(0);
+        movementMode.SetPlayer(null);
         movementMode = ghostMovement;
     }
 

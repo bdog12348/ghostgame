@@ -8,9 +8,12 @@ public abstract class MovementMode : MonoBehaviour
 
     #region Protected Fields
     protected Rigidbody rb;
+    protected GameObject player;
     protected SpriteChanger SpriteChanger;
     protected float verticalVelocity;
+    protected Vector3 slopeNormal;
     protected int playerNumber = 0;
+    protected int currentGoalNumber = 0;
     #endregion
 
     #region Serialized Fields
@@ -18,6 +21,7 @@ public abstract class MovementMode : MonoBehaviour
     [Header("Movement Config")]
     [SerializeField] protected float movementSpeed = 5f;
 
+    [Header("Optional Goals")]
     public string[] interactableTags;
     #endregion
 
@@ -46,6 +50,11 @@ public abstract class MovementMode : MonoBehaviour
     public void SetPlayerNumber(int player)
     {
         playerNumber = player;
+    }
+
+    public void SetPlayer(GameObject p)
+    {
+        player = p;
     }
 
     /// <summary>
