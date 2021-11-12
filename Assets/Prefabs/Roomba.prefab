@@ -92,7 +92,6 @@ GameObject:
   m_Component:
   - component: {fileID: 249141719803793363}
   - component: {fileID: 249141719803793364}
-  - component: {fileID: 249141719803793365}
   m_Layer: 0
   m_Name: Roomba
   m_TagString: Possessable
@@ -128,24 +127,3 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.3705348, y: 1.5160251, z: 1}
   m_Center: {x: 0, y: 0.25801253, z: 0}
---- !u!114 &249141719803793365
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 249141719803793366}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d029a9f8f806d9a4d83092b0b1bf0ad3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speedX: 10
-  speedY: 10
-  gravity: 0.25
-  terminalVelocity: 5
-  jumpForce: 8
-  extremitiesOffset: 0.05
-  innerVerticalOffset: 0.25
-  distanceGrounded: 0.15
-  slopeThreshold: 0.55
