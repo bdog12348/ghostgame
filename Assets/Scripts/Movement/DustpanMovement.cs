@@ -9,13 +9,43 @@ public class DustpanMovement : MovementMode
 {
     bool Filled = false;
 
+    public float jumpSpeed;
+    private float ySpeed;
+    private float distanceToGround;
+    private bool isGrounded;
+
+
+    void Update()
+    {
+        // Check if it is grounded on this frame
+        if(player != null)
+        {
+            isGrounded = IsGrounded();
+        }
+
+        // Set the distanceToGround if the object was just inhabited by a player
+        if(player == null)
+        {
+            distanceToGround = 0f;
+        }
+        else if(distanceToGround == 0f)
+        {
+            distanceToGround = GetComponent<BoxCollider>().bounds.extents.y;
+        }
+
+        ySpeed += Physics.gravity.y * Time.deltaTime;
+    }
     public override List<float> GetInputs()
     {
+        string currentJoystick = "joystick " + playerNumber.ToString();
+
         List<float> inputs = new List<float>();
         Vector2 r;
+
+    
         if(playerNumber == 1 && Input.GetAxisRaw("HorizontalGamepad1") == 0 && Input.GetAxisRaw("VerticalGamepad1") == 0)
         {
-            r = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            r = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")); // keyboard
         }
         else if(playerNumber != 0)
         {
@@ -23,11 +53,22 @@ public class DustpanMovement : MovementMode
         }
         else
         {
-            return null;
+            r = new Vector2(0f,0f);
         }
+
         r = (r.magnitude > 1) ? r.normalized : r;
         inputs.Add(r.x);
         inputs.Add(r.y);
+
+        // Return before the jump if not grounded
+        if(!isGrounded)
+            return inputs;
+
+        // Jump
+        if(Input.GetKeyDown(currentJoystick + " button 0") || (playerNumber == 1 && Input.GetKeyDown("space")))
+        {
+            ySpeed = jumpSpeed;
+        }
 
         return inputs;
     }
@@ -37,10 +78,15 @@ public class DustpanMovement : MovementMode
         Vector3 moveDirection = FixMovementForCamera(Vector3.forward * inputs[1] + Vector3.right * inputs[0]);
         Vector3 moveVel = moveDirection * movementSpeed;
         if (moveVel == Vector3.zero)
-            rb.velocity = Vector3.zero;
+        {
+            moveVel.y = -1; // Makes the object fall if it's in the air
+        } 
         else
-            rb.velocity = moveVel;
-            //rb.AddForce(moveVel, ForceMode.VelocityChange);
+        {
+            moveVel.y = ySpeed;
+        }
+        rb.velocity = moveVel;
+        //rb.AddForce(moveVel, ForceMode.VelocityChange);
     }
 
     public override void InteractWithObject(GameObject interactObject)
@@ -52,7 +98,8 @@ public class DustpanMovement : MovementMode
                 Filled = true;
                 interactObject.SetActive(false);
             }
-        }else if (interactObject.CompareTag("Trash"))
+        }
+        else if (interactObject.CompareTag("Trash"))
         {
             if (Filled)
             {
@@ -60,5 +107,11 @@ public class DustpanMovement : MovementMode
                 FindObjectOfType<ScoreManager>().AddScore(20f);
             }
         }
+    }
+
+    private bool IsGrounded()
+    {
+        Debug.DrawRay(player.transform.position, -Vector3.up, Color.red);
+        return Physics.Raycast(player.transform.position, -Vector3.up, distanceToGround - .1f);
     }
 }

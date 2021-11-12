@@ -8,6 +8,7 @@ public abstract class MovementMode : MonoBehaviour
 
     #region Protected Fields
     protected Rigidbody rb;
+    protected GameObject player;
     protected float verticalVelocity;
     protected Vector3 slopeNormal;
     protected int playerNumber = 0;
@@ -41,6 +42,11 @@ public abstract class MovementMode : MonoBehaviour
     public void SetPlayerNumber(int player)
     {
         playerNumber = player;
+    }
+
+    public void SetPlayer(GameObject p)
+    {
+        player = p;
     }
 
     /// <summary>

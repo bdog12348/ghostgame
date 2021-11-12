@@ -1339,10 +1339,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 185840310}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d821cce478ad47c4095703d1abc4f98e, type: 3}
+  m_Script: {fileID: 11500000, guid: c67e6f7760d507546859325ef6ed348f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 5
+  movementSpeed: 2
   interactableTags: []
 --- !u!4 &185840314 stripped
 Transform:
@@ -13841,10 +13841,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1280049202}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d821cce478ad47c4095703d1abc4f98e, type: 3}
+  m_Script: {fileID: 11500000, guid: d80110cd31e2db54b93edfe85819654b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 5
+  movementSpeed: 6
   interactableTags: []
 --- !u!4 &1280049206 stripped
 Transform:
@@ -14670,10 +14670,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 314d14b4c32bab545b9e97503091c003, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 5
+  movementSpeed: 3
   interactableTags:
   - Trash
   - Dirt
+  jumpSpeed: 2
 --- !u!43 &1507269922
 Mesh:
   m_ObjectHideFlags: 0
