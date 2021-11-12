@@ -8,10 +8,9 @@ public abstract class MovementMode : MonoBehaviour
 
     #region Protected Fields
     protected Rigidbody rb;
+    protected SpriteChanger SpriteChanger;
     protected float verticalVelocity;
-    protected Vector3 slopeNormal;
     protected int playerNumber = 0;
-    protected int currentGoalNumber = 0;
     #endregion
 
     #region Serialized Fields
@@ -19,8 +18,14 @@ public abstract class MovementMode : MonoBehaviour
     [Header("Movement Config")]
     [SerializeField] protected float movementSpeed = 5f;
 
-    [Header("Optional Goals")]
     public string[] interactableTags;
+    #endregion
+
+    #region MonoBehaviour Methods
+    private void Start()
+    {
+        SpriteChanger = GetComponentInChildren<SpriteChanger>();
+    }
     #endregion
 
     #region Public Methods
@@ -84,64 +89,6 @@ public abstract class MovementMode : MonoBehaviour
     #endregion
 
     #region Protected Methods
-    /// <summary>
-    /// Checks if character controller is hitting the ground
-    /// </summary>
-    /// <returns>True if raycasts hit the ground, False otherwise</returns>
-    //protected bool Grounded()
-    //{
-    //    if (verticalVelocity > 0)
-    //        return false;
-
-    //    float yRay = (char_controller.bounds.center.y - (char_controller.height * 0.5f)) + innerVerticalOffset; // Bottom of character controller
-    //    RaycastHit hit;
-
-    //    //Mid
-    //    if (Physics.Raycast(new Vector3(char_controller.bounds.center.x, yRay, char_controller.bounds.center.z), -Vector3.up, out hit, innerVerticalOffset + distanceGrounded))
-    //    {
-    //        Debug.DrawRay(new Vector3(char_controller.bounds.center.x, yRay, char_controller.bounds.center.z), -Vector3.up * (innerVerticalOffset + distanceGrounded), Color.red);
-    //        slopeNormal = hit.normal;
-    //        return (slopeNormal.y > slopeThreshold) ? true : false;
-    //    }
-    //    //Front-Right
-    //    if (Physics.Raycast(new Vector3(char_controller.bounds.center.x + (char_controller.bounds.extents.x - extremitiesOffset), yRay, char_controller.bounds.center.z + (char_controller.bounds.extents.z - extremitiesOffset)), -Vector3.up, out hit, innerVerticalOffset + distanceGrounded))
-    //    {
-    //        slopeNormal = hit.normal;
-    //        return (slopeNormal.y > slopeThreshold) ? true : false;
-    //    }
-    //    //Front-Left
-    //    if (Physics.Raycast(new Vector3(char_controller.bounds.center.x - (char_controller.bounds.extents.x - extremitiesOffset), yRay, char_controller.bounds.center.z + (char_controller.bounds.extents.z - extremitiesOffset)), -Vector3.up, out hit, innerVerticalOffset + distanceGrounded))
-    //    {
-    //        slopeNormal = hit.normal;
-    //        return (slopeNormal.y > slopeThreshold) ? true : false;
-    //    }
-    //    //Back-Right
-    //    if (Physics.Raycast(new Vector3(char_controller.bounds.center.x + (char_controller.bounds.extents.x - extremitiesOffset), yRay, char_controller.bounds.center.z - (char_controller.bounds.extents.z - extremitiesOffset)), -Vector3.up, out hit, innerVerticalOffset + distanceGrounded))
-    //    {
-    //        slopeNormal = hit.normal;
-    //        return (slopeNormal.y > slopeThreshold) ? true : false;
-    //    }
-    //    //Back-Left
-    //    if (Physics.Raycast(new Vector3(char_controller.bounds.center.x - (char_controller.bounds.extents.x - extremitiesOffset), yRay, char_controller.bounds.center.z - (char_controller.bounds.extents.z - extremitiesOffset)), -Vector3.up, out hit, innerVerticalOffset + distanceGrounded))
-    //    {
-    //        slopeNormal = hit.normal;
-    //        return (slopeNormal.y > slopeThreshold) ? true : false;
-    //    }
-
-    //    return false;
-    //}
-
-    /// <summary>
-    /// Given <paramref name="moveVector"/> returns a Vector3 following the floor even if it's sloped
-    /// </summary>
-    /// <param name="moveVector">Input vector after anything added to it</param>
-    /// <returns>Adjusted move vector</returns>
-    protected Vector3 FollowFloor(Vector3 moveVector)
-    {
-        Vector3 right = new Vector3(slopeNormal.y, -slopeNormal.x, 0).normalized;
-        Vector3 forward = new Vector3(0, -slopeNormal.z, slopeNormal.y).normalized;
-        return right * moveVector.x + forward * moveVector.z;
-    }
 
     protected Vector3 FixMovementForCamera(Vector3 moveVector)
     {

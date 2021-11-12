@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
 
     #region Private Fields
     GameObject possessableObject = null;
+    GameObject currentlyPossessedObject = null;
+    GameObject draggingObject = null;
     GameObject interactObject = null;
 
     MovementMode movementMode;
@@ -25,6 +27,7 @@ public class PlayerController : MonoBehaviour
     bool CanInteract = false;
     bool Possessing = false;
     bool IsHuman = false;
+    bool isDraggingObject = false;
 
     List<float> inputs;
     #endregion
@@ -73,11 +76,36 @@ public class PlayerController : MonoBehaviour
                     Possess();
                     return;
                 }
+            }else if (IsHuman) // On an object only human form can interact with; currently only trash can so is going to be hard coded
+            {
+                interactIndicatorObject.SetActive(true);
+                if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKeyDown("e"))))
+                {
+                    if (!isDraggingObject)
+                    {
+                        isDraggingObject = true;
+                        draggingObject = interactObject;
+                        draggingObject.transform.SetParent(transform);
+                        CanInteract = false;
+                    }
+                    return;
+                }
             }
         }
         else
         {
             interactIndicatorObject.SetActive(false);
+        }
+
+        if (IsHuman && isDraggingObject)
+        {
+            if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKeyDown("e"))))
+            {
+                isDraggingObject = false;
+                draggingObject.transform.SetParent(transform.parent);
+                draggingObject = null;
+                CanInteract = false;
+            }
         }
 
         if (movementMode != null)
@@ -105,6 +133,11 @@ public class PlayerController : MonoBehaviour
             movementMode.Move(inputs);
         }
 
+        if (Possessing)
+        {
+            currentlyPossessedObject.transform.position = transform.position;
+        }
+
         if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKeyDown("e"))) && Possessing)
         {
             ResetGhost();
@@ -115,16 +148,26 @@ public class PlayerController : MonoBehaviour
     #region Collision Handlers
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.CompareTag("Possessable") && !Possessing)
+        if (other.gameObject.CompareTag("Possessable") && !Possessing && !IsHuman)
         {
             CanInteract = true;
             possessableObject = other.gameObject;
         }
 
-        if (movementMode.interactableTags.Contains(other.gameObject.tag) && Possessing)
+        if (movementMode.interactableTags.Contains(other.gameObject.tag))
         {
-            CanInteract = true;
-            interactObject = other.gameObject;
+            if (movementMode.Equals(ghostMovement))
+            {
+                if (IsHuman)
+                {
+                    CanInteract = true;
+                    interactObject = other.gameObject;
+                }
+            }else
+            {
+                CanInteract = true;
+                interactObject = other.gameObject;
+            }
         }
     }
 
@@ -137,10 +180,10 @@ public class PlayerController : MonoBehaviour
                 possessableObject = null;
         }
 
-        if (movementMode.interactableTags.Contains(other.gameObject.tag) && Possessing)
+        if (movementMode.interactableTags.Contains(other.gameObject.tag))
         {
             CanInteract = false;
-            if (Possessing)
+            //if (Possessing)
                 interactObject = null;
         }
     }
@@ -155,11 +198,13 @@ public class PlayerController : MonoBehaviour
     {
         Possessing = true;
         CanInteract = false;
-        ChangeSprites(possessableObject.GetComponentInChildren<SpriteRenderer>().sprite);
+
+        spriteRenderer.enabled = false;
+        currentlyPossessedObject = possessableObject;
+
         movementMode = possessableObject.GetComponent<MovementMode>();
         movementMode.SetRigidbody(ghostMovement.GetRigidbody());
         movementMode.SetPlayerNumber(playerJoystick);
-        possessableObject.GetComponentInChildren<SpriteRenderer>().enabled = false;
     }
 
     /// <summary>
@@ -168,10 +213,10 @@ public class PlayerController : MonoBehaviour
     void ResetGhost()
     {
         Possessing = false;       
-        ChangeSprites(ghostSprite);
-        possessableObject.transform.position = transform.position;
-        possessableObject.GetComponentInChildren<SpriteRenderer>().enabled = true;
         possessableObject = null;
+
+        spriteRenderer.enabled = true;
+        currentlyPossessedObject = null;
 
         movementMode.SetRigidbody(null);
         movementMode.SetPlayerNumber(0);
@@ -194,6 +239,7 @@ public class PlayerController : MonoBehaviour
             movementMode.SetSpeed(4f);
             ChangeSprites(ghostSprite);
         }
+        CanInteract = false;
     }
     void ChangeSprites(Sprite sprite)
     {

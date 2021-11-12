@@ -7,7 +7,9 @@ using UnityEngine;
 /// </summary>
 public class DustpanMovement : MovementMode
 {
-    bool Filled = false;
+    bool full = false;
+    int currentLoad = 0;
+    readonly int MAX_LOAD = 2;
 
     public override List<float> GetInputs()
     {
@@ -47,18 +49,42 @@ public class DustpanMovement : MovementMode
     {
         if (interactObject.CompareTag("Dirt"))
         {
-            if (!Filled)
+            if (!full)
             {
-                Filled = true;
+                currentLoad++;
+                SetFullLevelSprite();
                 interactObject.SetActive(false);
             }
         }else if (interactObject.CompareTag("Trash"))
         {
-            if (Filled)
+            if (currentLoad > 0)
             {
-                Filled = false;
-                FindObjectOfType<ScoreManager>().AddScore(20f);
+                currentLoad = interactObject.GetComponent<TrashcanController>().AddTrash(currentLoad);
+                Debug.Log($"Dustpan got {currentLoad} as a return value after adding trash");
+                SetFullLevelSprite();
             }
+        }
+
+        if (currentLoad == MAX_LOAD)
+        {
+            full = true;
+        }else
+        {
+            full = false;
+        }
+    }
+
+    void SetFullLevelSprite()
+    {
+        if (currentLoad == MAX_LOAD)
+        {
+            SpriteChanger.SetFilledSprite(2);
+        }else if (currentLoad >= 1)
+        {
+            SpriteChanger.SetFilledSprite(1);
+        }else
+        {
+            SpriteChanger.SetFilledSprite(0);
         }
     }
 }

@@ -22,6 +22,11 @@ public class GameManager : MonoBehaviour
             Application.Quit();
     }
 
+    public void ShowIndicators() //TODO: Implement
+    {
+
+    }
+
     void TimeDone()
     {
         Debug.Log("Timer over");
