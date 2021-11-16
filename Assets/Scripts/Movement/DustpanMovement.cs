@@ -16,6 +16,12 @@ public class DustpanMovement : MovementMode
     private float distanceToGround;
     private bool isGrounded;
 
+    SpriteChanger dirtSpriteChanger;
+
+    private void Start()
+    {
+        dirtSpriteChanger = transform.Find("Dirt Overlay").GetComponent<SpriteChanger>();
+    }
 
     void Update()
     {
@@ -107,7 +113,6 @@ public class DustpanMovement : MovementMode
             if (currentLoad > 0)
             {
                 currentLoad = interactObject.GetComponent<TrashcanController>().AddTrash(currentLoad);
-                Debug.Log($"Dustpan got {currentLoad} as a return value after adding trash");
                 SetFullLevelSprite();
             }
         }
@@ -125,13 +130,13 @@ public class DustpanMovement : MovementMode
     {
         if (currentLoad == MAX_LOAD)
         {
-            SpriteChanger.SetFilledSprite(2);
+            dirtSpriteChanger.SetFilledSprite(2);
         }else if (currentLoad >= 1)
         {
-            SpriteChanger.SetFilledSprite(1);
+            dirtSpriteChanger.SetFilledSprite(1);
         }else
         {
-            SpriteChanger.SetFilledSprite(0);
+            dirtSpriteChanger.SetFilledSprite(0);
         }
     }
 

@@ -6,15 +6,19 @@ public class DogController : MonoBehaviour
 {
     SpriteRenderer spriteRenderer;
     SpriteRenderer indicatorSpriteRenderer;
+    
+    [Header("Numbers to Play With")]
+    [SerializeField] float deltaAmount = 0.1f;
+    [SerializeField] float maxSus = 100;
 
+    [Header("Inspector Fields")]
+    [SerializeField] Animator dogAnimator;
     [SerializeField] Sprite asleepIndicatorSprite;
     [SerializeField] Sprite alertIndicatorSprite;
     [SerializeField] Sprite asleepSprite;
     [SerializeField] Sprite alertSprite;
 
     float susAmount = 0;
-    float maxSus = 100;
-    float deltaAmount = 0.1f;
 
     bool ready = true;
     bool playerInRange = false;
@@ -44,6 +48,7 @@ public class DogController : MonoBehaviour
         if (susAmount >= maxSus)
         {
             FindObjectOfType<ScoreManager>().AddScore(-10f);
+            dogAnimator.SetBool("Sleeping", false);
             susAmount = 0f;
             spriteRenderer.sprite = alertSprite;
             indicatorSpriteRenderer.sprite = alertIndicatorSprite;
@@ -74,5 +79,7 @@ public class DogController : MonoBehaviour
         ready = true;
         spriteRenderer.sprite = asleepSprite;
         indicatorSpriteRenderer.sprite = asleepIndicatorSprite;
+        dogAnimator.SetBool("Sleeping", true);
+
     }
 }

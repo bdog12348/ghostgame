@@ -7,10 +7,13 @@ public class PlayerController : MonoBehaviour
 {
     #region Serialized Fields
     [SerializeField] GameObject interactIndicatorObject;
+    [SerializeField] GameObject ghostObject;
+    [SerializeField] GameObject humanObject;
     [SerializeField] Sprite ghostSprite;
     [SerializeField] Sprite humanSprite;
     [SerializeField] public int playerJoystick;
     [SerializeField] Animator spriteAnimator;
+    [SerializeField] SpriteRenderer[] spriteRenderers;
     #endregion
 
     #region Private Fields
@@ -21,7 +24,6 @@ public class PlayerController : MonoBehaviour
 
     MovementMode movementMode;
     PlayerMovement ghostMovement;
-    SpriteRenderer spriteRenderer;
 
     bool GameOver = false;
     bool CanInteract = false;
@@ -36,7 +38,6 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        spriteRenderer = transform.Find("Sprite").GetComponent<SpriteRenderer>();
         ghostMovement = GetComponent<PlayerMovement>();
         ghostMovement.AutoAsssignRigidbody();
         ghostMovement.SetPlayerNumber(playerJoystick);
@@ -50,10 +51,9 @@ public class PlayerController : MonoBehaviour
         if (GameOver) return; // Disable script?
 
         if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 1") && !Possessing)
-          || (playerJoystick == 1 && Input.GetKeyDown(KeyCode.Space) && !Possessing))
+          || (playerJoystick == 1 && Input.GetKeyDown(KeyCode.Space) && !Possessing && !isDraggingObject))
         {
             ToggleHuman();
-            spriteAnimator.SetBool("IsHuman", IsHuman);
         }
 
         if (CanInteract)
@@ -116,19 +116,31 @@ public class PlayerController : MonoBehaviour
         if (inputs != null)
         {
             // Do animation stuff
-            //if (inputs[0] < 0)
-            //{
-            //    spriteRenderer.flipX = false;
-            //    spriteAnimator.SetBool("Moving", true);
+            if (inputs[0] != 0 || inputs [1] != 0)
+            {
+                if (IsHuman)
+                    spriteAnimator.SetBool("Moving", true);
+            }else
+            {
+                if (IsHuman)
+                    spriteAnimator.SetBool("Moving", false);
+            }
 
-            //}else if (inputs[0] > 0)
-            //{
-            //    spriteRenderer.flipX = true;
-            //    spriteAnimator.SetBool("Moving", true);
-            //}else
-            //{
-            //    spriteAnimator.SetBool("Moving", false);
-            //}
+            if (inputs[0] < 0)
+            {
+                foreach(SpriteRenderer renderer in spriteRenderers)
+                {
+                    renderer.flipX = true;
+                }
+
+            }
+            else if (inputs[0] > 0)
+            {
+                foreach (SpriteRenderer renderer in spriteRenderers)
+                {
+                    renderer.flipX = false;
+                }
+            }
 
             movementMode.Move(inputs);
         }
@@ -199,7 +211,7 @@ public class PlayerController : MonoBehaviour
         Possessing = true;
         CanInteract = false;
 
-        spriteRenderer.enabled = false;
+        ghostObject.SetActive(false);
         currentlyPossessedObject = possessableObject;
         movementMode = possessableObject.GetComponent<MovementMode>();
         movementMode.SetRigidbody(ghostMovement.GetRigidbody());
@@ -215,7 +227,7 @@ public class PlayerController : MonoBehaviour
         Possessing = false;       
         possessableObject = null;
 
-        spriteRenderer.enabled = true;
+        ghostObject.SetActive(true);
         currentlyPossessedObject = null;
 
         movementMode.SetRigidbody(null);
@@ -234,18 +246,23 @@ public class PlayerController : MonoBehaviour
         {
             movementMode.SetSpeed(10f);
             ChangeSprites(humanSprite);
+            ghostObject.SetActive(false);
+            humanObject.SetActive(true);
         }
         else
         {
             movementMode.SetSpeed(4f);
             ChangeSprites(ghostSprite);
+            ghostObject.SetActive(true);
+            humanObject.SetActive(false);
         }
         CanInteract = false;
     }
+
     void ChangeSprites(Sprite sprite)
     {
-        spriteRenderer.sprite = sprite;
-        Vector2 spriteSize = spriteRenderer.sprite.bounds.size;
+        //spriteRenderer.sprite = sprite;
+        Vector2 spriteSize = sprite.bounds.size;
         GetComponent<BoxCollider>().size = new Vector3(spriteSize.x / 2, spriteSize.y / 4, .5f);
         GetComponent<BoxCollider>().center = new Vector3(0, -spriteSize.y / 4, 0);
     }
