@@ -30,6 +30,16 @@ public class TrashcanController : MonoBehaviour
         SetFillLevelSprite();
         return leftoverAmount;
     }
+    public int GetCurrentLoad()
+    {
+        return currentLoad;
+    }
+
+    public void Empty()
+    {
+        currentLoad = 0;
+        SetFillLevelSprite();
+    }
 
     void SetFillLevelSprite()
     {
@@ -41,4 +51,5 @@ public class TrashcanController : MonoBehaviour
             spriteChanger.SetFilledSprite(0);
         }
     }
+
 }

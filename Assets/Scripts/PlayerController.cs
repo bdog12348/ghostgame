@@ -7,10 +7,13 @@ public class PlayerController : MonoBehaviour
 {
     #region Serialized Fields
     [SerializeField] GameObject interactIndicatorObject;
+    [SerializeField] GameObject ghostObject;
+    [SerializeField] GameObject humanObject;
     [SerializeField] Sprite ghostSprite;
     [SerializeField] Sprite humanSprite;
     [SerializeField] public int playerJoystick;
     [SerializeField] Animator spriteAnimator;
+    [SerializeField] SpriteRenderer[] spriteRenderers;
     #endregion
 
     #region Private Fields
@@ -21,14 +24,14 @@ public class PlayerController : MonoBehaviour
 
     MovementMode movementMode;
     PlayerMovement ghostMovement;
-    SpriteRenderer spriteRenderer;
 
     bool GameOver = false;
     bool CanInteract = false;
     bool Possessing = false;
     bool IsHuman = false;
     bool isDraggingObject = false;
-
+    float totalHoldTime = 1f;
+    float holdTimer;
     List<float> inputs;
     #endregion
 
@@ -36,12 +39,12 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        spriteRenderer = transform.Find("Sprite").GetComponent<SpriteRenderer>();
         ghostMovement = GetComponent<PlayerMovement>();
         ghostMovement.AutoAsssignRigidbody();
         ghostMovement.SetPlayerNumber(playerJoystick);
         movementMode = ghostMovement;
         TimerHelper.OnTimerEnd += () => GameOver = true;
+        holdTimer = totalHoldTime;
     }
 
     // Update is called once per frame
@@ -49,11 +52,48 @@ public class PlayerController : MonoBehaviour
     {
         if (GameOver) return; // Disable script?
 
+        if (movementMode != null)
+        {
+            inputs = movementMode.GetInputs();
+        }
+
+        if (inputs != null)
+        {
+            // Do animation stuff
+            if (inputs[0] != 0 || inputs [1] != 0)
+            {
+                if (IsHuman)
+                    spriteAnimator.SetBool("Moving", true);
+            }
+            else
+            {
+                if (IsHuman)
+                    spriteAnimator.SetBool("Moving", false);
+            }
+
+            if (inputs[0] < 0)
+            {
+                foreach(SpriteRenderer renderer in spriteRenderers)
+                {
+                    renderer.flipX = true;
+                }
+
+            }
+            else if (inputs[0] > 0)
+            {
+                foreach (SpriteRenderer renderer in spriteRenderers)
+                {
+                    renderer.flipX = false;
+                }
+            }
+
+            movementMode.Move(inputs);
+        }
+
         if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 1") && !Possessing)
-          || (playerJoystick == 1 && Input.GetKeyDown(KeyCode.Space) && !Possessing))
+          || (playerJoystick == 1 && Input.GetKeyDown(KeyCode.Space) && !Possessing && !isDraggingObject))
         {
             ToggleHuman();
-            spriteAnimator.SetBool("IsHuman", IsHuman);
         }
 
         if (CanInteract)
@@ -71,12 +111,22 @@ public class PlayerController : MonoBehaviour
             else if (!Possessing && !IsHuman) // On possessable object
             {
                 interactIndicatorObject.SetActive(true);
-                if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKeyDown("e"))))
+                if ((Input.GetKey("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKey("e"))))
                 {
-                    Possess();
+                    holdTimer -= Time.deltaTime;
+                    if (holdTimer <= 0f)
+                    {
+                        Possess();
+                        holdTimer = totalHoldTime;
+                    }                
                     return;
                 }
-            }else if (IsHuman) // On an object only human form can interact with; currently only trash can so is going to be hard coded
+                else if((Input.GetKeyUp("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKeyUp("e"))))
+                {
+                    holdTimer = totalHoldTime;
+                }
+            }
+            else if (IsHuman) // On an object only human form can interact with; currently only trash can so is going to be hard coded
             {
                 interactIndicatorObject.SetActive(true);
                 if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKeyDown("e"))))
@@ -108,39 +158,23 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (movementMode != null)
-        {
-            inputs = movementMode.GetInputs();
-        }
-
-        if (inputs != null)
-        {
-            // Do animation stuff
-            //if (inputs[0] < 0)
-            //{
-            //    spriteRenderer.flipX = false;
-            //    spriteAnimator.SetBool("Moving", true);
-
-            //}else if (inputs[0] > 0)
-            //{
-            //    spriteRenderer.flipX = true;
-            //    spriteAnimator.SetBool("Moving", true);
-            //}else
-            //{
-            //    spriteAnimator.SetBool("Moving", false);
-            //}
-
-            movementMode.Move(inputs);
-        }
-
         if (Possessing)
         {
             currentlyPossessedObject.transform.position = transform.position;
         }
 
-        if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKeyDown("e"))) && Possessing)
+        if ((Input.GetKey("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKey("e"))) && Possessing)
         {
-            ResetGhost();
+            holdTimer -= Time.deltaTime;
+            if (holdTimer <= 0f)
+            {
+                ResetGhost();
+                holdTimer = totalHoldTime;
+            }         
+        }
+        else if((Input.GetKeyUp("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKeyUp("e"))) && Possessing)
+        {
+            holdTimer = totalHoldTime;
         }
     }
     #endregion
@@ -199,7 +233,7 @@ public class PlayerController : MonoBehaviour
         Possessing = true;
         CanInteract = false;
 
-        spriteRenderer.enabled = false;
+        ghostObject.SetActive(false);
         currentlyPossessedObject = possessableObject;
         movementMode = possessableObject.GetComponent<MovementMode>();
         movementMode.SetRigidbody(ghostMovement.GetRigidbody());
@@ -215,7 +249,7 @@ public class PlayerController : MonoBehaviour
         Possessing = false;       
         possessableObject = null;
 
-        spriteRenderer.enabled = true;
+        ghostObject.SetActive(true);
         currentlyPossessedObject = null;
 
         movementMode.SetRigidbody(null);
@@ -234,18 +268,23 @@ public class PlayerController : MonoBehaviour
         {
             movementMode.SetSpeed(10f);
             ChangeSprites(humanSprite);
+            ghostObject.SetActive(false);
+            humanObject.SetActive(true);
         }
         else
         {
             movementMode.SetSpeed(4f);
             ChangeSprites(ghostSprite);
+            ghostObject.SetActive(true);
+            humanObject.SetActive(false);
         }
         CanInteract = false;
     }
+
     void ChangeSprites(Sprite sprite)
     {
-        spriteRenderer.sprite = sprite;
-        Vector2 spriteSize = spriteRenderer.sprite.bounds.size;
+        //spriteRenderer.sprite = sprite;
+        Vector2 spriteSize = sprite.bounds.size;
         GetComponent<BoxCollider>().size = new Vector3(spriteSize.x / 2, spriteSize.y / 4, .5f);
         GetComponent<BoxCollider>().center = new Vector3(0, -spriteSize.y / 4, 0);
     }
