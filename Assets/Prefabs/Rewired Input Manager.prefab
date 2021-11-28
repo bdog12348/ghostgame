@@ -205,7 +205,7 @@ MonoBehaviour:
       _descriptiveName: Player0
       _startPlaying: 1
       _defaultJoystickMaps:
-      - _enabled: 1
+      - _enabled: 0
         _categoryId: 1
         _layoutId: 0
       - _enabled: 0
@@ -223,7 +223,7 @@ MonoBehaviour:
       _startingCustomControllers: []
       _assignMouseOnStart: 1
       _assignKeyboardOnStart: 1
-      _excludeFromControllerAutoAssignment: 0
+      _excludeFromControllerAutoAssignment: 1
       _controllerMapLayoutManagerSettings:
         _enabled: 1
         _loadFromUserDataStore: 1
