@@ -96,6 +96,12 @@ public class MainMenuUI : MonoBehaviour
 
                     if (canStartGame)
                     {
+                        for(int j = 0; j <  ReInput.players.playerCount; j++)
+                        {
+                            Player player =  ReInput.players.GetPlayer(j);
+                            player.controllers.maps.SetMapsEnabled(false, "Menu");
+                            player.controllers.maps.SetMapsEnabled(true, "Default");
+                        }
                         LoadGame();
                     }
                 }
