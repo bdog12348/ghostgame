@@ -25,7 +25,6 @@ public class PlayerController : MonoBehaviour
 
     MovementMode movementMode;
     PlayerMovement ghostMovement;
-    SpriteRenderer spriteRenderer;
 
     bool GameOver = false;
     bool CanInteract = false;
@@ -41,7 +40,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        spriteRenderer = transform.Find("Sprite").GetComponent<SpriteRenderer>();
+        Debug.Log("start");
         ghostMovement = GetComponent<PlayerMovement>();
         ghostMovement.AutoAsssignRigidbody();
         ghostMovement.SetPlayerNumber(playerJoystick);
@@ -59,7 +58,6 @@ public class PlayerController : MonoBehaviour
           || (playerJoystick == 1 && Input.GetKeyDown(KeyCode.Space) && !Possessing && !isDraggingObject))
         {
             ToggleHuman();
-            spriteAnimator.SetBool("IsHuman", IsHuman);
         }
 
         if (CanInteract)
