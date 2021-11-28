@@ -12,6 +12,7 @@ public class TrashTruckManager : MonoBehaviour
     [SerializeField] Animator trashAnimator;
     [SerializeField] GameObject trashIndicator;
     [SerializeField] TrashCollection trashArea;
+    [SerializeField] TrashTruckIndicatorHelper truckIndicatorHelper;
 
     float currentTrashTime;
 
@@ -33,10 +34,10 @@ public class TrashTruckManager : MonoBehaviour
 
         yield return new WaitForSeconds(currentTrashTime - 5f);
         trashIndicator.SetActive(true);
-        StartCoroutine(StartLastFiveSeconds());
+        truckIndicatorHelper.StartTimer();
     }
 
-    IEnumerator StartLastFiveSeconds()
+    public IEnumerator StartLastFiveSeconds()
     {
         trashAnimator.SetTrigger("Enter");
         yield return new WaitForSeconds(5f);
