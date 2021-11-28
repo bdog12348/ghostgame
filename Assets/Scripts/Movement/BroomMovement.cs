@@ -18,6 +18,11 @@ public class BroomMovement : MovementMode
         storedPowerInfo = Vector3.zero;
         storedPower = true;
     }
+
+    public bool StoringPower()
+    {
+        return storedPower;
+    }
     public override List<float> GetInputs()
     {
         string currentJoystick = "joystick " + playerNumber.ToString();
@@ -62,6 +67,7 @@ public class BroomMovement : MovementMode
         // If the player is holding a direction while stationary, store that power
         else if(moveVel != Vector3.zero && rb.velocity == Vector3.zero)
         {
+            storedPower = true;
             // Only store the max power (so when they let go, it doesn't save the most recent position which would be small)
             if(Math.Abs(moveDirection.x) >= Math.Abs(storedPowerInfo.x) || Math.Abs(moveDirection.z) >= Math.Abs(storedPowerInfo.z))
             {
@@ -88,10 +94,23 @@ public class BroomMovement : MovementMode
                 newVelocity.z = 0;
             rb.velocity = newVelocity;
         }
-        storedPower = true;
         //rb.AddForce(moveVel - rb.velocity, ForceMode.VelocityChange);
     }
 
+    public bool HoldingLeft()
+    {
+        if(storedPowerInfo.x < 0)
+            return true;
+        return false;
+    }
+
+    public bool HoldingRight()
+    {
+        if(storedPowerInfo.x > 0)
+            return true;
+        return false;
+    }
+    
     public override void InteractWithObject(GameObject interactObject)
     {
         throw new System.NotImplementedException();

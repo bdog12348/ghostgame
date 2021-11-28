@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     GameObject currentlyPossessedObject = null;
     GameObject draggingObject = null;
     GameObject interactObject = null;
+    SpriteChanger spriteChanger = null;
 
     MovementMode movementMode;
     PlayerMovement ghostMovement;
@@ -239,6 +240,9 @@ public class PlayerController : MonoBehaviour
         movementMode.SetRigidbody(ghostMovement.GetRigidbody());
         movementMode.SetPlayerNumber(playerJoystick);
         movementMode.SetPlayer(gameObject);
+        spriteChanger = currentlyPossessedObject.transform.Find("Sprite").gameObject.GetComponent<SpriteChanger>();
+        if(spriteChanger != null)
+            spriteChanger.SetPlayerSprite(playerJoystick);
     }
 
     /// <summary>
@@ -253,9 +257,12 @@ public class PlayerController : MonoBehaviour
         currentlyPossessedObject = null;
 
         movementMode.SetRigidbody(null);
-        movementMode.SetPlayerNumber(0);
+        movementMode.SetPlayerNumber(-1);
         movementMode.SetPlayer(null);
         movementMode = ghostMovement;
+        if(spriteChanger != null)
+            spriteChanger.SetDefaultSprite();
+        spriteChanger = null;
     }
 
     /// <summary>

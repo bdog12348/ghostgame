@@ -108,8 +108,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5179974738846640620}
   - component: {fileID: 5179974738846640623}
-  - component: {fileID: 596115576800233342}
-  - component: {fileID: 596115575891829161}
+  - component: {fileID: 7829779605892582787}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Broom
@@ -182,46 +181,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &596115576800233342
+--- !u!114 &7829779605892582787
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5179974738846640621}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5882bf758a9a0c943bf84adb0e5fa308, type: 3}
+  m_Script: {fileID: 11500000, guid: 33c27d34f9e1deb419996d7bd114af60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerSprites:
-  - {fileID: 21300000, guid: 02c3966337387424ca3097988d7d6080, type: 3}
-  - {fileID: 21300000, guid: 9f070af4c2630004f9e22b7212cd1d08, type: 3}
-  - {fileID: 21300000, guid: 2ce0798360f86ae47a8eb1c3aefb9fcd, type: 3}
-  - {fileID: 21300000, guid: f650269e8c2f73141b892391d47f60a5, type: 3}
-  filledSprites:
-  - {fileID: 21300000, guid: 6a2d6c04eb53b1c429b52a567b6c52ee, type: 3}
-  - {fileID: 21300000, guid: 5439e0eb3c8577c45805d6c2aad80a51, type: 3}
---- !u!114 &596115575891829161
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5179974738846640621}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5882bf758a9a0c943bf84adb0e5fa308, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerSprites:
-  - {fileID: 21300000, guid: 02c3966337387424ca3097988d7d6080, type: 3}
-  - {fileID: 21300000, guid: 9f070af4c2630004f9e22b7212cd1d08, type: 3}
-  - {fileID: 21300000, guid: 2ce0798360f86ae47a8eb1c3aefb9fcd, type: 3}
-  - {fileID: 21300000, guid: f650269e8c2f73141b892391d47f60a5, type: 3}
-  filledSprites:
-  - {fileID: 21300000, guid: 6a2d6c04eb53b1c429b52a567b6c52ee, type: 3}
-  - {fileID: 21300000, guid: 5439e0eb3c8577c45805d6c2aad80a51, type: 3}
+  - {fileID: 21300000, guid: 4e88208bf25c4e24c8136fcc203348bc, type: 3}
+  - {fileID: 21300000, guid: 4e88208bf25c4e24c8136fcc203348bc, type: 3}
+  - {fileID: 21300000, guid: 4e88208bf25c4e24c8136fcc203348bc, type: 3}
+  - {fileID: 21300000, guid: 4e88208bf25c4e24c8136fcc203348bc, type: 3}
+  filledSprites: []
+  downPlayerSprite: {fileID: 21300000, guid: 8c8e17f1ca403ac4083afa314b6e3633, type: 3}
 --- !u!1001 &596115575520771384
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2473044126247634225}
   - component: {fileID: 2473044126247634224}
-  - component: {fileID: 2075543399}
+  - component: {fileID: 7381997587754941368}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Broom
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2075543399
+--- !u!114 &7381997587754941368
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -92,7 +92,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2473044126247634238}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5882bf758a9a0c943bf84adb0e5fa308, type: 3}
+  m_Script: {fileID: 11500000, guid: a201312d5b63e0b4da9b003b3b324995, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerSprites:
@@ -101,6 +101,11 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c6f5bd595956e0e4d8d16ee3d634a9db, type: 3}
   - {fileID: 21300000, guid: 6d72bcac447aab646b920c08fd325e5d, type: 3}
   filledSprites: []
+  bentPlayerSprites:
+  - {fileID: 21300000, guid: 604f13624d9783049920e67b9ae8fd55, type: 3}
+  - {fileID: 21300000, guid: e7f135311dc107b41b3457489cfee438, type: 3}
+  - {fileID: 21300000, guid: 29f51a2e53e98214ab886a473d66fe3f, type: 3}
+  - {fileID: 21300000, guid: eadb1ca4850321443b05f72f03dc57b8, type: 3}
 --- !u!1 &2473044127160344901
 GameObject:
   m_ObjectHideFlags: 0

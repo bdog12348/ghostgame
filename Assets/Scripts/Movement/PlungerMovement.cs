@@ -39,6 +39,10 @@ public class PlungerMovement : MovementMode
 
         ySpeed += Physics.gravity.y * Time.deltaTime;
     }
+    public bool Charging()
+    {
+        return clickCount > 0;
+    }
     public override List<float> GetInputs()
     {
         string currentJoystick = "joystick " + playerNumber.ToString();
