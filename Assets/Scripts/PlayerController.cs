@@ -21,16 +21,19 @@ public class PlayerController : MonoBehaviour
     GameObject currentlyPossessedObject = null;
     GameObject draggingObject = null;
     GameObject interactObject = null;
+    SpriteChanger spriteChanger = null;
 
     MovementMode movementMode;
     PlayerMovement ghostMovement;
+    SpriteRenderer spriteRenderer;
 
     bool GameOver = false;
     bool CanInteract = false;
     bool Possessing = false;
     bool IsHuman = false;
     bool isDraggingObject = false;
-
+    float totalHoldTime = 1f;
+    float holdTimer;
     List<float> inputs;
     #endregion
 
@@ -38,11 +41,13 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        spriteRenderer = transform.Find("Sprite").GetComponent<SpriteRenderer>();
         ghostMovement = GetComponent<PlayerMovement>();
         ghostMovement.AutoAsssignRigidbody();
         ghostMovement.SetPlayerNumber(playerJoystick);
         movementMode = ghostMovement;
         TimerHelper.OnTimerEnd += () => GameOver = true;
+        holdTimer = totalHoldTime;
     }
 
     // Update is called once per frame
@@ -54,6 +59,7 @@ public class PlayerController : MonoBehaviour
           || (playerJoystick == 1 && Input.GetKeyDown(KeyCode.Space) && !Possessing && !isDraggingObject))
         {
             ToggleHuman();
+            spriteAnimator.SetBool("IsHuman", IsHuman);
         }
 
         if (CanInteract)
@@ -71,12 +77,22 @@ public class PlayerController : MonoBehaviour
             else if (!Possessing && !IsHuman) // On possessable object
             {
                 interactIndicatorObject.SetActive(true);
-                if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKeyDown("e"))))
+                if ((Input.GetKey("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKey("e"))))
                 {
-                    Possess();
+                    holdTimer -= Time.deltaTime;
+                    if (holdTimer <= 0f)
+                    {
+                        Possess();
+                        holdTimer = totalHoldTime;
+                    }                
                     return;
                 }
-            }else if (IsHuman) // On an object only human form can interact with; currently only trash can so is going to be hard coded
+                else if((Input.GetKeyUp("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKeyUp("e"))))
+                {
+                    holdTimer = totalHoldTime;
+                }
+            }
+            else if (IsHuman) // On an object only human form can interact with; currently only trash can so is going to be hard coded
             {
                 interactIndicatorObject.SetActive(true);
                 if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKeyDown("e"))))
@@ -152,7 +168,16 @@ public class PlayerController : MonoBehaviour
 
         if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKeyDown("e"))) && Possessing)
         {
-            ResetGhost();
+            holdTimer -= Time.deltaTime;
+            if (holdTimer <= 0f)
+            {
+                ResetGhost();
+                holdTimer = totalHoldTime;
+            }         
+        }
+        else if((Input.GetKeyUp("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKeyUp("e"))) && Possessing)
+        {
+            holdTimer = totalHoldTime;
         }
     }
     #endregion
@@ -217,6 +242,9 @@ public class PlayerController : MonoBehaviour
         movementMode.SetRigidbody(ghostMovement.GetRigidbody());
         movementMode.SetPlayerNumber(playerJoystick);
         movementMode.SetPlayer(gameObject);
+        spriteChanger = currentlyPossessedObject.transform.Find("Sprite").gameObject.GetComponent<SpriteChanger>();
+        if(spriteChanger != null)
+            spriteChanger.SetPlayerSprite(playerJoystick);
     }
 
     /// <summary>
@@ -231,9 +259,12 @@ public class PlayerController : MonoBehaviour
         currentlyPossessedObject = null;
 
         movementMode.SetRigidbody(null);
-        movementMode.SetPlayerNumber(0);
+        movementMode.SetPlayerNumber(-1);
         movementMode.SetPlayer(null);
         movementMode = ghostMovement;
+        if(spriteChanger != null)
+            spriteChanger.SetDefaultSprite();
+        spriteChanger = null;
     }
 
     /// <summary>
@@ -258,7 +289,6 @@ public class PlayerController : MonoBehaviour
         }
         CanInteract = false;
     }
-
     void ChangeSprites(Sprite sprite)
     {
         //spriteRenderer.sprite = sprite;

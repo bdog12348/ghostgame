@@ -18,6 +18,11 @@ public class BroomMovement : MovementMode
         storedPowerInfo = Vector3.zero;
         storedPower = true;
     }
+
+    public bool StoringPower()
+    {
+        return storedPower;
+    }
     public override List<float> GetInputs()
     {
         string currentJoystick = "joystick " + playerNumber.ToString();
@@ -51,6 +56,7 @@ public class BroomMovement : MovementMode
         Vector3 moveDirection = FixMovementForCamera(Vector3.forward * inputs[1] + Vector3.right * inputs[0]);
         Vector3 moveVel = moveDirection * movementSpeed;
         
+        // If the player just let go of the direction they were holding
         if(moveVel == Vector3.zero && storedPowerInfo != Vector3.zero && storedPower)
         {
             Vector3 newMoveDirection = -storedPowerInfo;
@@ -58,26 +64,29 @@ public class BroomMovement : MovementMode
             storedPowerInfo = Vector3.zero;
             storedPower = false;
         }
-        else if(moveVel != Vector3.zero)
+        // If the player is holding a direction while stationary, store that power
+        else if(moveVel != Vector3.zero && rb.velocity == Vector3.zero)
         {
+            storedPower = true;
+            // Only store the max power (so when they let go, it doesn't save the most recent position which would be small)
             if(Math.Abs(moveDirection.x) >= Math.Abs(storedPowerInfo.x) || Math.Abs(moveDirection.z) >= Math.Abs(storedPowerInfo.z))
             {
                 storedPowerInfo = moveDirection;
-                Debug.Log($"{storedPowerInfo}");
             }
         }
-        else if(moveVel == Vector3.zero && rb.velocity != Vector3.zero)     // slow down a moving broom
+        // If the player is still moving, slow them down
+        else if(rb.velocity != Vector3.zero)
         {
             Vector3 newVelocity = Vector3.zero;
             newVelocity = rb.velocity;
 
             if(newVelocity.x > 0)
                 newVelocity.x -= 0.01f;
-            if(newVelocity.x < 0)
+            else if(newVelocity.x < 0)
                 newVelocity.x += 0.01f;
             if(newVelocity.z > 0)
                 newVelocity.z -= 0.01f;
-            if(newVelocity.z < 0)
+            else if(newVelocity.z < 0)
                 newVelocity.z += 0.01f;
             if(newVelocity.x < 0.01f && newVelocity.x > -0.01f)
                 newVelocity.x = 0;
@@ -85,10 +94,23 @@ public class BroomMovement : MovementMode
                 newVelocity.z = 0;
             rb.velocity = newVelocity;
         }
-        storedPower = true;
         //rb.AddForce(moveVel - rb.velocity, ForceMode.VelocityChange);
     }
 
+    public bool HoldingLeft()
+    {
+        if(storedPowerInfo.x < 0)
+            return true;
+        return false;
+    }
+
+    public bool HoldingRight()
+    {
+        if(storedPowerInfo.x > 0)
+            return true;
+        return false;
+    }
+    
     public override void InteractWithObject(GameObject interactObject)
     {
         throw new System.NotImplementedException();

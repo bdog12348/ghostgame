@@ -12,7 +12,7 @@ public abstract class MovementMode : MonoBehaviour
     protected SpriteChanger SpriteChanger;
     protected float verticalVelocity;
     protected Vector3 slopeNormal;
-    protected int playerNumber = 0;
+    protected int playerNumber = -1;
     protected int currentGoalNumber = 0;
     #endregion
 
@@ -50,6 +50,11 @@ public abstract class MovementMode : MonoBehaviour
     public void SetPlayerNumber(int player)
     {
         playerNumber = player;
+    }
+
+    public int GetPlayerNumber()
+    {
+        return playerNumber;
     }
 
     public void SetPlayer(GameObject p)

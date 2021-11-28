@@ -10,9 +10,9 @@ public class SpriteChanger : MonoBehaviour
 
     [Header("Others")]
     [SerializeField] Sprite[] filledSprites;
-    Sprite defaultSprite;
+    protected Sprite defaultSprite;
 
-    SpriteRenderer SpriteRenderer;
+    protected SpriteRenderer SpriteRenderer;
 
     private void Start()
     {
@@ -22,12 +22,14 @@ public class SpriteChanger : MonoBehaviour
 
     public void SetDefaultSprite()
     {
-        SpriteRenderer.sprite = defaultSprite;
+        if(SpriteRenderer != null)
+            SpriteRenderer.sprite = defaultSprite;
     }
 
     public void SetPlayerSprite(int playerNumber)
     {
-        SpriteRenderer.sprite = playerSprites[playerNumber];
+        if(SpriteRenderer != null)
+            SpriteRenderer.sprite = playerSprites[playerNumber];
     }
 
     public void SetFilledSprite(int level)
