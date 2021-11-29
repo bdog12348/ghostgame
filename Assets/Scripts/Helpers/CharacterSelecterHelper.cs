@@ -7,12 +7,12 @@ using Rewired;
 using UnityEngine.Events;
 
 [System.Serializable]
-public class CharacterLockedEvent : UnityEvent<int>
+public class CharacterLockedEvent : UnityEvent<int, CharacterSelectObject>
 {
 }
 
 [System.Serializable]
-public class CharacterUnlockedEvent : UnityEvent<int>
+public class CharacterUnlockedEvent : UnityEvent<int, CharacterSelectObject>
 {
 }
 
@@ -97,7 +97,7 @@ public class CharacterSelecterHelper : MonoBehaviour
         }
     }
 
-    void SetLockEventResponse(int characterNumber)
+    void SetLockEventResponse(int characterNumber, CharacterSelectObject character)
     {
         if (characterNumber == currentCharacterIndex)
         {
@@ -107,7 +107,7 @@ public class CharacterSelecterHelper : MonoBehaviour
         lockedCharacters[characterNumber] = true;
     }
 
-    void SetUnlockEventResponse(int characterNumber)
+    void SetUnlockEventResponse(int characterNumber, CharacterSelectObject character)
     {
         lockedCharacters[characterNumber] = false;
     }
@@ -118,7 +118,7 @@ public class CharacterSelecterHelper : MonoBehaviour
         {
             characterSprite.color = Color.white;
             lockedCharacters[currentCharacterIndex] = true;
-            m_CharacterLockedEvent.Invoke(currentCharacterIndex);
+            m_CharacterLockedEvent.Invoke(currentCharacterIndex, characters[currentCharacterIndex]);
             lockedIn = true;
         }
     }
@@ -129,7 +129,7 @@ public class CharacterSelecterHelper : MonoBehaviour
         {
             characterSprite.color = new Color(1, 1, 1, .5f);
             lockedCharacters[currentCharacterIndex] = false;
-            m_CharacterUnlockedEvent.Invoke(currentCharacterIndex);
+            m_CharacterUnlockedEvent.Invoke(currentCharacterIndex, characters[currentCharacterIndex]);
             lockedIn = false;
         }
     }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Rewired;
 
 /// <summary>
 /// Basic 2D movement, WASD / Arrow Keys to move and you move smoothly in that direction
@@ -43,26 +44,12 @@ public class DustpanMovement : MovementMode
 
         ySpeed += Physics.gravity.y * Time.deltaTime;
     }
-    public override List<float> GetInputs()
+    public override List<float> GetInputs(Player player)
     {
         string currentJoystick = "joystick " + playerNumber.ToString();
 
         List<float> inputs = new List<float>();
-        Vector2 r;
-
-    
-        if(playerNumber == 1 && Input.GetAxisRaw("HorizontalGamepad1") == 0 && Input.GetAxisRaw("VerticalGamepad1") == 0)
-        {
-            r = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")); // keyboard
-        }
-        else if(playerNumber != 0)
-        {
-            r = new Vector2(Input.GetAxisRaw("HorizontalGamepad" + playerNumber.ToString()), Input.GetAxisRaw("VerticalGamepad" + playerNumber.ToString()));
-        }
-        else
-        {
-            r = new Vector2(0f,0f);
-        }
+        Vector2 r = new Vector2(player.GetAxisRaw("Horizontal"), player.GetAxisRaw("Vertical"));
 
         r = (r.magnitude > 1) ? r.normalized : r;
         inputs.Add(r.x);
@@ -73,7 +60,7 @@ public class DustpanMovement : MovementMode
             return inputs;
 
         // Jump
-        if(Input.GetKeyDown(currentJoystick + " button 0") || (playerNumber == 1 && Input.GetKeyDown("space")))
+        if(player.GetButtonDown("Jump"))
         {
             ySpeed = jumpSpeed;
         }

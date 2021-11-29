@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Rewired;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject interactIndicatorObject;
     [SerializeField] GameObject ghostObject;
     [SerializeField] GameObject humanObject;
-    [SerializeField] Sprite ghostSprite;
+    [SerializeField] public Sprite ghostSprite;
     [SerializeField] Sprite humanSprite;
     [SerializeField] public int playerJoystick;
     [SerializeField] Animator spriteAnimator;
@@ -21,8 +22,10 @@ public class PlayerController : MonoBehaviour
     GameObject currentlyPossessedObject = null;
     GameObject draggingObject = null;
     GameObject interactObject = null;
-    SpriteChanger spriteChanger = null;
 
+    Player player;
+
+    SpriteChanger spriteChanger = null;
     MovementMode movementMode;
     PlayerMovement ghostMovement;
 
@@ -40,13 +43,13 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("start");
         ghostMovement = GetComponent<PlayerMovement>();
         ghostMovement.AutoAsssignRigidbody();
         ghostMovement.SetPlayerNumber(playerJoystick);
         movementMode = ghostMovement;
         TimerHelper.OnTimerEnd += () => GameOver = true;
         holdTimer = totalHoldTime;
+        spriteRenderers[0].sprite = ghostSprite;
     }
 
     // Update is called once per frame
@@ -54,18 +57,18 @@ public class PlayerController : MonoBehaviour
     {
         if (GameOver) return; // Disable script?
 
-        if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 1") && !Possessing)
-          || (playerJoystick == 1 && Input.GetKeyDown(KeyCode.Space) && !Possessing && !isDraggingObject))
-        {
-            ToggleHuman();
-        }
+        //if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 1") && !Possessing)
+        //  || (playerJoystick == 1 && Input.GetKeyDown(KeyCode.Space) && !Possessing && !isDraggingObject))
+        //{
+        //    ToggleHuman();
+        //}
 
         if (CanInteract)
         {
             if (Possessing) // On goal object
             {
                 interactIndicatorObject.SetActive(true);
-                if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 2") || (playerJoystick == 1 && Input.GetKeyDown("f"))))
+                if (player.GetButtonDown("Action"))
                 {
                     movementMode.InteractWithObject(interactObject);
                     CanInteract = false;
@@ -75,8 +78,9 @@ public class PlayerController : MonoBehaviour
             else if (!Possessing && !IsHuman) // On possessable object
             {
                 interactIndicatorObject.SetActive(true);
-                if ((Input.GetKey("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKey("e"))))
+                if (player.GetButton("Action"))
                 {
+                    print("Pressing action button");
                     holdTimer -= Time.deltaTime;
                     if (holdTimer <= 0f)
                     {
@@ -85,46 +89,46 @@ public class PlayerController : MonoBehaviour
                     }                
                     return;
                 }
-                else if((Input.GetKeyUp("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKeyUp("e"))))
+                else if(player.GetButtonUp("Action"))
                 {
                     holdTimer = totalHoldTime;
                 }
             }
-            else if (IsHuman) // On an object only human form can interact with; currently only trash can so is going to be hard coded
-            {
-                interactIndicatorObject.SetActive(true);
-                if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKeyDown("e"))))
-                {
-                    if (!isDraggingObject)
-                    {
-                        isDraggingObject = true;
-                        draggingObject = interactObject;
-                        draggingObject.transform.SetParent(transform);
-                        CanInteract = false;
-                    }
-                    return;
-                }
-            }
+            //else if (IsHuman) // On an object only human form can interact with; currently only trash can so is going to be hard coded
+            //{
+            //    interactIndicatorObject.SetActive(true);
+            //    if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKeyDown("e"))))
+            //    {
+            //        if (!isDraggingObject)
+            //        {
+            //            isDraggingObject = true;
+            //            draggingObject = interactObject;
+            //            draggingObject.transform.SetParent(transform);
+            //            CanInteract = false;
+            //        }
+            //        return;
+            //    }
+            //}
         }
         else
         {
             interactIndicatorObject.SetActive(false);
         }
 
-        if (IsHuman && isDraggingObject)
-        {
-            if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKeyDown("e"))))
-            {
-                isDraggingObject = false;
-                draggingObject.transform.SetParent(transform.parent);
-                draggingObject = null;
-                CanInteract = false;
-            }
-        }
+        //if (IsHuman && isDraggingObject)
+        //{
+        //    if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKeyDown("e"))))
+        //    {
+        //        isDraggingObject = false;
+        //        draggingObject.transform.SetParent(transform.parent);
+        //        draggingObject = null;
+        //        CanInteract = false;
+        //    }
+        //}
 
         if (movementMode != null)
         {
-            inputs = movementMode.GetInputs();
+            inputs = movementMode.GetInputs(player);
         }
 
         if (inputs != null)
@@ -164,7 +168,7 @@ public class PlayerController : MonoBehaviour
             currentlyPossessedObject.transform.position = transform.position;
         }
 
-        if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKeyDown("e"))) && Possessing)
+        if (player.GetButton("Action") && Possessing)
         {
             holdTimer -= Time.deltaTime;
             if (holdTimer <= 0f)
@@ -173,7 +177,7 @@ public class PlayerController : MonoBehaviour
                 holdTimer = totalHoldTime;
             }         
         }
-        else if((Input.GetKeyUp("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKeyUp("e"))) && Possessing)
+        else if(player.GetButtonUp("Action") && Possessing)
         {
             holdTimer = totalHoldTime;
         }
@@ -294,5 +298,14 @@ public class PlayerController : MonoBehaviour
         GetComponent<BoxCollider>().size = new Vector3(spriteSize.x / 2, spriteSize.y / 4, .5f);
         GetComponent<BoxCollider>().center = new Vector3(0, -spriteSize.y / 4, 0);
     }
+    #endregion
+
+    #region Getters / Setters
+
+    public void SetPlayer(Player player)
+    {
+        this.player = player;
+    }
+
     #endregion
 }

@@ -1,30 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Rewired;
 
 /// <summary>
 /// Basic 2D movement, WASD / Arrow Keys to move and you move smoothly in that direction
 /// </summary>
 public class UtensilMovement : MovementMode
 {
-    public override List<float> GetInputs()
+    public override List<float> GetInputs(Player player)
     {
         List<float> inputs = new List<float>();
-        Vector2 r;
-        // Check if player 1 is inputting on the keyboard
-        if(playerNumber == 1 && Input.GetAxisRaw("HorizontalGamepad1") == 0 && Input.GetAxisRaw("VerticalGamepad1") == 0)
-        {
-            r = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        }
-        // Check if any player is inputting on their controller
-        else if(playerNumber != 0)
-        {
-            r = new Vector2(Input.GetAxisRaw("HorizontalGamepad" + playerNumber.ToString()), Input.GetAxisRaw("VerticalGamepad" + playerNumber.ToString()));
-        }
-        else
-        {
-            return null;
-        }
+        Vector2 r = new Vector2(player.GetAxisRaw("Horizontal"), player.GetAxisRaw("Vertical"));
         r = (r.magnitude > 1) ? r.normalized : r;
         inputs.Add(r.x);
         inputs.Add(r.y);

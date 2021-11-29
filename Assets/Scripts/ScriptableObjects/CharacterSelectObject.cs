@@ -7,4 +7,5 @@ public class CharacterSelectObject : ScriptableObject
 {
     public Color characterColor;
     public Sprite characterSprite;
+    public int ghostNumber;
 }

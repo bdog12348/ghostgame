@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Rewired;
 
 /// <summary>
 /// 
@@ -16,12 +17,12 @@ public class RoombaMovement : MovementMode
     {
         direction = 0;
     }
-    public override List<float> GetInputs()
+    public override List<float> GetInputs(Player player)
     {
         Vector3 newDirection = Vector3.zero;
         string currentJoystick = "joystick " + playerNumber.ToString();
         
-        if(Input.GetKeyDown(currentJoystick + " button 4") | (playerNumber == 1 && Input.GetKeyDown("a"))) // L button
+        if(player.GetButtonDown("RoombaTurnL")) // L button
         {
             if(direction == 0)
                 direction = 7;
@@ -29,14 +30,14 @@ public class RoombaMovement : MovementMode
                 direction -= 1;
                     
         }
-        if(Input.GetKeyDown(currentJoystick + " button 5") || (playerNumber == 1 && Input.GetKeyDown("d"))) // R button
+        if(player.GetButtonDown("RoombaTurnR")) // R button
         {
             if(direction == 7)
                 direction = 0;
             else
                 direction += 1;
         }
-        if(Input.GetKey(currentJoystick + " button 0") || (playerNumber == 1 && Input.GetKey("w"))) // A button
+        if(player.GetButton("RoombaGo")) // A button
         {
             Vector2 r = new Vector2(xDirections[direction], zDirections[direction]);
             r = (r.magnitude > 1) ? r.normalized : r;

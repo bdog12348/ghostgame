@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Rewired;
 
 /// <summary>
 /// 
@@ -23,26 +24,10 @@ public class BroomMovement : MovementMode
     {
         return storedPower;
     }
-    public override List<float> GetInputs()
+    public override List<float> GetInputs(Player player)
     {
-        string currentJoystick = "joystick " + playerNumber.ToString();
-
         List<float> inputs = new List<float>();
-        Vector2 r;
-
-    
-        if(playerNumber == 1 && Input.GetAxisRaw("HorizontalGamepad1") == 0 && Input.GetAxisRaw("VerticalGamepad1") == 0)
-        {
-            r = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")); // keyboard
-        }
-        else if(playerNumber != 0)
-        {
-            r = new Vector2(Input.GetAxisRaw("HorizontalGamepad" + playerNumber.ToString()), Input.GetAxisRaw("VerticalGamepad" + playerNumber.ToString()));
-        }
-        else
-        {
-            r = new Vector2(0f,0f);
-        }
+        Vector2 r = new Vector2(player.GetAxisRaw("Horizontal"), player.GetAxisRaw("Vertical"));
 
         r = (r.magnitude > 1) ? r.normalized : r;
         inputs.Add(r.x);

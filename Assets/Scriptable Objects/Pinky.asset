@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterColor: {r: 0.7956635, g: 0.9245283, b: 0.11774653, a: 1}
   characterSprite: {fileID: 21300000, guid: e6a279f059351484aa7335d3bba911cd, type: 3}
+  ghostNumber: 3

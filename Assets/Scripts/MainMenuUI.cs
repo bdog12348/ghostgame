@@ -16,6 +16,7 @@ public class MainMenuUI : MonoBehaviour
     public int maxPlayers = 4;
 
     List<PlayerMap> playerMap;
+    List<CharacterSelectObject> characterSelectObjects;
     List<int> addedRewiredJoysticks;
     int gamePlayerIdCounter = 0;
     int charLockedCounter = 0;
@@ -29,6 +30,7 @@ public class MainMenuUI : MonoBehaviour
     void Start()
     {
         playerMap = new List<PlayerMap>();
+        characterSelectObjects = new List<CharacterSelectObject>();
         addedRewiredJoysticks = new List<int>();
         foreach(GameObject go in characterSelectGOs)
         {
@@ -102,6 +104,8 @@ public class MainMenuUI : MonoBehaviour
                             player.controllers.maps.SetMapsEnabled(false, "Menu");
                             player.controllers.maps.SetMapsEnabled(true, "Default");
                         }
+                        DataHolder.PlayerMaps = playerMap;
+                        DataHolder.Characters = characterSelectObjects;
                         LoadGame();
                     }
                 }
@@ -212,17 +216,19 @@ public class MainMenuUI : MonoBehaviour
         return gamePlayerIdCounter++;
     }
 
-    void CharacterLocked(int charNumber)
+    void CharacterLocked(int charNumber, CharacterSelectObject character)
     {
         charLockedCounter++;
+        characterSelectObjects.Add(character);
     }
 
-    void CharacterUnlocked(int charNumber)
+    void CharacterUnlocked(int charNumber, CharacterSelectObject character)
     {
         charLockedCounter--;
+        characterSelectObjects.Remove(character);
     }
 
-    private class PlayerMap
+    public class PlayerMap
     {
         public int rewiredPlayerId;
         public int gamePlayerId;

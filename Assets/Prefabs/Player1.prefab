@@ -93,7 +93,7 @@ Animator:
   m_GameObject: {fileID: 1090308153}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ad06d2ecf6d14cc4d92ab81d0591be95, type: 2}
+  m_Controller: {fileID: 9100000, guid: f6030bf433e1d6445afd3464c486e4ca, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -316,7 +316,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4129354923653186397}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 27.09}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4129354923616845615}
@@ -338,10 +338,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactIndicatorObject: {fileID: 4129354923537706565}
+  ghostObject: {fileID: 4129354923616845614}
+  humanObject: {fileID: 1090308153}
   ghostSprite: {fileID: 21300000, guid: 136634fb7ccb0ba489b728fa80799c76, type: 3}
   humanSprite: {fileID: 21300000, guid: 81446765035f4364f9e7891fcbfa7a7e, type: 3}
   playerJoystick: 1
-  spriteAnimator: {fileID: 1431704453}
+  spriteAnimator: {fileID: 1090308155}
+  spriteRenderers:
+  - {fileID: 4129354923616845608}
+  - {fileID: 1090308156}
 --- !u!114 &4129354923653186398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -368,8 +373,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 0.5910075, z: 1}
+  m_Center: {x: 0, y: -0.20449626, z: 0}
 --- !u!54 &4129354923653186393
 Rigidbody:
   m_ObjectHideFlags: 0

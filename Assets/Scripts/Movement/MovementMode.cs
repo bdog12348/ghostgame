@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Rewired;
 
 public abstract class MovementMode : MonoBehaviour
 {
@@ -32,12 +33,12 @@ public abstract class MovementMode : MonoBehaviour
     }
     #endregion
 
-    #region Public Methods
+    #region Public Abstract Methods
     /// <summary>
     /// Takes in input however it may be handled depending on the child class
     /// </summary>
     /// <returns>List of the input parameters needed to carry out movement</returns>
-    public abstract List<float> GetInputs();
+    public abstract List<float> GetInputs(Player player);
 
     /// <summary>
     /// Gien <paramref name="inputs"/> figures out how ot move the player appropriately
@@ -46,7 +47,9 @@ public abstract class MovementMode : MonoBehaviour
     public abstract void Move(List<float> inputs);
 
     public abstract void InteractWithObject(GameObject interactObject);
+    #endregion
 
+    #region Public Methods
     public void SetPlayerNumber(int player)
     {
         playerNumber = player;
