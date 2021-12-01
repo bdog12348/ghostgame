@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Pause();
         timer.StartTimer(timeForLevel);
         TimerHelper.OnTimerEnd += TimeDone;
     }
@@ -23,6 +24,16 @@ public class GameManager : MonoBehaviour
             Application.Quit();
         else if (Input.GetKeyDown(KeyCode.R))
             SceneManager.LoadScene(1);
+    }
+
+    public void Pause()
+    {
+        Time.timeScale = 0f;
+    }
+
+    public void Unpause()
+    {
+        Time.timeScale = 1f;
     }
 
     public void ShowIndicators() //TODO: Implement
