@@ -17,12 +17,13 @@ public class TrashTruckManager : MonoBehaviour
     readonly float TIME_TO_COLLECT_TRASH = 5f;
     float currentTrashTime;
     float trashColletingTime;
+    bool setTrashCollectingTime = false;
     bool indicatorOut = false;
+    bool truckGoing = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        trashColletingTime = TIME_TO_COLLECT_TRASH;
         currentTrashTime = Random.Range(minimumTime, maximumTime);
     }
 
@@ -38,10 +39,17 @@ public class TrashTruckManager : MonoBehaviour
             {
                 indicatorOut = true;
                 trashIndicator.SetActive(true);
+                truckIndicatorHelper.StartTimer();
             }
         } else
         {
-            trashAnimator.SetTrigger("Enter");
+            if (!truckGoing)
+            {
+                trashAnimator.SetTrigger("Enter");
+                trashColletingTime = TIME_TO_COLLECT_TRASH;
+                setTrashCollectingTime = true;
+                truckGoing = true;
+            }
         }
 
         if (trashColletingTime > 0)
@@ -50,10 +58,16 @@ public class TrashTruckManager : MonoBehaviour
         }
         else
         {
-            currentTrashTime = Random.Range(minimumTime, maximumTime) + 5f;
-            trashIndicator.SetActive(false);
-            trashArea.CollectTrash();
-            trashAnimator.SetTrigger("Exit");
+            if (setTrashCollectingTime)
+            {
+                currentTrashTime = Random.Range(minimumTime, maximumTime) + 5f;
+                trashIndicator.SetActive(false);
+                trashArea.CollectTrash();
+                trashAnimator.SetTrigger("Exit");
+                indicatorOut = false;
+                setTrashCollectingTime = false;
+                truckGoing = false;
+            }
         }
     }
 }

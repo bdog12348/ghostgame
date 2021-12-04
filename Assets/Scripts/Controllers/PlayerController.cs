@@ -32,9 +32,8 @@ public class PlayerController : MonoBehaviour
     bool CanInteract = false;
     bool Possessing = false;
     bool possessingTrash = false;
-    int currentTrashLoad = 0;
+    float currentTrashLoad = 0;
     bool IsHuman = false;
-    bool isDraggingObject = false;
     float totalHoldTime = 1f;
     float holdTimer;
     List<float> inputs;
