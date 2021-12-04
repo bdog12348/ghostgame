@@ -45,5 +45,12 @@ public class SpriteChanger : MonoBehaviour
         {
             SpriteRenderer.sprite = filledSprites[1];
         }
+        else if (level == 3)
+        {
+            SpriteRenderer.sprite = filledSprites[2];
+        }else if (level == 4)
+        {
+            SpriteRenderer.sprite = filledSprites[3];
+        }
     }
 }
