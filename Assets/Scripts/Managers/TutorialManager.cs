@@ -13,6 +13,7 @@ public class TutorialManager : MonoBehaviour
     void Start()
     {
         gm = GetComponent<GameManager>();
+        tutorialGO.SetActive(true);
         gm.Pause();
     }
 
@@ -27,7 +28,7 @@ public class TutorialManager : MonoBehaviour
                 {
                     screenUp = false;
                     tutorialGO.SetActive(false);
-                    gm.Unpause();
+                    gm.StartGame();
                 }
             }
         }

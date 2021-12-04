@@ -9,11 +9,23 @@ public class GameManager : MonoBehaviour
     [SerializeField] TimerHelper timer;
     [Header("Game Variables")]
     [SerializeField] float timeForLevel;
+    [Header("GameObjects")]
+    [SerializeField] GameObject readyImage;
+    [SerializeField] GameObject goImage;
+    [SerializeField] GameObject timeUpImage;
+    [SerializeField] GameObject scoreScreenGO;
+
+    public static bool Paused = false;
+
+    float readyTimer;
+    float goTimer;
+    float timeUpTimer;
+    bool readyTimerSet, goTimerSet, timeUpTimerSet;
+
     // Start is called before the first frame update
     void Start()
     {
-        Pause();
-        timer.StartTimer(timeForLevel);
+        timer.SetTime(timeForLevel);
         TimerHelper.OnTimerEnd += TimeDone;
     }
 
@@ -23,17 +35,78 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
             Application.Quit();
         else if (Input.GetKeyDown(KeyCode.R))
-            SceneManager.LoadScene(1);
+            Restart();
+
+        HandleTimers();
+    }
+
+    void HandleTimers()
+    {
+        if (readyTimer > 0)
+        {
+            readyTimer -= Time.deltaTime;
+        } else
+        {
+            if (readyTimerSet)
+            {
+                readyImage.SetActive(false);
+                goImage.SetActive(true);
+                goTimer = .75f;
+                goTimerSet = true;
+                readyTimerSet = false;
+            }
+        }
+
+        if (goTimer > 0)
+        {
+            goTimer -= Time.deltaTime;
+        }else
+        {
+            if (goTimerSet)
+            {
+                goImage.SetActive(false);
+
+                Paused = false;
+                timer.StartTimer();
+                goTimerSet = false;
+            }
+        }
+
+        if (timeUpTimer > 0)
+        {
+            timeUpTimer -= Time.deltaTime;
+        }else
+        {
+            if (timeUpTimerSet)
+            {
+                timeUpImage.SetActive(false);
+                scoreScreenGO.SetActive(true);
+                GetComponent<ScoreScreenManager>().LoadScores();
+                timeUpTimerSet = false;
+            }
+        }
+    }
+
+    public void StartGame()
+    {
+        readyImage.SetActive(true);
+        readyTimer = 1.5f;
+        readyTimerSet = true;
     }
 
     public void Pause()
     {
-        Time.timeScale = 0f;
+        Paused = true;
     }
 
     public void Unpause()
     {
-        Time.timeScale = 1f;
+        Paused = false;
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(1);
     }
 
     public void ShowIndicators() //TODO: Implement
@@ -43,7 +116,9 @@ public class GameManager : MonoBehaviour
 
     void TimeDone()
     {
-        Debug.Log("Timer over");
         TimerHelper.OnTimerEnd -= TimeDone;
+        timeUpImage.SetActive(true);
+        timeUpTimer = 1.25f;
+        timeUpTimerSet = true;
     }
 }

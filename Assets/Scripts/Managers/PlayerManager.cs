@@ -20,10 +20,4 @@ public class PlayerManager : MonoBehaviour
             pc.ghostSprite = DataHolder.Characters[i].characterSprite;
         }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

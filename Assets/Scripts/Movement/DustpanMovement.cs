@@ -9,8 +9,8 @@ using Rewired;
 public class DustpanMovement : MovementMode
 {
     bool full = false;
-    int currentLoad = 0;
-    readonly int MAX_LOAD = 2;
+    float currentLoad = 0;
+    readonly float MAX_LOAD = 2;
 
     public float jumpSpeed;
     private float ySpeed;
@@ -46,8 +46,6 @@ public class DustpanMovement : MovementMode
     }
     public override List<float> GetInputs(Player player)
     {
-        string currentJoystick = "joystick " + playerNumber.ToString();
-
         List<float> inputs = new List<float>();
         Vector2 r = new Vector2(player.GetAxisRaw("Horizontal"), player.GetAxisRaw("Vertical"));
 
@@ -81,21 +79,11 @@ public class DustpanMovement : MovementMode
             moveVel.y = ySpeed;
         }
         rb.velocity = moveVel;
-        //rb.AddForce(moveVel, ForceMode.VelocityChange);
     }
 
     public override void InteractWithObject(GameObject interactObject)
     {
-        if (interactObject.CompareTag("Dirt"))
-        {
-            if (!full)
-            {
-                currentLoad++;
-                SetFullLevelSprite();
-                interactObject.SetActive(false);
-            }
-        }
-        else if (interactObject.CompareTag("Trash"))
+        if (interactObject.CompareTag("Trash"))
         {
             if (currentLoad > 0)
             {
@@ -103,11 +91,44 @@ public class DustpanMovement : MovementMode
                 SetFullLevelSprite();
             }
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Dirt"))
+        {
+            Dirt dirt = other.gameObject.GetComponent<Dirt>();
+            if (dirt.GetVelocity() != Vector3.zero)
+            {
+                if (!full)
+                {
+                    if (dirt.GetSmall())
+                        currentLoad += 0.5f;
+                    else
+                        currentLoad++;
+                    SetFullLevelSprite();
+                    Destroy(other.gameObject);
+                }
+            }
+        }else if  (other.gameObject.CompareTag("Leaf"))
+        {
+            Leaf leaf = other.gameObject.GetComponent<Leaf>();
+            if (leaf.GetVelocity() != Vector3.zero)
+            {
+                if (!full)
+                {
+                    currentLoad++;
+                    SetFullLevelSprite();
+                    Destroy(other.gameObject);
+                }
+            }
+        }
 
         if (currentLoad == MAX_LOAD)
         {
             full = true;
-        }else
+        }
+        else
         {
             full = false;
         }

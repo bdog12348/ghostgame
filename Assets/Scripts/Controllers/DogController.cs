@@ -8,8 +8,8 @@ public class DogController : MonoBehaviour
     SpriteRenderer indicatorSpriteRenderer;
     
     [Header("Numbers to Play With")]
-    [SerializeField] float deltaAmount = 0.1f;
-    [SerializeField] float maxSus = 100;
+    [SerializeField] float deltaAmount = 1f;
+    [SerializeField] float maxSus = 10;
 
     [Header("Inspector Fields")]
     [SerializeField] Animator dogAnimator;
@@ -37,11 +37,11 @@ public class DogController : MonoBehaviour
         {
             if (playerInRange)
             {
-                susAmount += deltaAmount;
+                susAmount += Time.deltaTime * deltaAmount;
             }else
             {
                 if (susAmount > 0)
-                    susAmount -= deltaAmount;
+                    susAmount -= Time.deltaTime * deltaAmount;
             }
         }
 

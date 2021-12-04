@@ -23,7 +23,6 @@ public class TrashTruckIndicatorHelper : MonoBehaviour
                 currentTime += Time.deltaTime;
             } else
             {
-                StartCoroutine(truckManager.StartLastFiveSeconds());
                 timerStarted = false;
             }
         }

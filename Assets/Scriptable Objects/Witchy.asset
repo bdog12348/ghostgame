@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 04dbb5bb776fee94493f1c2c81fc130e, type: 3}
-  m_Name: Inky
+  m_Name: Witchy
   m_EditorClassIdentifier: 
   characterColor: {r: 0.7058824, g: 0.18039216, b: 0.13725491, a: 1}
   characterSprite: {fileID: 21300000, guid: 136634fb7ccb0ba489b728fa80799c76, type: 3}

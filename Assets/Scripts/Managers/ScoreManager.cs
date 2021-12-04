@@ -14,4 +14,9 @@ public class ScoreManager : MonoBehaviour
         score += amount;
         scoreTMP.text = score.ToString();
     }
+
+    public float GetScore()
+    {
+        return score;
+    }
 }

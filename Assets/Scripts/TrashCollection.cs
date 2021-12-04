@@ -16,18 +16,11 @@ public class TrashCollection : MonoBehaviour
         scoreManager = FindObjectOfType<ScoreManager>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void CollectTrash()
     {
-        Debug.Log("Collecting Trash");
         foreach(TrashcanController trashcan in trashcans)
         {
-            int trashAmount = trashcan.GetCurrentLoad();
+            float trashAmount = trashcan.GetCurrentLoad();
             trashcan.Empty();
             scoreManager.AddScore(trashAmount * 20);
         }

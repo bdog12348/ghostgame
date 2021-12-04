@@ -14,36 +14,46 @@ public class TrashTruckManager : MonoBehaviour
     [SerializeField] TrashCollection trashArea;
     [SerializeField] TrashTruckIndicatorHelper truckIndicatorHelper;
 
+    readonly float TIME_TO_COLLECT_TRASH = 5f;
     float currentTrashTime;
+    float trashColletingTime;
+    bool indicatorOut = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(StartTrashTimer());
+        trashColletingTime = TIME_TO_COLLECT_TRASH;
+        currentTrashTime = Random.Range(minimumTime, maximumTime);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.Paused) return;
 
-    }
+        if (currentTrashTime > 0)
+        {
+            currentTrashTime -= Time.deltaTime;
+            if (currentTrashTime < 5f && !indicatorOut)
+            {
+                indicatorOut = true;
+                trashIndicator.SetActive(true);
+            }
+        } else
+        {
+            trashAnimator.SetTrigger("Enter");
+        }
 
-    IEnumerator StartTrashTimer()
-    {
-        currentTrashTime = Random.Range(minimumTime, maximumTime);
-
-        yield return new WaitForSeconds(currentTrashTime - 5f);
-        trashIndicator.SetActive(true);
-        truckIndicatorHelper.StartTimer();
-    }
-
-    public IEnumerator StartLastFiveSeconds()
-    {
-        trashAnimator.SetTrigger("Enter");
-        yield return new WaitForSeconds(5f);
-        trashIndicator.SetActive(false);
-        trashArea.CollectTrash();
-        trashAnimator.SetTrigger("Exit");
-        StartCoroutine(StartTrashTimer());
+        if (trashColletingTime > 0)
+        {
+            trashColletingTime -= Time.deltaTime;
+        }
+        else
+        {
+            currentTrashTime = Random.Range(minimumTime, maximumTime) + 5f;
+            trashIndicator.SetActive(false);
+            trashArea.CollectTrash();
+            trashAnimator.SetTrigger("Exit");
+        }
     }
 }

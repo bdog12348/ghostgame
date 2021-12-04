@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class TrashcanController : MonoBehaviour
 {
-    int currentLoad = 0;
-    [SerializeField] int maxLoad = 3;
+    float currentLoad = 0;
+    [SerializeField] float maxLoad = 3;
 
     [SerializeField] SpriteChanger spriteChanger;
 
@@ -14,9 +14,9 @@ public class TrashcanController : MonoBehaviour
     /// </summary>
     /// <param name="amount">Amount of trash to add to trashcan</param>
     /// <returns>Amount of trash that could not be stored</returns>
-    public int AddTrash(int amount)
+    public float AddTrash(float amount)
     {
-        int leftoverAmount = 0;
+        float leftoverAmount = 0;
 
         if (currentLoad + amount > maxLoad)
         {
@@ -30,7 +30,7 @@ public class TrashcanController : MonoBehaviour
         SetFillLevelSprite();
         return leftoverAmount;
     }
-    public int GetCurrentLoad()
+    public float GetCurrentLoad()
     {
         return currentLoad;
     }

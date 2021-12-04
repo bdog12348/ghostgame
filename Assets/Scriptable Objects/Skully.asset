@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 04dbb5bb776fee94493f1c2c81fc130e, type: 3}
-  m_Name: Blinky
+  m_Name: Skully
   m_EditorClassIdentifier: 
-  characterColor: {r: 0.21266466, g: 0.764151, b: 0.40155345, a: 1}
-  characterSprite: {fileID: 21300000, guid: 2c64fcede8d948641afb04a477df6b8a, type: 3}
-  ghostNumber: 1
+  characterColor: {r: 0.7956635, g: 0.9245283, b: 0.11774653, a: 1}
+  characterSprite: {fileID: 21300000, guid: e6a279f059351484aa7335d3bba911cd, type: 3}
+  ghostNumber: 3

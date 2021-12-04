@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Rewired;
+using UnityEngine.UI;
 
 /// <summary>
 /// 
@@ -13,14 +14,20 @@ public class RoombaMovement : MovementMode
 
     private int direction;
 
+    float maxLoad = 1f;
+    float currentLoad = 0f;
+    bool full = false;
+
+    [SerializeField] Slider fullIndicator;
+
     void Start()
     {
         direction = 0;
+        fullIndicator.maxValue = maxLoad;
     }
     public override List<float> GetInputs(Player player)
     {
         Vector3 newDirection = Vector3.zero;
-        string currentJoystick = "joystick " + playerNumber.ToString();
         
         if(player.GetButtonDown("RoombaTurnL")) // L button
         {
@@ -54,7 +61,25 @@ public class RoombaMovement : MovementMode
 
     public override void InteractWithObject(GameObject interactObject)
     {
-        throw new System.NotImplementedException();
+        if (interactObject.CompareTag("Trash"))
+        {
+            if (currentLoad > 0)
+            {
+                currentLoad = interactObject.GetComponent<TrashcanController>().AddTrash(currentLoad);
+            }
+        }
+    }
+
+    private void Update()
+    {
+        if (currentLoad > 0 )
+        {
+            fullIndicator.enabled = true;
+        }else
+        {
+            fullIndicator.enabled = false;
+        }
+        fullIndicator.value = currentLoad;
     }
 
     public override void Move(List<float> inputs)
@@ -62,5 +87,26 @@ public class RoombaMovement : MovementMode
         // Vector3 moveDirection = FixMovementForCamera(Vector3.forward * inputs[1] + Vector3.right * inputs[0]);
         // Vector3 moveVel = moveDirection * movementSpeed;
         // rb.AddForce(moveVel - rb.velocity, ForceMode.VelocityChange);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Dirt") && !full)
+        {
+            Dirt dirt = other.gameObject.GetComponent<Dirt>();
+            if (dirt.GetSmall())
+            {
+                Destroy(other.gameObject);
+            }else
+            {
+                dirt.SetSmall(true);
+            }
+            currentLoad += 0.5f;
+
+            if (currentLoad == maxLoad)
+            {
+                full = true;
+            }
+        }
     }
 }

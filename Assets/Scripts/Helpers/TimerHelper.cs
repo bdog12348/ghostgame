@@ -25,7 +25,7 @@ public class TimerHelper : MonoBehaviour
 
     private void Update()
     {
-        if (!TimerEnabled) return;
+        if (!TimerEnabled || GameManager.Paused) return;
 
         timerText.text = remainingTime.ToString("0");
         fillImage.fillAmount = remainingTime / initialTime;
@@ -40,9 +40,14 @@ public class TimerHelper : MonoBehaviour
         }
     }
 
-    public void StartTimer(float time)
+    public void SetTime(float time)
     {
         initialTime = time;
-        remainingTime = time;
+        timerText.text = initialTime.ToString("0");
+    }
+
+    public void StartTimer()
+    {
+        remainingTime = initialTime;
     }
 }

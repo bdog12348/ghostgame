@@ -20,7 +20,6 @@ public class PlayerController : MonoBehaviour
     #region Private Fields
     GameObject possessableObject = null;
     GameObject currentlyPossessedObject = null;
-    GameObject draggingObject = null;
     GameObject interactObject = null;
 
     Player player;
@@ -33,7 +32,6 @@ public class PlayerController : MonoBehaviour
     bool CanInteract = false;
     bool Possessing = false;
     bool IsHuman = false;
-    bool isDraggingObject = false;
     float totalHoldTime = 1f;
     float holdTimer;
     List<float> inputs;
@@ -55,7 +53,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameOver) return; // Disable script?
+        if (GameOver || GameManager.Paused) return; // Disable script?
 
         //if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 1") && !Possessing)
         //  || (playerJoystick == 1 && Input.GetKeyDown(KeyCode.Space) && !Possessing && !isDraggingObject))
@@ -80,7 +78,6 @@ public class PlayerController : MonoBehaviour
                 interactIndicatorObject.SetActive(true);
                 if (player.GetButton("Action"))
                 {
-                    print("Pressing action button");
                     holdTimer -= Time.deltaTime;
                     if (holdTimer <= 0f)
                     {
@@ -94,37 +91,11 @@ public class PlayerController : MonoBehaviour
                     holdTimer = totalHoldTime;
                 }
             }
-            //else if (IsHuman) // On an object only human form can interact with; currently only trash can so is going to be hard coded
-            //{
-            //    interactIndicatorObject.SetActive(true);
-            //    if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKeyDown("e"))))
-            //    {
-            //        if (!isDraggingObject)
-            //        {
-            //            isDraggingObject = true;
-            //            draggingObject = interactObject;
-            //            draggingObject.transform.SetParent(transform);
-            //            CanInteract = false;
-            //        }
-            //        return;
-            //    }
-            //}
         }
         else
         {
             interactIndicatorObject.SetActive(false);
         }
-
-        //if (IsHuman && isDraggingObject)
-        //{
-        //    if ((Input.GetKeyDown("joystick " + playerJoystick.ToString() + " button 3") || (playerJoystick == 1 && Input.GetKeyDown("e"))))
-        //    {
-        //        isDraggingObject = false;
-        //        draggingObject.transform.SetParent(transform.parent);
-        //        draggingObject = null;
-        //        CanInteract = false;
-        //    }
-        //}
 
         if (movementMode != null)
         {
@@ -238,6 +209,7 @@ public class PlayerController : MonoBehaviour
         Possessing = true;
         CanInteract = false;
 
+        transform.position = possessableObject.transform.position;
         ghostObject.SetActive(false);
         currentlyPossessedObject = possessableObject;
         movementMode = possessableObject.GetComponent<MovementMode>();
@@ -267,36 +239,6 @@ public class PlayerController : MonoBehaviour
         if(spriteChanger != null)
             spriteChanger.SetDefaultSprite();
         spriteChanger = null;
-    }
-
-    /// <summary>
-    /// Toggles from human to ghost and changes sprites + speed
-    /// </summary>
-    void ToggleHuman()
-    {
-        IsHuman = !IsHuman;
-        if (IsHuman)
-        {
-            movementMode.SetSpeed(10f);
-            ChangeSprites(humanSprite);
-            ghostObject.SetActive(false);
-            humanObject.SetActive(true);
-        }
-        else
-        {
-            movementMode.SetSpeed(4f);
-            ChangeSprites(ghostSprite);
-            ghostObject.SetActive(true);
-            humanObject.SetActive(false);
-        }
-        CanInteract = false;
-    }
-    void ChangeSprites(Sprite sprite)
-    {
-        //spriteRenderer.sprite = sprite;
-        Vector2 spriteSize = sprite.bounds.size;
-        GetComponent<BoxCollider>().size = new Vector3(spriteSize.x / 2, spriteSize.y / 4, .5f);
-        GetComponent<BoxCollider>().center = new Vector3(0, -spriteSize.y / 4, 0);
     }
     #endregion
 
