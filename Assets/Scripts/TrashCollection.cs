@@ -35,17 +35,23 @@ public class TrashCollection : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Trash"))
+        if (other.gameObject.CompareTag("Player") && other.gameObject.GetComponent<PlayerController>().PossessingTrash())
         {
-            trashcans.Add(other.gameObject.GetComponent<TrashcanController>());
+            Debug.Log("Trash Added");
+            trashcans.Add(other.gameObject.GetComponent<PlayerController>().GetPossessedTrashController());
+        }
+        else
+        {
+            Debug.Log($"Something else entered! {other.gameObject.tag}");
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Trash"))
+        if (other.gameObject.CompareTag("Player") && other.gameObject.GetComponent<PlayerController>().PossessingTrash())
         {
-            trashcans.Remove(other.gameObject.GetComponent<TrashcanController>());
+            Debug.Log("Trash Removed");
+            trashcans.Remove(other.gameObject.GetComponent<PlayerController>().GetPossessedTrashController());
         }
     }
 }

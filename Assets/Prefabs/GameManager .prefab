@@ -11,6 +11,9 @@ GameObject:
   - component: {fileID: 2834092503674483094}
   - component: {fileID: 1170535739015471970}
   - component: {fileID: 2005806368}
+  - component: {fileID: 7215777019418073788}
+  - component: {fileID: 2266885698251619671}
+  - component: {fileID: 2769111084130319720}
   m_Layer: 0
   m_Name: 'GameManager '
   m_TagString: Untagged
@@ -59,3 +62,48 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreTMP: {fileID: 0}
+--- !u!114 &7215777019418073788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5252269575116622125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 920d3f04e9a84364fb0bea4d8d4909ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerParent: {fileID: 0}
+  playerPrefab: {fileID: 0}
+--- !u!114 &2266885698251619671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5252269575116622125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d681e363f3cfb5040b1fa871320d29a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tutorialGO: {fileID: 0}
+--- !u!114 &2769111084130319720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5252269575116622125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f65b137f31f8f674aa5caac5e3b2995d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minimumTime: 10
+  maximumTime: 20
+  trashAnimator: {fileID: 0}
+  trashIndicator: {fileID: 0}
+  trashArea: {fileID: 0}
+  truckIndicatorHelper: {fileID: 0}

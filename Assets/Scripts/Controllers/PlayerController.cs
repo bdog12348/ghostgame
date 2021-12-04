@@ -32,6 +32,8 @@ public class PlayerController : MonoBehaviour
     bool GameOver = false;
     bool CanInteract = false;
     bool Possessing = false;
+    bool possessingTrash = false;
+    int currentTrashLoad = 0;
     bool IsHuman = false;
     bool isDraggingObject = false;
     float totalHoldTime = 1f;
@@ -80,7 +82,7 @@ public class PlayerController : MonoBehaviour
                 interactIndicatorObject.SetActive(true);
                 if (player.GetButton("Action"))
                 {
-                    print("Pressing action button");
+                    //print("Pressing action button");
                     holdTimer -= Time.deltaTime;
                     if (holdTimer <= 0f)
                     {
@@ -187,7 +189,8 @@ public class PlayerController : MonoBehaviour
     #region Collision Handlers
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.CompareTag("Possessable") && !Possessing && !IsHuman)
+        if ((other.gameObject.CompareTag("Possessable") || other.gameObject.CompareTag("Trash")) 
+        && !Possessing && !IsHuman)
         {
             CanInteract = true;
             possessableObject = other.gameObject;
@@ -212,7 +215,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Possessable")) // Potentially store name of GO in case we have multiple possessable objects over each other and it becomes a problem
+        if (other.gameObject.CompareTag("Possessable") || 
+        (other.gameObject.CompareTag("Trash") && other.gameObject.GetComponent<TrashcanController>().CheckFull())) // Potentially store name of GO in case we have multiple possessable objects over each other and it becomes a problem
         {
             CanInteract = false;
             if (!Possessing)
@@ -245,8 +249,24 @@ public class PlayerController : MonoBehaviour
         movementMode.SetPlayerNumber(playerJoystick);
         movementMode.SetPlayer(gameObject);
         spriteChanger = currentlyPossessedObject.transform.Find("Sprite").gameObject.GetComponent<SpriteChanger>();
-        if(spriteChanger != null)
+        if (currentlyPossessedObject.CompareTag("Trash"))
+        {
+            possessingTrash = true;
+            currentTrashLoad = currentlyPossessedObject.GetComponent<TrashcanController>().GetCurrentLoad();
+        }
+        if(!possessingTrash && spriteChanger != null)
             spriteChanger.SetPlayerSprite(playerJoystick);
+        else if(possessingTrash && spriteChanger != null)
+        {
+            TrashcanController tController = currentlyPossessedObject.GetComponent<TrashcanController>();
+            if(tController.PartiallyFull())
+                spriteChanger.SetFilledSprite(3);
+            else if(tController.CheckFull())
+                spriteChanger.SetFilledSprite(4);
+            else
+                spriteChanger.SetPlayerSprite(playerJoystick);
+        }
+        
     }
 
     /// <summary>
@@ -258,14 +278,25 @@ public class PlayerController : MonoBehaviour
         possessableObject = null;
 
         ghostObject.SetActive(true);
+        if(possessingTrash && spriteChanger != null)
+        {
+            TrashcanController tController = currentlyPossessedObject.GetComponent<TrashcanController>();
+            if(tController.CheckFull())
+                spriteChanger.SetFilledSprite(2);
+            else if(tController.PartiallyFull())
+                spriteChanger.SetFilledSprite(1);
+            else
+                spriteChanger.SetDefaultSprite();
+            currentTrashLoad = 0;
+            possessingTrash = false;
+        }
+        else if(spriteChanger != null)
+            spriteChanger.SetDefaultSprite();
         currentlyPossessedObject = null;
-
         movementMode.SetRigidbody(null);
         movementMode.SetPlayerNumber(-1);
         movementMode.SetPlayer(null);
         movementMode = ghostMovement;
-        if(spriteChanger != null)
-            spriteChanger.SetDefaultSprite();
         spriteChanger = null;
     }
 
@@ -305,6 +336,19 @@ public class PlayerController : MonoBehaviour
     public void SetPlayer(Player player)
     {
         this.player = player;
+    }
+
+    public bool PossessingTrash()
+    {
+        return possessingTrash;
+    }
+    public TrashcanController GetPossessedTrashController()
+    {
+        if(possessingTrash)
+            return currentlyPossessedObject.GetComponent<TrashcanController>(); 
+        else
+            return null;
+        
     }
 
     #endregion

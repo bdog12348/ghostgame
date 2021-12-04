@@ -8,6 +8,7 @@ public class TrashcanController : MonoBehaviour
     [SerializeField] int maxLoad = 3;
 
     [SerializeField] SpriteChanger spriteChanger;
+    bool possessed = false;
 
     /// <summary>
     /// Adds specified amount of trash to current load and returns left over amount, if any
@@ -35,20 +36,48 @@ public class TrashcanController : MonoBehaviour
         return currentLoad;
     }
 
+    public bool CheckFull()
+    {
+        return currentLoad == maxLoad;
+    }
+
+    public bool PartiallyFull()
+    {
+        return (currentLoad > 0) && !CheckFull();
+    }
+
     public void Empty()
     {
         currentLoad = 0;
         SetFillLevelSprite();
     }
+    public void SetPossessed()
+    {
+        possessed = true;
+    }
+    public void ResetPosession()
+    {
+        possessed = false;
+    }
 
     void SetFillLevelSprite()
     {
-        if (currentLoad == maxLoad)
+        int fillLevel = 0;
+        if(CheckFull())
+            fillLevel = 2;
+        else if(PartiallyFull())
+            fillLevel = 1;
+
+        if (possessed)
         {
-            spriteChanger.SetFilledSprite(1);
-        }else
+            if(fillLevel == 0)
+                spriteChanger.SetPlayerSprite(0);
+            else
+                spriteChanger.SetFilledSprite(fillLevel + 2);
+        }
+        else
         {
-            spriteChanger.SetFilledSprite(0);
+            spriteChanger.SetFilledSprite(fillLevel);
         }
     }
 
