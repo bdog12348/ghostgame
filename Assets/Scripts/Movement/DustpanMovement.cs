@@ -30,6 +30,7 @@ public class DustpanMovement : MovementMode
         if(player != null)
         {
             isGrounded = IsGrounded();
+            Debug.Log($"Grounded dustpan status: {isGrounded}");
         }
 
         // Set the distanceToGround if the object was just inhabited by a player

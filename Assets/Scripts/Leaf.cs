@@ -16,7 +16,7 @@ public class Leaf : MonoBehaviour
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         rb = GetComponent<Rigidbody>();
 
-        spriteRenderer.sprite = leafSprites[Random.Range(0, 7)];
+        spriteRenderer.sprite = leafSprites[Random.Range(0, leafSprites.Length - 1)];
     }
 
     // Update is called once per frame

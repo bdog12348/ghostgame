@@ -18,6 +18,8 @@ public class DogController : MonoBehaviour
     [SerializeField] Sprite asleepSprite;
     [SerializeField] Sprite alertSprite;
 
+    [SerializeField] AudioSource dogBark;
+
     float susAmount = 0;
 
     bool ready = true;
@@ -47,6 +49,7 @@ public class DogController : MonoBehaviour
 
         if (susAmount >= maxSus)
         {
+            dogBark.Play();
             FindObjectOfType<ScoreManager>().AddScore(-10f);
             dogAnimator.SetBool("Sleeping", false);
             susAmount = 0f;

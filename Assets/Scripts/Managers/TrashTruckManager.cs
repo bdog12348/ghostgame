@@ -11,6 +11,7 @@ public class TrashTruckManager : MonoBehaviour
     [Header("Inspector Fields")]
     [SerializeField] Animator trashAnimator;
     [SerializeField] GameObject trashIndicator;
+    [SerializeField] GameObject truckSprite;
     [SerializeField] TrashCollection trashArea;
     [SerializeField] TrashTruckIndicatorHelper truckIndicatorHelper;
 
@@ -25,11 +26,15 @@ public class TrashTruckManager : MonoBehaviour
     void Start()
     {
         currentTrashTime = Random.Range(minimumTime, maximumTime);
+        truckSprite.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (trashAnimator.GetCurrentAnimatorStateInfo(0).IsName("TruckIdle"))
+            truckSprite.SetActive(false);
+    
         if (GameManager.Paused) return;
 
         if (currentTrashTime > 0)
@@ -45,6 +50,7 @@ public class TrashTruckManager : MonoBehaviour
         {
             if (!truckGoing)
             {
+                truckSprite.SetActive(true);
                 trashAnimator.SetTrigger("Enter");
                 trashColletingTime = TIME_TO_COLLECT_TRASH;
                 setTrashCollectingTime = true;

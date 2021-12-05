@@ -19,6 +19,7 @@ public class RoombaMovement : MovementMode
     bool full = false;
 
     [SerializeField] Slider fullIndicator;
+    [SerializeField] GameObject canvas;
 
     void Start()
     {
@@ -67,6 +68,8 @@ public class RoombaMovement : MovementMode
             {
                 currentLoad = interactObject.GetComponent<TrashcanController>().AddTrash(currentLoad);
             }
+            if (currentLoad < maxLoad)
+                full = false;
         }
     }
 
@@ -74,10 +77,12 @@ public class RoombaMovement : MovementMode
     {
         if (currentLoad > 0 )
         {
+            canvas.SetActive(true);
             fullIndicator.enabled = true;
         }else
         {
             fullIndicator.enabled = false;
+            canvas.SetActive(false);
         }
         fullIndicator.value = currentLoad;
     }

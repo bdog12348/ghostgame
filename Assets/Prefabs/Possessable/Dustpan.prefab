@@ -111,6 +111,7 @@ GameObject:
   - component: {fileID: 5739596252149415784}
   - component: {fileID: 1705418952}
   - component: {fileID: 1498628078}
+  - component: {fileID: 3474958897162678220}
   m_Layer: 0
   m_Name: Dustpan
   m_TagString: Possessable
@@ -180,6 +181,19 @@ MonoBehaviour:
   interactableTags:
   - Trash
   jumpSpeed: 1
+--- !u!114 &3474958897162678220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5739596252149415790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddefd43abc801a14fa2ec8040cd989d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementMode: {fileID: 1498628078}
 --- !u!1 &5739596252164606016
 GameObject:
   m_ObjectHideFlags: 0

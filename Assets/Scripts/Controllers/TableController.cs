@@ -11,7 +11,6 @@ public class TableController : MonoBehaviour
 
     [SerializeField] GameObject[] utensils;
     SpriteRenderer tableSprite;
-    Color originalColor;
 
     // Start is called before the first frame update
     void Start()
@@ -21,13 +20,6 @@ public class TableController : MonoBehaviour
         spoon = false;
         tablePointsAdded = false;
         tableSprite = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
-        originalColor = tableSprite.color;
-    }
-
-    void Update()
-    {
-        if(!tablePointsAdded)
-            ColorObject();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -39,7 +31,6 @@ public class TableController : MonoBehaviour
         {
             FindObjectOfType<ScoreManager>().AddScore(20f);
             tablePointsAdded = true;
-            tableSprite.color = originalColor;
         }
 
         if (other.gameObject.name == "Fork")
@@ -54,23 +45,5 @@ public class TableController : MonoBehaviour
         {
             spoon = true;
         }
-    }
-
-    private void ColorObject()
-    {
-        // If a player is inhabiting a fork, knife, or spoon, and the points have not been given, highlight
-        //  the table based on the player
-
-        bool found = false;
-        foreach (GameObject gameObject in utensils)
-        {
-            if (gameObject.GetComponent<UtensilMovement>().GetPlayerNumber() != -1)
-            {
-                tableSprite.color = new Color(originalColor.r, originalColor.g, 0f, originalColor.a);
-                found = true;
-            }
-        }
-        if (!found)
-            tableSprite.color = originalColor;
     }
 }

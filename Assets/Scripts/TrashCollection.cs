@@ -30,12 +30,7 @@ public class TrashCollection : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player") && other.gameObject.GetComponent<PlayerController>().PossessingTrash())
         {
-            Debug.Log("Trash Added");
             trashcans.Add(other.gameObject.GetComponent<PlayerController>().GetPossessedTrashController());
-        }
-        else
-        {
-            Debug.Log($"Something else entered! {other.gameObject.tag}");
         }
     }
 
@@ -43,7 +38,6 @@ public class TrashCollection : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player") && other.gameObject.GetComponent<PlayerController>().PossessingTrash())
         {
-            Debug.Log("Trash Removed");
             trashcans.Remove(other.gameObject.GetComponent<PlayerController>().GetPossessedTrashController());
         }
     }

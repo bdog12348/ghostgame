@@ -53,7 +53,7 @@ public class TrashcanMovement : MovementMode
             {
                 for(int i = 0; i < trashcanController.GetCurrentLoad(); i++)
                 {
-                    Instantiate(toSpawn, transform.position, toSpawn.transform.rotation);
+                    Instantiate(toSpawn, new Vector3(transform.position.x - .25f + .5f * i, transform.position.y, transform.position.z), Quaternion.identity, transform.parent.parent);
                 }
                 trashcanController.Empty();
                 holdtimer = totalHoldTime;

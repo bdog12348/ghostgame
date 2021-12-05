@@ -15,12 +15,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public int playerJoystick;
     [SerializeField] Animator spriteAnimator;
     [SerializeField] SpriteRenderer[] spriteRenderers;
+
     #endregion
 
     #region Private Fields
     GameObject possessableObject = null;
     GameObject currentlyPossessedObject = null;
     GameObject interactObject = null;
+
+    GameObject[] possessableTags;
+    GameObject[] trashTags;
+
 
     Player player;
 
@@ -36,7 +41,10 @@ public class PlayerController : MonoBehaviour
     bool IsHuman = false;
     float totalHoldTime = 1f;
     float holdTimer;
+
+    bool showingPossessables = true;
     List<float> inputs;
+    float showTimer = 5.0f;
     #endregion
 
     #region MonoBehaviour Methods
@@ -50,6 +58,14 @@ public class PlayerController : MonoBehaviour
         TimerHelper.OnTimerEnd += () => GameOver = true;
         holdTimer = totalHoldTime;
         spriteRenderers[0].sprite = ghostSprite;
+        InitializeAllPossessables();
+        ShowAllPossessables();
+    }
+
+    void InitializeAllPossessables()
+    {
+        possessableTags = GameObject.FindGameObjectsWithTag("Possessable");
+        trashTags = GameObject.FindGameObjectsWithTag("Trash");
     }
 
     // Update is called once per frame
@@ -62,6 +78,21 @@ public class PlayerController : MonoBehaviour
         //{
         //    ToggleHuman();
         //}
+
+        if(showTimer > 0f)
+            showTimer -= Time.deltaTime;
+        if(!showingPossessables && player.GetButtonDown("ShowPossessables"))
+        {
+            showTimer = 5.0f;
+            ShowAllPossessables();
+        }
+        else if(showingPossessables && player.GetButtonDown("ShowPossessables"))
+            showTimer = 5.0f;
+        if(showingPossessables && showTimer <= 0f)
+        {
+            HideAllPossessables();
+        }
+        
 
         if (CanInteract)
         {
@@ -161,7 +192,7 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         if ((other.gameObject.CompareTag("Possessable") || other.gameObject.CompareTag("Trash")) 
-        && !Possessing && !IsHuman)
+            && !other.gameObject.GetComponent<PossessedStatus>().ObjectTaken() && !Possessing && !IsHuman)
         {
             CanInteract = true;
             possessableObject = other.gameObject;
@@ -231,6 +262,7 @@ public class PlayerController : MonoBehaviour
         else if(possessingTrash && spriteChanger != null)
         {
             TrashcanController tController = currentlyPossessedObject.GetComponent<TrashcanController>();
+            tController.SetPossessed();
             if(tController.PartiallyFull())
                 spriteChanger.SetFilledSprite(3);
             else if(tController.CheckFull())
@@ -239,6 +271,34 @@ public class PlayerController : MonoBehaviour
                 spriteChanger.SetPlayerSprite(playerJoystick);
         }
         
+    }
+
+    void ShowAllPossessables()
+    {
+        showingPossessables = true;
+        foreach (GameObject possessable in possessableTags)
+        {
+            possessable.transform.GetChild(1).GetComponent<Animator>().SetTrigger("Show");
+
+        }
+        foreach (GameObject possessable in trashTags)
+        {
+            possessable.transform.GetChild(1).GetComponent<Animator>().SetTrigger("Show");
+        }
+    }
+
+    void HideAllPossessables()
+    {
+        showingPossessables = false;
+        foreach (GameObject possessable in possessableTags)
+        {
+            possessable.transform.GetChild(1).GetComponent<Animator>().SetTrigger("Hide");
+
+        }
+        foreach (GameObject possessable in trashTags)
+        {
+            possessable.transform.GetChild(1).GetComponent<Animator>().SetTrigger("Hide");
+        }
     }
 
     /// <summary>
@@ -253,6 +313,7 @@ public class PlayerController : MonoBehaviour
         if(possessingTrash && spriteChanger != null)
         {
             TrashcanController tController = currentlyPossessedObject.GetComponent<TrashcanController>();
+            tController.ResetPosession();
             if(tController.CheckFull())
                 spriteChanger.SetFilledSprite(2);
             else if(tController.PartiallyFull())
@@ -270,8 +331,6 @@ public class PlayerController : MonoBehaviour
         movementMode.SetPlayerNumber(-1);
         movementMode.SetPlayer(null);
         movementMode = ghostMovement;
-        if(spriteChanger != null)
-            spriteChanger.SetDefaultSprite();
         spriteChanger = null;
     }
     #endregion

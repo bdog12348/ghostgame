@@ -60,6 +60,11 @@ public abstract class MovementMode : MonoBehaviour
         return playerNumber;
     }
 
+    public bool ObjectTaken()
+    {
+        return playerNumber != -1;
+    }
+
     public void SetPlayer(GameObject p)
     {
         player = p;

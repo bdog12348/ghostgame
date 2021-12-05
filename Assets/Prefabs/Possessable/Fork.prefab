@@ -114,6 +114,7 @@ GameObject:
   - component: {fileID: 6448213627085789744}
   - component: {fileID: 6448213627085789746}
   - component: {fileID: 5456425190146933963}
+  - component: {fileID: 55829274255949529}
   m_Layer: 0
   m_Name: Fork
   m_TagString: Possessable
@@ -196,6 +197,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &55829274255949529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6487867593794950651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddefd43abc801a14fa2ec8040cd989d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementMode: {fileID: 6448213627085789744}
 --- !u!1001 &6448213626567121644
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -217,7 +231,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5026158871996696023, guid: ecf4f3430e2641540b23598872557556, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.26
+      value: -0.044
       objectReference: {fileID: 0}
     - target: {fileID: 5026158871996696023, guid: ecf4f3430e2641540b23598872557556, type: 3}
       propertyPath: m_LocalPosition.y
