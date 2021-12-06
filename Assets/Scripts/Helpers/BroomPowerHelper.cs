@@ -54,6 +54,11 @@ public class BroomPowerHelper : MonoBehaviour
         detectPower = true;
     }
 
+    public bool HelperOn()
+    {
+        return detectPower;
+    }
+
     public float DeactivateWithReturn()
     {
         float cachedPower = currentPower;
