@@ -67,7 +67,6 @@ public class GameManager : MonoBehaviour
                 goImage.SetActive(false);
 
                 Paused = false;
-                timer.StartTimer();
                 goTimerSet = false;
             }
         }
@@ -85,6 +84,11 @@ public class GameManager : MonoBehaviour
                 timeUpTimerSet = false;
             }
         }
+    }
+
+    public void StartTimer()
+    {
+        timer.StartTimer();
     }
 
     public void StartGame()

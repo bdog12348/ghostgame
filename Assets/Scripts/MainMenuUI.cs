@@ -9,6 +9,7 @@ public class MainMenuUI : MonoBehaviour
 {
     [SerializeField] GameObject[] screens;
     [SerializeField] GameObject[] characterSelectGOs;
+    [SerializeField] GameObject[] textGOs;
     [SerializeField] GameObject startGameBannerGO;
     [SerializeField] Button[] mainButtons;
     [SerializeField] Button[] creditsButtons;
@@ -210,6 +211,7 @@ public class MainMenuUI : MonoBehaviour
         characterSelectGOs[gamePlayerId].GetComponent<CharacterSelecterHelper>().currentCharacterIndex = gamePlayerId;
         characterSelectGOs[gamePlayerId].GetComponent<CharacterSelecterHelper>().UpdateUI();
         characterSelectGOs[gamePlayerId].transform.GetChild(0).gameObject.SetActive(true);
+        textGOs[gamePlayerId].SetActive(false);
 
         Debug.Log("Added Rewired Player id " + rewiredPlayerId + " to game player " + gamePlayerId);
     }

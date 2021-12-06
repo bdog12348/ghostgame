@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class TimerHelper : MonoBehaviour
 {
-    public bool TimerEnabled = false;
+    bool TimerEnabled = false;
 
     TextMeshProUGUI timerText;
     Image fillImage;
@@ -43,11 +43,12 @@ public class TimerHelper : MonoBehaviour
     public void SetTime(float time)
     {
         initialTime = time;
+        remainingTime = initialTime;
         timerText.text = initialTime.ToString("0");
     }
 
     public void StartTimer()
     {
-        remainingTime = initialTime;
+        TimerEnabled = true;
     }
 }

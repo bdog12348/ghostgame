@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public int playerJoystick;
     [SerializeField] Animator spriteAnimator;
     [SerializeField] SpriteRenderer[] spriteRenderers;
+    [SerializeField] BoxCollider collider;
 
     #endregion
 
@@ -244,6 +245,7 @@ public class PlayerController : MonoBehaviour
         Possessing = true;
         CanInteract = false;
 
+        collider.isTrigger = false;
         transform.position = possessableObject.transform.position;
         ghostObject.SetActive(false);
         currentlyPossessedObject = possessableObject;
@@ -308,7 +310,7 @@ public class PlayerController : MonoBehaviour
     {
         Possessing = false;       
         possessableObject = null;
-
+        collider.isTrigger = true;
         ghostObject.SetActive(true);
         if(possessingTrash && spriteChanger != null)
         {

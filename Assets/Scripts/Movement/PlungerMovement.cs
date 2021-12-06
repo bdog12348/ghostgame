@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Rewired;
+using UnityEngine.UI;
 
 /// <summary>
 /// Basic 2D movement, WASD / Arrow Keys to move and you move smoothly in that direction
@@ -14,11 +15,13 @@ public class PlungerMovement : MovementMode
     private bool isGrounded;
     private int clickCount;
     [SerializeField] public int clickThreshold;
-
+    [SerializeField] GameObject powerGaugeGo;
+    [SerializeField] Slider powerGauge;
 
     void Start()
     {
         clickCount = 0;
+        powerGauge.maxValue = clickThreshold;
     }
     void Update()
     {
@@ -75,6 +78,16 @@ public class PlungerMovement : MovementMode
             {
                 clickCount++;
             }
+
+            if (clickCount == 0 )
+            {
+                powerGaugeGo.SetActive(false);
+            } else
+            {
+                powerGaugeGo.SetActive(true);
+            }
+
+            powerGauge.value = clickCount;
         }
 
         return inputs;
