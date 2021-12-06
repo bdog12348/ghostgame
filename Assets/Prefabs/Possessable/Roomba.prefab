@@ -214,7 +214,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementMode: {fileID: 185840312}
   toolHintText: Press the shoulder buttons (or 'A' and 'D') to turn the roomba. Hold
-    (Bottom Face Button/'E') to move. Pick up dirt!
+    (Bottom Face Button/'W') to move. Pick up dirt!
 --- !u!82 &6983133975182299283
 AudioSource:
   m_ObjectHideFlags: 0

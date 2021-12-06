@@ -27,6 +27,11 @@ public class PlungerMovement : MovementMode
     }
     void Update()
     {
+        if(!ObjectTaken() || clickCount == 0)
+            powerGaugeGo.SetActive(false);
+        else if(ObjectTaken() && clickCount > 0)
+            powerGaugeGo.SetActive(true);
+
         // Check if it is grounded on this frame
         if(player != null)
         {
@@ -80,14 +85,6 @@ public class PlungerMovement : MovementMode
             else
             {
                 clickCount++;
-            }
-
-            if (clickCount == 0 )
-            {
-                powerGaugeGo.SetActive(false);
-            } else
-            {
-                powerGaugeGo.SetActive(true);
             }
 
             powerGauge.value = clickCount;
