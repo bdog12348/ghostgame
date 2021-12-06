@@ -94,20 +94,22 @@ public class MainMenuUI : MonoBehaviour
                     if (!addedRewiredJoysticks.Contains(i))
                     {
                         AssignNextPlayer(i);
+                    } else
+                    {
+                        if (canStartGame)
+                        {
+                            for(int j = 0; j <  ReInput.players.playerCount; j++)
+                            {
+                                Player player =  ReInput.players.GetPlayer(j);
+                                player.controllers.maps.SetMapsEnabled(false, "Menu");
+                                player.controllers.maps.SetMapsEnabled(true, "Default");
+                            }
+                            DataHolder.PlayerMaps = playerMap;
+                            DataHolder.Characters = characterSelectObjects;
+                            LoadGame();
+                        }
                     }
 
-                    if (canStartGame)
-                    {
-                        for(int j = 0; j <  ReInput.players.playerCount; j++)
-                        {
-                            Player player =  ReInput.players.GetPlayer(j);
-                            player.controllers.maps.SetMapsEnabled(false, "Menu");
-                            player.controllers.maps.SetMapsEnabled(true, "Default");
-                        }
-                        DataHolder.PlayerMaps = playerMap;
-                        DataHolder.Characters = characterSelectObjects;
-                        LoadGame();
-                    }
                 }
             }
             else if (currentSceneIndex == 2)

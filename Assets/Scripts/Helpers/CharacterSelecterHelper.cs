@@ -176,7 +176,7 @@ public class CharacterSelecterHelper : MonoBehaviour
 
         if (lockedCharacters[charIndex] != false && depth < 20)
         {
-            charIndex = NextAvailableCharacterIndex(charIndex, ++depth);
+            charIndex = PreviousAvailableCharacterIndex(charIndex, ++depth);
         }
         return charIndex;
     }
