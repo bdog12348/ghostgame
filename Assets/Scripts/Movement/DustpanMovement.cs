@@ -18,6 +18,7 @@ public class DustpanMovement : MovementMode
     private bool isGrounded;
 
     SpriteChanger dirtSpriteChanger;
+    [SerializeField] AudioSource dustpanScrape;
 
     private void Start()
     {
@@ -65,6 +66,7 @@ public class DustpanMovement : MovementMode
         // Jump
         if(player.GetButtonDown("Jump"))
         {
+            dustpanScrape.Play();
             ySpeed = jumpSpeed;
         }
 

@@ -7,6 +7,7 @@ public class ScoreManager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI scoreTMP;
     [SerializeField] AudioSource pointsGet;
+    [SerializeField] AudioSource pointsLost;
 
     float score = 0;
 
@@ -14,6 +15,9 @@ public class ScoreManager : MonoBehaviour
     {
         if(amount > 0f)
             pointsGet.Play();
+        else
+            pointsLost.Play();
+        
         score += amount;
         scoreTMP.text = score.ToString();
     }

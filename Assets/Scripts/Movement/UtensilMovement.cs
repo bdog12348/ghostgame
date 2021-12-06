@@ -8,6 +8,8 @@ using Rewired;
 /// </summary>
 public class UtensilMovement : MovementMode
 {
+    [SerializeField] AudioSource dinkSound;
+
     public override List<float> GetInputs(Player player)
     {
         List<float> inputs = new List<float>();
@@ -40,6 +42,7 @@ public class UtensilMovement : MovementMode
         // If the utensil hits a wall
         if (other.gameObject.CompareTag("Wall"))
         {
+            dinkSound.Play();
             FindObjectOfType<ScoreManager>().AddScore(-10f);
         }
     }

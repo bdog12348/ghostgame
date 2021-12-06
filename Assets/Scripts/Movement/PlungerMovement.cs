@@ -18,6 +18,8 @@ public class PlungerMovement : MovementMode
     [SerializeField] GameObject powerGaugeGo;
     [SerializeField] Slider powerGauge;
 
+    [SerializeField] AudioSource plungerPop;
+
     void Start()
     {
         clickCount = 0;
@@ -73,6 +75,7 @@ public class PlungerMovement : MovementMode
             {
                 clickCount = 0;
                 ySpeed = jumpSpeed;
+                plungerPop.Play();
             }
             else
             {

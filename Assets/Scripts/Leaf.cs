@@ -5,6 +5,7 @@ using UnityEngine;
 public class Leaf : MonoBehaviour
 {
     [SerializeField] Sprite[] leafSprites;
+    [SerializeField] AudioSource smackSound;
 
     SpriteRenderer spriteRenderer;
     Rigidbody rb;
@@ -82,10 +83,12 @@ public class Leaf : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Wall"))
         {
+            smackSound.Play();
             rb.velocity = -rb.velocity;
         }
         else if ((other.gameObject.name.Equals("Broom") || other.gameObject.CompareTag("Leaf")) && rb.velocity == Vector3.zero)
         {
+            smackSound.Play();
             BroomMovement broom = other.gameObject.GetComponent<BroomMovement>();
             rb.velocity = broom.GetVelocity();
             broom.SetVelocity(broom.GetVelocity() / 3);

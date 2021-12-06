@@ -1070,7 +1070,7 @@ MonoBehaviour:
   DebugActive: 0
   TargetTMPText: {fileID: 7139114469698766527}
   ReplaceText: 1
-  NewText: Move joystick or press the movement buttons to float around the house.
+  NewText: Move the joystick or press the movement buttons to float around the house.
     Be wary of your surroundings!
   RevealMode: 0
   DurationMode: 0
@@ -3117,9 +3117,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Restart
-
-'
+  m_text: Press 'R' on your keyboard to Restart!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3146,7 +3144,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 68.35
+  m_fontSize: 33.65
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3306,8 +3304,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 956, y: -265}
-  m_SizeDelta: {x: 450.9742, y: 76.3631}
+  m_AnchoredPosition: {x: 1120, y: -265}
+  m_SizeDelta: {x: 400, y: 76.3631}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &55908383379621241
 CanvasRenderer:

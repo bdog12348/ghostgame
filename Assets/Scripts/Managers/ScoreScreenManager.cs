@@ -11,6 +11,8 @@ public class ScoreScreenManager : MonoBehaviour
     [SerializeField] GameObject failImage;
     [SerializeField] GameObject successImage;
     [SerializeField] ScoreManager scoreManager;
+    [SerializeField] AudioSource winFanfare;
+    [SerializeField] AudioSource loseFanfare;
 
     public float[] scoreThresholds;
 
@@ -31,11 +33,13 @@ public class ScoreScreenManager : MonoBehaviour
 
         if (scoreManager.GetScore() < scoreThresholds[0])
         {
+            loseFanfare.Play();
             evaluationText.text = "Failed!";
             failImage.SetActive(true);
         }
         else
         {
+            winFanfare.Play();
             evaluationText.text = "Cleared!";
             successImage.SetActive(true);
         }

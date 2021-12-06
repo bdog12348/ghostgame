@@ -14,13 +14,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject goImage;
     [SerializeField] GameObject timeUpImage;
     [SerializeField] GameObject scoreScreenGO;
+    [SerializeField] AudioSource whistle;
 
     public static bool Paused = false;
 
     float readyTimer;
     float goTimer;
     float timeUpTimer;
-    bool readyTimerSet, goTimerSet, timeUpTimerSet;
+    bool readyTimerSet, goTimerSet, timeUpTimerSet, scoreScreenShowing;
 
     // Start is called before the first frame update
     void Start()
@@ -34,7 +35,8 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
             Application.Quit();
-        else if (Input.GetKeyDown(KeyCode.R))
+
+        if(scoreScreenShowing && Input.GetKeyDown(KeyCode.R))
             Restart();
 
         HandleTimers();
@@ -51,6 +53,7 @@ public class GameManager : MonoBehaviour
             {
                 readyImage.SetActive(false);
                 goImage.SetActive(true);
+                whistle.Play();
                 goTimer = .75f;
                 goTimerSet = true;
                 readyTimerSet = false;
@@ -80,6 +83,7 @@ public class GameManager : MonoBehaviour
             {
                 timeUpImage.SetActive(false);
                 scoreScreenGO.SetActive(true);
+                scoreScreenShowing = true;
                 GetComponent<ScoreScreenManager>().LoadScores();
                 timeUpTimerSet = false;
             }
@@ -121,6 +125,7 @@ public class GameManager : MonoBehaviour
     void TimeDone()
     {
         TimerHelper.OnTimerEnd -= TimeDone;
+        whistle.Play();
         timeUpImage.SetActive(true);
         timeUpTimer = 1.25f;
         timeUpTimerSet = true;

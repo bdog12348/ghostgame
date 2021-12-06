@@ -14,6 +14,8 @@ public class BroomMovement : MovementMode
     private Vector3 storedPowerInfo;
     private BroomPowerHelper powerHelper;
     private Player rePlayer = null;
+    private bool startPlayingSounds = false;
+    [SerializeField] AudioSource broomSwoosh;
 
     float idleTime = 0f;
 
@@ -49,8 +51,15 @@ public class BroomMovement : MovementMode
         // If the player lets go the guage resets
         if(moveDirection == Vector3.zero)
         {
+            if(storedPower && startPlayingSounds)
+                broomSwoosh.Play();
+            
+            else if(storedPower && !startPlayingSounds)
+                startPlayingSounds = true;
             if(storedPower)
+            {
                 rb.velocity = -storedPowerInfo * movementSpeed * powerHelper.DeactivateWithReturn();
+            }
             else
             {
                 powerHelper.Deactivate();                
@@ -64,7 +73,11 @@ public class BroomMovement : MovementMode
         {
             powerHelper.Activate();
             storedPower = true;
-            storedPowerInfo = moveDirection;
+            // Only store the max power (so when they let go, it doesn't save the most recent position which would be small)
+            if(Math.Abs(moveDirection.x) >= Math.Abs(storedPowerInfo.x) || Math.Abs(moveDirection.z) >= Math.Abs(storedPowerInfo.z))
+            {
+                storedPowerInfo = moveDirection;
+            }
             //If they press the jump button release power and move them
             // if (rePlayer.GetButtonDown("Jump"))
             // {

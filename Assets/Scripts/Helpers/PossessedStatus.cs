@@ -5,6 +5,7 @@ using UnityEngine;
 public class PossessedStatus : MonoBehaviour
 {
     [SerializeField] MovementMode movementMode;
+    [SerializeField] string toolHintText;
 
     public bool ObjectTaken()
     {
@@ -19,5 +20,10 @@ public class PossessedStatus : MonoBehaviour
                 return DataHolder.Characters[i].characterColor;
         }
         return new Color();
+    }
+
+    public string GetToolHintText()
+    {
+        return toolHintText;
     }
 }

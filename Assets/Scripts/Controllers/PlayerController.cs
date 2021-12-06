@@ -17,6 +17,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] SpriteRenderer[] spriteRenderers;
     [SerializeField] BoxCollider ghostCollider;
 
+    [SerializeField] AudioSource possessSound;
+    [SerializeField] AudioSource unpossessSound;
+
+    [SerializeField] public TutorialManager tutorialManager;
+
+
     #endregion
 
     #region Private Fields
@@ -34,6 +40,7 @@ public class PlayerController : MonoBehaviour
     MovementMode movementMode;
     PlayerMovement ghostMovement;
 
+
     bool GameOver = false;
     bool CanInteract = false;
     bool Possessing = false;
@@ -42,6 +49,8 @@ public class PlayerController : MonoBehaviour
     bool IsHuman = false;
     float totalHoldTime = 1f;
     float holdTimer;
+
+    bool playingSound = false;
 
     bool showingPossessables = true;
     List<float> inputs;
@@ -110,12 +119,20 @@ public class PlayerController : MonoBehaviour
             else if (!Possessing && !IsHuman) // On possessable object
             {
                 interactIndicatorObject.SetActive(true);
+                
                 if (player.GetButton("Action"))
                 {
+                    if(!playingSound)
+                    {
+                        playingSound = true;
+                        possessSound.Play();
+                    }
                     holdTimer -= Time.deltaTime;
                     spriteAnimator.SetBool("HoldingPossess", true);
                     if (holdTimer <= 0f)
                     {
+                        possessSound.Stop();
+                        playingSound = false;
                         Possess();
                         holdTimer = totalHoldTime;
                     }                
@@ -124,6 +141,8 @@ public class PlayerController : MonoBehaviour
                 else if(player.GetButtonUp("Action"))
                 {
                     spriteAnimator.SetBool("HoldingPossess", false);
+                    playingSound = false;
+                    possessSound.Stop();
                     holdTimer = totalHoldTime;
                 }
             }
@@ -236,6 +255,7 @@ public class PlayerController : MonoBehaviour
     {
         Possessing = true;
         CanInteract = false;
+        tutorialManager.SetNewText(possessableObject.GetComponent<PossessedStatus>().GetToolHintText());
 
         ghostCollider.isTrigger = false;
         transform.position = possessableObject.transform.position;
@@ -300,8 +320,14 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void ResetGhost()
     {
+        unpossessSound.Play();
         Possessing = false;       
         possessableObject = null;
+        movementMode.SetRigidbody(null);
+        movementMode.SetPlayerNumber(-1);
+        movementMode.SetPlayer(null);
+        movementMode = ghostMovement;
+        movementMode.StopRB();
         ghostCollider.isTrigger = true;
         ghostObject.SetActive(true);
         spriteAnimator.SetBool("HoldingPossess", false);
@@ -321,11 +347,7 @@ public class PlayerController : MonoBehaviour
         else if(spriteChanger != null)
             spriteChanger.SetDefaultSprite();
         currentlyPossessedObject = null;
-
-        movementMode.SetRigidbody(null);
-        movementMode.SetPlayerNumber(-1);
-        movementMode.SetPlayer(null);
-        movementMode = ghostMovement;
+        
         spriteChanger = null;
     }
     #endregion

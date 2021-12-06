@@ -17,6 +17,7 @@ public class TrashcanMovement : MovementMode
 
     [SerializeField] GameObject sliderGo;
     [SerializeField] Slider trashGauge;
+    [SerializeField] AudioSource trashSpillSound;
 
     private TrashcanController trashcanController;
     float holdtimer;
@@ -58,6 +59,8 @@ public class TrashcanMovement : MovementMode
             holdtimer -= Time.deltaTime;
             if (holdtimer <= 0f)
             {
+                if(trashcanController.GetCurrentLoad() > 0)
+                    trashSpillSound.Play();
                 for(int i = 0; i < trashcanController.GetCurrentLoad(); i++)
                 {
                     GameObject newObject = Instantiate(toSpawn, new Vector3(transform.position.x - .25f + .5f * i, transform.position.y, transform.position.z), Quaternion.identity, transform.parent.parent);

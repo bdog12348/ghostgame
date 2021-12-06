@@ -9,6 +9,8 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] Transform[] playerSpawnPositions;
     [SerializeField] GameObject playerPrefab;
 
+    [SerializeField] TutorialManager tutorialManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +21,7 @@ public class PlayerManager : MonoBehaviour
             pc.playerJoystick = DataHolder.Characters[i].ghostNumber;
             pc.SetPlayer(ReInput.players.GetPlayer(DataHolder.PlayerMaps[i].rewiredPlayerId));
             pc.ghostSprite = DataHolder.Characters[i].characterSprite;
+            pc.tutorialManager = tutorialManager;
         }
     }
 }

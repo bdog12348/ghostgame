@@ -15,6 +15,8 @@ public class Dirt : MonoBehaviour
     private Color colorShowing = new Color();
 
     [SerializeField] GameObject[] roombaObjects;
+    [SerializeField] GameObject[] dustpanObjects;
+    [SerializeField] AudioSource smackSound;
     GameObject indicator;
 
     private void Start()
@@ -32,6 +34,14 @@ public class Dirt : MonoBehaviour
             if(roomba.GetComponent<PossessedStatus>().ObjectTaken())
             {
                 colorShowing = roomba.GetComponent<PossessedStatus>().PlayerColor();
+                newColor = true;
+            }
+        }
+        foreach (GameObject dustpan in dustpanObjects)
+        {
+            if(dustpan.GetComponent<PossessedStatus>().ObjectTaken())
+            {
+                colorShowing = dustpan.GetComponent<PossessedStatus>().PlayerColor();
                 newColor = true;
             }
         }
@@ -78,6 +88,7 @@ public class Dirt : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Wall"))
         {
+            smackSound.Play();
             Debug.Log("Hit wall");
             rb.velocity = -rb.velocity;
             if (!small)
@@ -92,6 +103,7 @@ public class Dirt : MonoBehaviour
             }
         } else if ((other.gameObject.name.Equals("Broom") || other.gameObject.CompareTag("Dirt")) && rb.velocity == Vector3.zero)
         {
+            smackSound.Play();
             BroomMovement broom = other.gameObject.GetComponent<BroomMovement>();
             rb.velocity = broom.GetVelocity();
             broom.SetVelocity(broom.GetVelocity() / 3);

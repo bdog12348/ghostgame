@@ -13,6 +13,7 @@ public class MainMenuUI : MonoBehaviour
     [SerializeField] GameObject startGameBannerGO;
     [SerializeField] Button[] mainButtons;
     [SerializeField] Button[] creditsButtons;
+    [SerializeField] AudioSource selectSound;
 
     public int maxPlayers = 4;
 
@@ -62,6 +63,7 @@ public class MainMenuUI : MonoBehaviour
                         {
                             currentlySelectedButton--;
                         }
+                        selectSound.Play();
                         movedHighlight = true;
                     }
                     else if (ReInput.players.GetPlayer(i).GetAxisRaw("Vertical") < 0)
@@ -74,6 +76,7 @@ public class MainMenuUI : MonoBehaviour
                         {
                             currentlySelectedButton++;
                         }
+                        selectSound.Play();
                         movedHighlight = true;
                     }
                 }

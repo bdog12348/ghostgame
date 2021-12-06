@@ -21,6 +21,10 @@ public class RoombaMovement : MovementMode
     [SerializeField] Slider fullIndicator;
     [SerializeField] GameObject canvas;
     [SerializeField] GameObject[] arrows;
+    [SerializeField] AudioSource roombaOn;
+    [SerializeField] AudioSource roombaOff;
+    [SerializeField] AudioSource roombaMove;
+
 
     void Start()
     {
@@ -53,6 +57,8 @@ public class RoombaMovement : MovementMode
         }
         if(player.GetButton("RoombaGo")) // A button
         {
+            if(!roombaMove.isPlaying)
+                roombaMove.Play();
             Vector2 r = new Vector2(xDirections[direction], zDirections[direction]);
             r = (r.magnitude > 1) ? r.normalized : r;
             newDirection.x = r.x;
@@ -61,6 +67,7 @@ public class RoombaMovement : MovementMode
         }
         else
         {
+            roombaMove.Stop();
             rb.velocity = Vector3.zero;
         }
         return null;    // "Move" does not need to be called

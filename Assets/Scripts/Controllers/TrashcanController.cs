@@ -11,6 +11,7 @@ public class TrashcanController : MonoBehaviour
 
     [SerializeField] GameObject[] dustpanObjects;
     [SerializeField] GameObject[] roombaObjects;
+    [SerializeField] AudioSource fillTrashSound;
 
     GameObject indicator;
     bool possessed = false;
@@ -65,6 +66,7 @@ public class TrashcanController : MonoBehaviour
             currentLoad = maxLoad;
         }else
         {
+            fillTrashSound.Play();
             currentLoad = currentLoad + amount;
         }
 
@@ -132,8 +134,10 @@ public class TrashcanController : MonoBehaviour
                 {
                     if (dirt.GetSmall())
                         currentLoad += 0.5f;
+                    
                     else
                         currentLoad++;
+                    fillTrashSound.Play();
                     SetFillLevelSprite();
                     Destroy(other.gameObject);
                 }
@@ -146,6 +150,7 @@ public class TrashcanController : MonoBehaviour
                 if (!CheckFull())
                 {
                     currentLoad++;
+                    fillTrashSound.Play();
                     SetFillLevelSprite();
                     Destroy(other.gameObject);
                 }
