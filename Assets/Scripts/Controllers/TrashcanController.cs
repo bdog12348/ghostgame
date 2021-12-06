@@ -121,4 +121,38 @@ public class TrashcanController : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Dirt"))
+        {
+            Dirt dirt = other.gameObject.GetComponent<Dirt>();
+            if (dirt.GetVelocity() != Vector3.zero)
+            {
+                if (!CheckFull())
+                {
+                    if (dirt.GetSmall())
+                        currentLoad += 0.5f;
+                    else
+                        currentLoad++;
+                    SetFillLevelSprite();
+                    Destroy(other.gameObject);
+                }
+            }
+        }else if  (other.gameObject.CompareTag("Leaf"))
+        {
+            Leaf leaf = other.gameObject.GetComponent<Leaf>();
+            if (leaf.GetVelocity() != Vector3.zero)
+            {
+                if (!CheckFull())
+                {
+                    currentLoad++;
+                    SetFillLevelSprite();
+                    Destroy(other.gameObject);
+                }
+            }
+        }
+
+        
+    }
+
 }

@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class RoombaMovement : MovementMode
 {
     private float[] xDirections = {0f, 1f, 1f, 1f, 0f, -1f, -1f, -1f};
-    private float[] zDirections = {1f, 1f, 0f, -1f, -1f, -1f, 0f, 1f};   
+    private float[] zDirections = {1f, 1f, 0f, -1f, -1f, -1f, 0f, 1f};
 
     private int direction;
 
@@ -20,30 +20,36 @@ public class RoombaMovement : MovementMode
 
     [SerializeField] Slider fullIndicator;
     [SerializeField] GameObject canvas;
+    [SerializeField] GameObject[] arrows;
 
     void Start()
     {
         direction = 0;
         fullIndicator.maxValue = maxLoad;
+        arrows[direction].SetActive(true);
     }
+
     public override List<float> GetInputs(Player player)
     {
         Vector3 newDirection = Vector3.zero;
         
         if(player.GetButtonDown("RoombaTurnL")) // L button
         {
+            arrows[direction].SetActive(false);
             if(direction == 0)
                 direction = 7;
             else
                 direction -= 1;
-                    
+            arrows[direction].SetActive(true);                    
         }
         if(player.GetButtonDown("RoombaTurnR")) // R button
         {
+            arrows[direction].SetActive(false);
             if(direction == 7)
                 direction = 0;
             else
                 direction += 1;
+            arrows[direction].SetActive(true);
         }
         if(player.GetButton("RoombaGo")) // A button
         {
@@ -75,6 +81,11 @@ public class RoombaMovement : MovementMode
 
     private void Update()
     {
+        if(!ObjectTaken())
+            arrows[direction].SetActive(false);
+        else
+            arrows[direction].SetActive(true);
+
         if (currentLoad > 0 )
         {
             canvas.SetActive(true);

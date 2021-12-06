@@ -199,16 +199,16 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8274104671294501925}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5882bf758a9a0c943bf84adb0e5fa308, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerSprites:
-  - {fileID: 21300000, guid: 2b867769cb174a041861e15f643c0968, type: 3}
-  - {fileID: 21300000, guid: 2b867769cb174a041861e15f643c0968, type: 3}
-  - {fileID: 21300000, guid: 2b867769cb174a041861e15f643c0968, type: 3}
-  - {fileID: 21300000, guid: 2b867769cb174a041861e15f643c0968, type: 3}
+  - {fileID: 21300000, guid: 65efe47058041e946ad88569ff18f508, type: 3}
+  - {fileID: 21300000, guid: 65efe47058041e946ad88569ff18f508, type: 3}
+  - {fileID: 21300000, guid: 65efe47058041e946ad88569ff18f508, type: 3}
+  - {fileID: 21300000, guid: 65efe47058041e946ad88569ff18f508, type: 3}
   filledSprites: []
 --- !u!1001 &8189416928490747228
 PrefabInstance:

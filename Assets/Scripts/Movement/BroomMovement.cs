@@ -49,7 +49,13 @@ public class BroomMovement : MovementMode
         // If the player lets go the guage resets
         if(moveDirection == Vector3.zero)
         {
-            powerHelper.Deactivate();
+            if(storedPower)
+                rb.velocity = -storedPowerInfo * movementSpeed * powerHelper.DeactivateWithReturn();
+            else
+            {
+                powerHelper.Deactivate();                
+            }
+
             storedPowerInfo = Vector3.zero;
             storedPower = false;
         }
@@ -60,16 +66,18 @@ public class BroomMovement : MovementMode
             storedPower = true;
             storedPowerInfo = moveDirection;
             //If they press the jump button release power and move them
-            if (rePlayer.GetButtonDown("Jump"))
-            {
-                rb.velocity = -moveDirection * movementSpeed * powerHelper.DeactivateWithReturn();
-                storedPowerInfo = Vector3.zero;
-            }
+            // if (rePlayer.GetButtonDown("Jump"))
+            // {
+            //     rb.velocity = -moveDirection * movementSpeed * powerHelper.DeactivateWithReturn();
+            //     storedPowerInfo = Vector3.zero;
+            // }
         }
     }
 
     private void Update()
     {
+        if(!ObjectTaken() && powerHelper.HelperOn())
+            powerHelper.Deactivate();
         // If the player is still moving, slow them down
         if (rb && rb.velocity != Vector3.zero)
         {
