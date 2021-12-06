@@ -23,12 +23,14 @@ public class TutorialManager : MonoBehaviour
 
     bool newText = false;
 
-    bool screenUp = true;
+    bool storyScreenUp = true;
+    bool screenUp = false;
     // Start is called before the first frame update
     void Start()
     {
         gm = GetComponent<GameManager>();
-        tutorialGO.SetActive(true);
+        storyGO.SetActive(true);
+        tutorialGO.SetActive(false);
         hintBoxGO.SetActive(false);
         gm.Pause();
         parentFeedback.Initialization(gameObject);
@@ -45,7 +47,7 @@ public class TutorialManager : MonoBehaviour
     {
         if (screenUp)
         {
-            for(int i = 0; i < ReInput.players.playerCount; i++)
+            for (int i = 0; i < ReInput.players.playerCount; i++)
             {
                 if (ReInput.players.GetPlayer(i).GetButtonDown("Jump"))
                 {
@@ -53,6 +55,20 @@ public class TutorialManager : MonoBehaviour
                     tutorialGO.SetActive(false);
                     gm.StartGame();
                     gameStarted = true;
+                }
+            }
+        }
+
+        if (storyScreenUp)
+        {
+            for (int i = 0; i < ReInput.players.playerCount; i++)
+            {
+                if (ReInput.players.GetPlayer(i).GetButtonDown("Jump"))
+                {
+                    storyGO.SetActive(false);
+                    tutorialGO.SetActive(true);
+                    screenUp = true;
+                    storyScreenUp = false;
                 }
             }
         }
