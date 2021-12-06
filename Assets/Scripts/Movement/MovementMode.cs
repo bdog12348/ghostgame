@@ -60,6 +60,11 @@ public abstract class MovementMode : MonoBehaviour
         return playerNumber;
     }
 
+    public void StopRB()
+    {
+        rb.velocity = new Vector3(0, 0 ,0);
+    }
+
     public bool ObjectTaken()
     {
         return playerNumber != -1;

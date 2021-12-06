@@ -310,7 +310,13 @@ public class PlayerController : MonoBehaviour
     {
         Possessing = false;       
         possessableObject = null;
+        movementMode.SetRigidbody(null);
+        movementMode.SetPlayerNumber(-1);
+        movementMode.SetPlayer(null);
+        movementMode = ghostMovement;
+        movementMode.StopRB();
         collider.isTrigger = true;
+
         ghostObject.SetActive(true);
         if(possessingTrash && spriteChanger != null)
         {
@@ -329,10 +335,7 @@ public class PlayerController : MonoBehaviour
             spriteChanger.SetDefaultSprite();
         currentlyPossessedObject = null;
 
-        movementMode.SetRigidbody(null);
-        movementMode.SetPlayerNumber(-1);
-        movementMode.SetPlayer(null);
-        movementMode = ghostMovement;
+        
         spriteChanger = null;
     }
     #endregion

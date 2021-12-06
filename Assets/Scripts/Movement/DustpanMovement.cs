@@ -30,6 +30,7 @@ public class DustpanMovement : MovementMode
         if(player != null)
         {
             isGrounded = IsGrounded();
+            Debug.Log($"{isGrounded}");
             ySpeed += Physics.gravity.y * Time.deltaTime;
         }
         else
@@ -74,7 +75,7 @@ public class DustpanMovement : MovementMode
     {
         Vector3 moveDirection = FixMovementForCamera(Vector3.forward * inputs[1] + Vector3.right * inputs[0]);
         Vector3 moveVel = moveDirection * movementSpeed;
-        if (moveVel == Vector3.zero)
+        if (player != null && moveVel == Vector3.zero)
         {
             moveVel.y = -1; // Makes the object fall if it's in the air
         } 
@@ -154,7 +155,7 @@ public class DustpanMovement : MovementMode
 
     private bool IsGrounded()
     {
-        return Physics.Raycast(player.transform.position, -Vector3.up, distanceToGround - .1f);
+        return Physics.Raycast(player.transform.position, -Vector3.up, distanceToGround + .1f);
     }
 
     public bool Empty()
