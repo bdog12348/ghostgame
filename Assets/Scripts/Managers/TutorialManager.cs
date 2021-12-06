@@ -21,7 +21,6 @@ public class TutorialManager : MonoBehaviour
     bool gameStarted = false;
     bool startTextDone = false;
 
-    bool showingToolText = false;
     bool newText = false;
 
     bool screenUp = true;
@@ -80,12 +79,9 @@ public class TutorialManager : MonoBehaviour
                 hintBoxGO.SetActive(true);
                 revealFeedback.NewText = newToolText;
                 parentFeedback.PlayFeedbacks();
-                hintBoxGO.SetActive(false);
-                showingToolText = true;
             }
-            else if(startTextDone && !showingToolText)
+            else if(startTextDone && !parentFeedback.IsPlaying && !newText)
             {
-                showingToolText = false;
                 hintBoxGO.SetActive(false);
             }
         }
