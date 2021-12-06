@@ -343,11 +343,11 @@ MonoBehaviour:
   ghostSprite: {fileID: 21300000, guid: 136634fb7ccb0ba489b728fa80799c76, type: 3}
   humanSprite: {fileID: 21300000, guid: 81446765035f4364f9e7891fcbfa7a7e, type: 3}
   playerJoystick: 1
-  spriteAnimator: {fileID: 1090308155}
+  spriteAnimator: {fileID: 1431704453}
   spriteRenderers:
   - {fileID: 4129354923616845608}
   - {fileID: 1090308156}
-  collider: {fileID: 4129354923653186392}
+  ghostCollider: {fileID: 4129354923653186392}
 --- !u!114 &4129354923653186398
 MonoBehaviour:
   m_ObjectHideFlags: 0

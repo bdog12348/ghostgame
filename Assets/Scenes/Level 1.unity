@@ -30394,6 +30394,10 @@ PrefabInstance:
       propertyPath: truckManager
       value: 
       objectReference: {fileID: 117980527}
+    - target: {fileID: 2082192039123614363, guid: 4ecde58db54a71d42a58074e2f387216, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2291030573262842020, guid: 4ecde58db54a71d42a58074e2f387216, type: 3}
       propertyPath: m_Pivot.x
       value: 0

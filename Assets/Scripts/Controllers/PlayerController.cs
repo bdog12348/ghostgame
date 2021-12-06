@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public int playerJoystick;
     [SerializeField] Animator spriteAnimator;
     [SerializeField] SpriteRenderer[] spriteRenderers;
-    [SerializeField] BoxCollider collider;
+    [SerializeField] BoxCollider ghostCollider;
 
     #endregion
 
@@ -113,6 +113,7 @@ public class PlayerController : MonoBehaviour
                 if (player.GetButton("Action"))
                 {
                     holdTimer -= Time.deltaTime;
+                    spriteAnimator.SetBool("HoldingPossess", true);
                     if (holdTimer <= 0f)
                     {
                         Possess();
@@ -122,6 +123,7 @@ public class PlayerController : MonoBehaviour
                 }
                 else if(player.GetButtonUp("Action"))
                 {
+                    spriteAnimator.SetBool("HoldingPossess", false);
                     holdTimer = totalHoldTime;
                 }
             }
@@ -129,6 +131,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             interactIndicatorObject.SetActive(false);
+            spriteAnimator.SetBool("HoldingPossess", false);
         }
 
         if (movementMode != null)
@@ -138,17 +141,6 @@ public class PlayerController : MonoBehaviour
 
         if (inputs != null)
         {
-            // Do animation stuff
-            if (inputs[0] != 0 || inputs [1] != 0)
-            {
-                if (IsHuman)
-                    spriteAnimator.SetBool("Moving", true);
-            }else
-            {
-                if (IsHuman)
-                    spriteAnimator.SetBool("Moving", false);
-            }
-
             if (inputs[0] < 0)
             {
                 foreach(SpriteRenderer renderer in spriteRenderers)
@@ -245,7 +237,7 @@ public class PlayerController : MonoBehaviour
         Possessing = true;
         CanInteract = false;
 
-        collider.isTrigger = false;
+        ghostCollider.isTrigger = false;
         transform.position = possessableObject.transform.position;
         ghostObject.SetActive(false);
         currentlyPossessedObject = possessableObject;
@@ -310,9 +302,10 @@ public class PlayerController : MonoBehaviour
     {
         Possessing = false;       
         possessableObject = null;
-        collider.isTrigger = true;
+        ghostCollider.isTrigger = true;
         ghostObject.SetActive(true);
-        if(possessingTrash && spriteChanger != null)
+        spriteAnimator.SetBool("HoldingPossess", false);
+        if (possessingTrash && spriteChanger != null)
         {
             TrashcanController tController = currentlyPossessedObject.GetComponent<TrashcanController>();
             tController.ResetPosession();
