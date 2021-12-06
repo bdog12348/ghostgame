@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Rewired;
+using UnityEngine.UI;
 
 /// <summary>
 /// Basic 2D movement, WASD / Arrow Keys to move and you move smoothly in that direction
@@ -14,6 +15,9 @@ public class TrashcanMovement : MovementMode
 
     [SerializeField] GameObject roomba;
 
+    [SerializeField] GameObject sliderGo;
+    [SerializeField] Slider trashGauge;
+
     private TrashcanController trashcanController;
     float holdtimer;
 
@@ -21,6 +25,7 @@ public class TrashcanMovement : MovementMode
     {
         holdtimer = totalHoldTime;
         trashcanController = GetComponent<TrashcanController>();
+        trashGauge.maxValue = totalHoldTime;
     }
     public override List<float> GetInputs(Player player)
     {
@@ -61,6 +66,14 @@ public class TrashcanMovement : MovementMode
                 trashcanController.Empty();
                 holdtimer = totalHoldTime;
             }
+        }
+        trashGauge.value = totalHoldTime - holdtimer;
+        if (totalHoldTime - holdtimer == 0)
+        {
+            sliderGo.SetActive(false);
+        } else
+        {
+            sliderGo.SetActive(true);
         }
             //rb.AddForce(moveVel, ForceMode.VelocityChange);
     }
