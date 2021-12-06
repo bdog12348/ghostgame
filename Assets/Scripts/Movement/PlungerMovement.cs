@@ -26,6 +26,11 @@ public class PlungerMovement : MovementMode
         if(player != null)
         {
             isGrounded = IsGrounded();
+            ySpeed += Physics.gravity.y * Time.deltaTime;
+        }
+        else
+        {
+            ySpeed = 0f;
         }
 
         // Set the distanceToGround if the object was just inhabited by a player
@@ -37,8 +42,7 @@ public class PlungerMovement : MovementMode
         {
             distanceToGround = GetComponent<BoxCollider>().bounds.extents.y;
         }
-
-        ySpeed += Physics.gravity.y * Time.deltaTime;
+        
     }
     public bool Charging()
     {
@@ -82,12 +86,13 @@ public class PlungerMovement : MovementMode
         Vector3 moveVel = moveDirection * movementSpeed;
         if (moveVel == Vector3.zero)
         {
-            moveVel.y = -1; // Makes the object fall if it's in the air
+            moveVel.y = -1f; // Makes the object fall if it's in the air
         } 
         else
         {
             moveVel.y = ySpeed;
         }
+        moveVel.y = ySpeed;
         rb.velocity = moveVel;
         //rb.AddForce(moveVel, ForceMode.VelocityChange);
     }
@@ -138,7 +143,6 @@ public class PlungerMovement : MovementMode
 
     private bool IsGrounded()
     {
-        Debug.DrawRay(player.transform.position, -Vector3.up, Color.red);
         return Physics.Raycast(player.transform.position, -Vector3.up, distanceToGround + .1f);
     }
 }

@@ -12,6 +12,8 @@ public class TrashcanMovement : MovementMode
 
     [SerializeField] GameObject toSpawn;
 
+    [SerializeField] GameObject roomba;
+
     private TrashcanController trashcanController;
     float holdtimer;
 
@@ -53,7 +55,8 @@ public class TrashcanMovement : MovementMode
             {
                 for(int i = 0; i < trashcanController.GetCurrentLoad(); i++)
                 {
-                    Instantiate(toSpawn, new Vector3(transform.position.x - .25f + .5f * i, transform.position.y, transform.position.z), Quaternion.identity, transform.parent.parent);
+                    GameObject newObject = Instantiate(toSpawn, new Vector3(transform.position.x - .25f + .5f * i, transform.position.y, transform.position.z), Quaternion.identity, transform.parent.parent);
+                    newObject.GetComponent<Dirt>().setRoomba(roomba);
                 }
                 trashcanController.Empty();
                 holdtimer = totalHoldTime;

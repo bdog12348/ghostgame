@@ -114,4 +114,9 @@ public class RoombaMovement : MovementMode
             }
         }
     }
+
+    public bool Empty()
+    {
+        return currentLoad == 0f;
+    }
 }

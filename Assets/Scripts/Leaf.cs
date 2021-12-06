@@ -10,6 +10,12 @@ public class Leaf : MonoBehaviour
     Rigidbody rb;
     float idleTime;
 
+    private Color colorShowing = new Color();
+
+    [SerializeField] GameObject[] broomObjects;
+    GameObject indicator;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,11 +23,32 @@ public class Leaf : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         spriteRenderer.sprite = leafSprites[Random.Range(0, leafSprites.Length - 1)];
+        indicator = transform.GetChild(1).gameObject;
     }
 
     // Update is called once per frame
     void Update()
     {
+        bool newColor = false;
+
+        foreach (GameObject broom in broomObjects)
+        {
+            if(broom.GetComponent<PossessedStatus>().ObjectTaken())
+            {
+                colorShowing = broom.GetComponent<PossessedStatus>().PlayerColor();
+                newColor = true;
+            }
+        }
+        if(newColor)
+        {
+            indicator.SetActive(true);
+            indicator.GetComponent<SpriteRenderer>().color = colorShowing;
+        }
+        else
+        {
+            indicator.SetActive(false);
+        }
+
         if (rb && rb.velocity != Vector3.zero)
         {
             Vector3 newVelocity = Vector3.zero;

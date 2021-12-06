@@ -12,7 +12,8 @@ public class ScoreManager : MonoBehaviour
 
     public void AddScore (float amount)
     {
-        pointsGet.Play();
+        if(amount > 0f)
+            pointsGet.Play();
         score += amount;
         scoreTMP.text = score.ToString();
     }

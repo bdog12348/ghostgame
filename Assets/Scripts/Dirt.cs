@@ -12,13 +12,39 @@ public class Dirt : MonoBehaviour
     float idleTime = 0f;
     bool small = false;
 
+    private Color colorShowing = new Color();
+
+    [SerializeField] GameObject[] roombaObjects;
+    GameObject indicator;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        indicator = transform.GetChild(1).gameObject;
     }
 
     private void Update()
     {
+        bool newColor = false;
+
+        foreach (GameObject roomba in roombaObjects)
+        {
+            if(roomba.GetComponent<PossessedStatus>().ObjectTaken())
+            {
+                colorShowing = roomba.GetComponent<PossessedStatus>().PlayerColor();
+                newColor = true;
+            }
+        }
+        if(newColor)
+        {
+            indicator.SetActive(true);
+            indicator.GetComponent<SpriteRenderer>().color = colorShowing;
+        }
+        else
+        {
+            indicator.SetActive(false);
+        }
+
         if (rb && rb.velocity != Vector3.zero)
         {
             Vector3 newVelocity = Vector3.zero;
@@ -94,4 +120,10 @@ public class Dirt : MonoBehaviour
     {
         return rb.velocity;
     }
+
+    public void setRoomba(GameObject roomba)
+    {
+        roombaObjects[0] = roomba;
+    }
+
 }

@@ -30,7 +30,11 @@ public class DustpanMovement : MovementMode
         if(player != null)
         {
             isGrounded = IsGrounded();
-            Debug.Log($"Grounded dustpan status: {isGrounded}");
+            ySpeed += Physics.gravity.y * Time.deltaTime;
+        }
+        else
+        {
+            ySpeed = 0f;
         }
 
         // Set the distanceToGround if the object was just inhabited by a player
@@ -43,7 +47,6 @@ public class DustpanMovement : MovementMode
             distanceToGround = GetComponent<BoxCollider>().bounds.extents.y;
         }
 
-        ySpeed += Physics.gravity.y * Time.deltaTime;
     }
     public override List<float> GetInputs(Player player)
     {
@@ -151,7 +154,11 @@ public class DustpanMovement : MovementMode
 
     private bool IsGrounded()
     {
-        Debug.DrawRay(player.transform.position, -Vector3.up, Color.red);
         return Physics.Raycast(player.transform.position, -Vector3.up, distanceToGround - .1f);
+    }
+
+    public bool Empty()
+    {
+        return currentLoad == 0f;
     }
 }

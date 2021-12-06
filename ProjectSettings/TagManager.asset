@@ -13,6 +13,8 @@ TagManager:
   - Player2
   - Wall
   - Leaf
+  - Table
+  - Toilet
   layers:
   - Default
   - TransparentFX

@@ -9,8 +9,10 @@ public class TableController : MonoBehaviour
     private bool spoon;
     private bool tablePointsAdded;
 
+    private Color colorShowing = new Color();
+
     [SerializeField] GameObject[] utensils;
-    SpriteRenderer tableSprite;
+    GameObject indicator;
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +21,34 @@ public class TableController : MonoBehaviour
         knife = false;
         spoon = false;
         tablePointsAdded = false;
-        tableSprite = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
+        indicator = transform.GetChild(1).gameObject;
+    }
+
+    void Update()
+    {
+        if(tablePointsAdded)
+        {
+            indicator.SetActive(false);
+            return;
+        }
+        bool newColor = false;
+        foreach (GameObject utensil in utensils)
+        {
+            if(utensil.GetComponent<PossessedStatus>().ObjectTaken())
+            {
+                colorShowing = utensil.GetComponent<PossessedStatus>().PlayerColor();
+                newColor = true;
+            }
+        }
+        if(newColor)
+        {
+            indicator.SetActive(true);
+            indicator.GetComponent<SpriteRenderer>().color = colorShowing;
+        }
+        else
+        {
+            indicator.SetActive(false);
+        }
     }
 
     private void OnTriggerEnter(Collider other)

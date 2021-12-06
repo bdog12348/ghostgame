@@ -8,8 +8,48 @@ public class TrashcanController : MonoBehaviour
     [SerializeField] float maxLoad = 3;
 
     [SerializeField] SpriteChanger spriteChanger;
-    bool possessed = false;
 
+    [SerializeField] GameObject[] dustpanObjects;
+    [SerializeField] GameObject[] roombaObjects;
+
+    GameObject indicator;
+    bool possessed = false;
+    private Color colorShowing = new Color();
+
+    void Start()
+    {
+        indicator = transform.GetChild(2).gameObject;
+    }
+    void Update()
+    {
+        bool newColor = false;
+        foreach (GameObject obj in roombaObjects)
+        {
+            if(!CheckFull() && !obj.GetComponent<RoombaMovement>().Empty() && obj.GetComponent<PossessedStatus>().ObjectTaken())
+            {
+                colorShowing = obj.GetComponent<PossessedStatus>().PlayerColor();
+                newColor = true;
+            }
+        }
+        foreach (GameObject obj in dustpanObjects)
+        {
+            if(!CheckFull() && !obj.GetComponent<DustpanMovement>().Empty() && obj.GetComponent<PossessedStatus>().ObjectTaken())
+            {
+                colorShowing = obj.GetComponent<PossessedStatus>().PlayerColor();
+                newColor = true;
+            }
+        }
+        if(newColor)
+        {
+            indicator.SetActive(true);
+            indicator.GetComponent<SpriteRenderer>().color = colorShowing;
+        }
+        else
+        {
+            indicator.SetActive(false);
+        }
+    }
+    
     /// <summary>
     /// Adds specified amount of trash to current load and returns left over amount, if any
     /// </summary>
